@@ -1,0 +1,89 @@
+\documentclass[a4paper]{report}
+
+\usepackage[utf8]{inputenc} % UTF-8
+\usepackage[T1]{fontenc} % 8-bit fonts
+
+\usepackage{lmodern} % Modern font
+
+\usepackage{xcolor} % Colors
+\usepackage{hyperref} % URLs
+\usepackage{graphicx} % Graphics
+
+\usepackage{booktabs} % Formal tables
+\usepackage{multirow} % Table cells that span multiple rows
+\usepackage{colortbl} % Table cell coloring
+
+\usepackage{xifthen}
+\usepackage{bytefield}
+%\usepackage{pgfplots} % Graph plots
+%\usepackage{pgfplotstable} % Table plots
+
+\graphicspath{{figures/}}
+
+\hypersetup{
+    colorlinks,
+    linkcolor={red!40!black},
+    citecolor={blue!40!black},
+    urlcolor={blue!80!black}
+}
+
+\newcommand\TODO{\textcolor{red}{[TODO]}}
+\newcommand\todo[1]{\textcolor{red}{[TODO: #1]}}
+\newcommand\CN{\textcolor{blue}{[Citation Needed]}}
+\newcommand\cn[1]{\textcolor{blue}{[Citation Needed: #1]}}
+
+\title{
+    {The Cellular Automata Research Platform}\\
+    \TODO
+}
+\author{Per Thomas Lundal}
+\date{2015-06-14}
+
+\begin{document}
+
+\maketitle
+
+\chapter*{Abstract}
+    \TODO
+
+\chapter*{Acknowledgements}
+    \TODO
+
+\tableofcontents
+
+\chapter{Introduction}
+    \label{ch:introduction}
+    \TODO
+
+\chapter{Background}
+    \label{ch:background}
+    \TODO
+
+\chapter{Previous Work}
+    \label{ch:previous-work}
+    \TODO
+
+\chapter{Motivation}
+    \label{ch:motivation}
+    \TODO
+
+\chapter{Implementation}
+    \label{ch:implementation}
+    \TODO
+
+\chapter{Verification}
+    \label{ch:verification}
+    \TODO
+
+\chapter{Discussion}
+    \label{ch:discussion}
+    \TODO
+
+\chapter{Conclusion}
+    \label{ch:conclusion}
+    \TODO
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}
