@@ -1,9 +1,10 @@
 .PHONY: all clean purge
 all:
-	pdflatex report
-	bibtex report
-	pdflatex report
-	pdflatex report
+	pdflatex thesis
+	pdflatex thesis
+	bibtex thesis
+	pdflatex thesis
+	pdflatex thesis
 
 clean:
 	git clean -xdf
