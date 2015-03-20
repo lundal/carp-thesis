@@ -95,6 +95,7 @@ It is implemented as a state machine controlling an interlocked two-stage pipeli
 
 The first stage is CellFetch, which reads the cell neighborhoods for one row of cells per run.
 \todo{explain access pattern}
+This takes 3 cycles for 2D and 5 for 3D.
 
 The second stage is implemented as yet another pipeline.
 First, rules are fetched from RuleBRAM, then rules and cell neighborhoods are sent to the RuleTesters.
@@ -106,6 +107,8 @@ Finally, everything is stored to memory.
 
 The number of active rules can be set at runtime to reduce development time by skipping unused rules.
 \TODO
+\todo{CellFetch limiting factor for very few rules}
+\todo{vectors overwritten to allow development without reading them}
 
 \begin{itemize}
     \item Rule 0 reserved.
