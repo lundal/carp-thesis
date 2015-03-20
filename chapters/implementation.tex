@@ -81,7 +81,9 @@ The Cellular Automata module is responsible for configuring the sblock matrix wi
 
 It is implemented as a state machine that is manipulating a matrix of sblocks connected to an adder tree.
 The adder tree is used to calculate the number of live cells after each step.
-The numbers are stored in the Live Count Buffer.
+The numbers are then stored in the Live Count Buffer.
+If the Live Count Buffer is full, data is overwritten, possibly corrupting fitness evaluation, until the buffers are reset.
+This design decision was made to allow the CA to run without being required to read fitness data.
 
 When configuring the sblock matrix, cell types are used as an index for the LUTBRAM to find the corresponding LUT entry.
 
