@@ -87,6 +87,13 @@ This design decision was made to allow the CA to run without being required to r
 
 When configuring the sblock matrix, cell types are used as an index for the LUTBRAM to find the corresponding LUT entry.
 
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=1\textwidth]{statemachine-cellular-automata}
+    \caption{TODO}
+    \label{fig:statemachine-cellular-automata}
+\end{figure}
+
 \section{Development}
 
 Development is responsible for reading the cells in cell BRAM A, change them based on development rules specified by the user, and write the result to cell BRAM B.
@@ -121,6 +128,13 @@ The number of active rules can be set at runtime to reduce development time by s
     \item All triggered rules are written to RuleVectorBuffer (even overridden)
 \end{itemize}
 
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{statemachine-development}
+    \caption{TODO}
+    \label{fig:statemachine-development}
+\end{figure}
+
 \section{Fitness}
 
 \begin{itemize}
@@ -128,6 +142,15 @@ The number of active rules can be set at runtime to reduce development time by s
     \item Custom implementation, simple interface
     \item Example: LC, DFT
 \end{itemize}
+
+\section{Cell Writer Reader}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{statemachine-cell-writer-reader}
+    \caption{TODO}
+    \label{fig:statemachine-cell-writer-reader}
+\end{figure}
 
 \todo{where? also tweak language}
 By default, neighbors which would be outside the matrix are treated as having a state and type of zero.
