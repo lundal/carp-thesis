@@ -77,28 +77,37 @@ The control signals determine which module is activated, which modules the CellB
 
 %The instruction parameter is simply stored to the BRAM.
 
-\section{Cellular Automata}
+\section{Control}
 
-The Cellular Automata module is responsible for configuring the sblock matrix with data from the Cell Buffer, step the sblocks and store the number of live cells, and read the new states back into the Cell Buffer.
+\begin{itemize}
+    \item Most very basic, but Cell Writer Reader very complex
+    \item Rule Writer, LUT Writer pretty much the same
+    \item Rule Number Reader similar to parts of Cell Writer Reader
+    \item Fitness Sender
+    \item Info Sender
+\end{itemize}
 
-It is implemented as a state machine that is manipulating a matrix of sblocks connected to an adder tree.
-The adder tree is used to calculate the number of live cells after each step.
-The numbers are then stored in the Live Count Buffer.
-If the Live Count Buffer is full, data is overwritten, possibly corrupting fitness evaluation, until the buffers are reset.
-This design decision was made to allow the CA to run without being required to read fitness data.
+\subsection{Cell Writer Reader}
 
-When configuring the sblock matrix, cell types are used as an index for the LUTBRAM to find the corresponding LUT entry.
+\begin{itemize}
+    \item Equivalent for Types
+    \item Output is cropped and zero-extended
+    \item Controlled by state machine
+\end{itemize}
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=1\textwidth]{statemachine-cellular-automata}
+    \includegraphics[width=0.8\textwidth]{implementation-cell-writer-reader}
     \caption{TODO}
-    \label{fig:statemachine-cellular-automata}
+    \label{fig:implementation-cell-writer-reader}
 \end{figure}
 
-\begin{itemize}
-    \item ConfigReadback is not separate module, but statemachine in CA
-\end{itemize}
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{statemachine-cell-writer-reader}
+    \caption{TODO}
+    \label{fig:statemachine-cell-writer-reader}
+\end{figure}
 
 \section{Development}
 
@@ -148,6 +157,29 @@ The number of active rules can be set at runtime to reduce development time by s
     \label{fig:statemachine-development}
 \end{figure}
 
+\section{Cellular Automata}
+
+The Cellular Automata module is responsible for configuring the sblock matrix with data from the Cell Buffer, step the sblocks and store the number of live cells, and read the new states back into the Cell Buffer.
+
+It is implemented as a state machine that is manipulating a matrix of sblocks connected to an adder tree.
+The adder tree is used to calculate the number of live cells after each step.
+The numbers are then stored in the Live Count Buffer.
+If the Live Count Buffer is full, data is overwritten, possibly corrupting fitness evaluation, until the buffers are reset.
+This design decision was made to allow the CA to run without being required to read fitness data.
+
+When configuring the sblock matrix, cell types are used as an index for the LUTBRAM to find the corresponding LUT entry.
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=1\textwidth]{statemachine-cellular-automata}
+    \caption{TODO}
+    \label{fig:statemachine-cellular-automata}
+\end{figure}
+
+\begin{itemize}
+    \item ConfigReadback is not separate module, but statemachine in CA
+\end{itemize}
+
 \section{Fitness}
 
 \begin{itemize}
@@ -166,28 +198,6 @@ The number of active rules can be set at runtime to reduce development time by s
     \item More customizable (describe parameters)
     \item Copies Data to internal buffer, since FIFO is delete-on-read (fig)
 \end{itemize}
-
-\section{Cell Writer Reader}
-
-\begin{itemize}
-    \item Equivalent for Types
-    \item Output is cropped and zero-extended
-    \item Controlled by state machine
-\end{itemize}
-
-\begin{figure}[!ht]
-    \centering
-    \includegraphics[width=0.8\textwidth]{implementation-cell-writer-reader}
-    \caption{TODO}
-    \label{fig:implementation-cell-writer-reader}
-\end{figure}
-
-\begin{figure}[!ht]
-    \centering
-    \includegraphics[width=0.7\textwidth]{statemachine-cell-writer-reader}
-    \caption{TODO}
-    \label{fig:statemachine-cell-writer-reader}
-\end{figure}
 
 \todo{where? also tweak language}
 By default, neighbors which would be outside the matrix are treated as having a state and type of zero.
