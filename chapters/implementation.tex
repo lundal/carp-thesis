@@ -22,6 +22,8 @@ A hazard detection unit could be implemented to increase performance by allowing
 Interlocking is implmented using special Run and Done signals.
 Run is asserted when all modules asserts Done.
 
+All state machines are of Mealy design with clocked output, unless noted otherwise.
+
 \section{Communication}
 
 See previous report!
@@ -94,6 +96,10 @@ When configuring the sblock matrix, cell types are used as an index for the LUTB
     \label{fig:statemachine-cellular-automata}
 \end{figure}
 
+\begin{itemize}
+    \item ConfigReadback is not separate module, but statemachine in CA
+\end{itemize}
+
 \section{Development}
 
 Development is responsible for reading the cells in cell BRAM A, change them based on development rules specified by the user, and write the result to cell BRAM B.
@@ -147,10 +153,27 @@ The number of active rules can be set at runtime to reduce development time by s
 \begin{itemize}
     \item Dataflow-ish (livecountbuffer to fitnessbuffer)
     \item Custom implementation, simple interface
-    \item Example: LC, DFT
+\end{itemize}
+
+\subsection{Live Count}
+
+\todo{simply copies from Live Count Buffer to Fitness Buffer}
+
+\subsection{Discrete Fourier Transform}
+
+\begin{itemize}
+    \item Revised version of Ola Martin's
+    \item More customizable (describe parameters)
+    \item Copies Data to internal buffer, since FIFO is delete-on-read (fig)
 \end{itemize}
 
 \section{Cell Writer Reader}
+
+\begin{itemize}
+    \item Equivalent for Types
+    \item Output is cropped and zero-extended
+    \item Controlled by state machine
+\end{itemize}
 
 \begin{figure}[!ht]
     \centering
