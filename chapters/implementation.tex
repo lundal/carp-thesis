@@ -1,14 +1,20 @@
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.8\textwidth]{implementation-simple}
-    \caption{TODO}
+    \caption{High-level block diagram of the new hardware platform.}
     \label{fig:implementation-simple}
 \end{figure}
 
 \begin{figure}[!ht]
     \hspace{-0.1\textwidth}
     \includegraphics[width=1.2\textwidth]{implementation-full}
-    \caption{TODO}
+    \caption{
+        Detailed block-diagram of the new hardware platform.
+        Some signals are color-coded for increased readability.
+        Signals from Decode are colored red, while those to the Send and Cell Buffer Multiplexers are colored blue and purple respectively.
+        Note the two different hues of purple for the different Cell BRAMs.
+        Control signals are not shown.
+    }
     \label{fig:implementation-full}
 \end{figure}
 
@@ -98,14 +104,18 @@ The control signals determine which module is activated, which modules the CellB
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.8\textwidth]{implementation-cell-writer-reader}
-    \caption{TODO}
+    \caption{
+        Detailed block diagram of the Cell Writer Reader.
+        Only the state part is shown as the type part is identical.
+        Control signals are not shown.
+    }
     \label{fig:implementation-cell-writer-reader}
 \end{figure}
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.7\textwidth]{statemachine-cell-writer-reader}
-    \caption{TODO}
+    \caption{State machine controlling the Cell Writer Reader.}
     \label{fig:statemachine-cell-writer-reader}
 \end{figure}
 
@@ -146,14 +156,17 @@ The number of active rules can be set at runtime to reduce development time by s
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.7\textwidth]{implementation-development-stage-2}
-    \caption{TODO}
+    \caption{
+        Block diagram for the second stage of the Development pipeline.
+        Control signals are not shown.
+    }
     \label{fig:implementation-development-stage-2}
 \end{figure}
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.8\textwidth]{statemachine-development}
-    \caption{TODO}
+    \caption{State machine controlling the Development module.}
     \label{fig:statemachine-development}
 \end{figure}
 
@@ -172,7 +185,7 @@ When configuring the sblock matrix, cell types are used as an index for the LUTB
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=1\textwidth]{statemachine-cellular-automata}
-    \caption{TODO}
+    \caption{State machine controlling the Cellular Automata.}
     \label{fig:statemachine-cellular-automata}
 \end{figure}
 
