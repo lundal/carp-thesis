@@ -163,6 +163,13 @@ If there is not enough present, the program waits and then rechecks.
 Fetch is responsible for fetching the next instruction from either communication or internal memory.
 It is also responsible for handling all control flow.
 
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{statemachine-fetch-handler}
+    \caption{State machine for the Fetch Handler}
+    \label{fig:implementation-simple}
+\end{figure}
+
 It has three modes of operation: FetchCom, FetchMem and StoreMem.
 
 In FetchCom mode, instructions are fetched from communication and sent to decode.
