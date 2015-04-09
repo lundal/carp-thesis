@@ -293,9 +293,13 @@ The number of active rules can be set at runtime to reduce development time by s
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.7\textwidth]{implementation-development-stage-2}
+    \includegraphics[width=\textwidth]{implementation-development}
     \caption{
-        Block diagram for the second stage of the Development pipeline.
+        Detailed block diagram for the Development module.
+        The two main pipeline stages are separated by a dashed line,
+        while the substages of the pipeline within the second main stage are marked at the top.
+        The cell buffers are shown for pipeline completeness, but are not part of the Development module.
+        All external signals connect to the Control module.
         Control signals are not shown.
     }
     \label{fig:implementation-development-stage-2}
