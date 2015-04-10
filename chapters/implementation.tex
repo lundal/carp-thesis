@@ -5,18 +5,21 @@
     \label{fig:implementation-simple}
 \end{figure}
 
-\begin{figure}[!ht]
-    \hspace{-0.1\textwidth}
-    \includegraphics[width=1.2\textwidth]{implementation-full}
+\begin{sidewaysfigure}[!pt]
+    \centering
+    \includegraphics[width=\textwidth]{implementation-full}
     \caption{
         Detailed block-diagram of the new hardware platform.
+        Control is implemented as a group of modules, marked by a dotted border.
         Some signals are color-coded for increased readability.
         Signals from Decode are colored red, while those to the Send and Cell Buffer Multiplexers are colored blue and purple respectively.
         Note the two different hues of purple for the different Cell BRAMs.
         Control signals are not shown.
     }
     \label{fig:implementation-full}
-\end{figure}
+\end{sidewaysfigure}
+
+\todo{Green = BRAM}
 
 The platform is design as an interlocked pipeline.
 The main stages are Fetch, Decode and Execute, but due to interlocking, each stage can contain sub-pipelines or state machines.
