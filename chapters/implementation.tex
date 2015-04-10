@@ -8,8 +8,8 @@
 \begin{sidewaysfigure}[!pt]
     \centering
     \includegraphics[width=\textwidth]{implementation-full}
-    \caption{
-        Detailed block-diagram of the new hardware platform.
+    \caption[Detailed block diagram of the new hardware platform.]{
+        Detailed block diagram of the new hardware platform.
         Control is implemented as a group of modules, marked by a dotted border.
         Some signals are color-coded for increased readability.
         Signals from Decode are colored red, while those to the Send and Cell Buffer Multiplexers are colored blue and purple respectively.
@@ -41,7 +41,7 @@ It consists of the Xilinx PCI Express endpoint core, reception and transmission 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.7\textwidth]{implementation-communication}
-    \caption{Detailed block-diagram of the PCI Express communication module.}
+    \caption{Detailed block diagram of the communication module.}
     \label{fig:implementation-communication}
 \end{figure}
 
@@ -125,7 +125,7 @@ There are currently four special requests implemented, as shown in Table~\ref{ta
         0x02 & Get reception buffer data count \\
         0x03 & Get reception buffer available space \\
     \end{tabular}
-    \caption{Special requests}
+    \caption{Special requests.}
 \end{table}
 
 Note that each of the implemented special requests assumes a read request length of one DW.
@@ -140,7 +140,9 @@ The counters determine the addresses that are written to and read from, and are 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.7\textwidth]{figures/wavediagram-fifo}
-    \caption{Wave diagram for the FIFO buffer, showing two consecutive writes followed by two consecutive reads.}
+    \caption[Wave diagram for the FIFO buffer.]{
+        Wave diagram for the FIFO buffer, showing two consecutive writes followed by two consecutive reads.
+    }
     \label{fig:wavediagram-fifo}
 \end{figure}
 
@@ -169,7 +171,7 @@ It is also responsible for handling all control flow.
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.7\textwidth]{implementation-fetch}
-    \caption{Detailed block-diagram of the Fetch module.}
+    \caption{Detailed block diagram of the Fetch module.}
     \label{fig:implementation-fetch}
 \end{figure}
 
@@ -245,7 +247,7 @@ The control signals determine which module is activated, which modules the CellB
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=\textwidth]{implementation-cell-writer-reader}
-    \caption{
+    \caption[Detailed block diagram of the Cell Writer Reader.]{
         Detailed block diagram of the Cell Writer Reader.
         Only the state part is shown as the type part is identical.
         Cell BRAM A is drawn inside the module for completeness.
@@ -305,8 +307,8 @@ The number of active rules can be set at runtime to reduce development time by s
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=\textwidth]{implementation-development}
-    \caption{
-        Detailed block diagram for the Development module.
+    \caption[Detailed block diagram of the Development module.]{
+        Detailed block diagram of the Development module.
         The two main pipeline stages are separated by a dashed line,
         while the substages of the pipeline within the second main stage are marked at the top.
         The cell BRAMs are drawn inside the module for pipeline completeness.
