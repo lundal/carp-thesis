@@ -71,7 +71,7 @@ The reception engine is implemented as a simple state machine, as shown in \figu
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=\textwidth]{statemachine-receive}
+    \includegraphics[width=0.8\textwidth]{statemachine-receive}
     \caption{State machine for the reception engine.}
     \label{fig:statemachine-receive}
 \end{figure}
@@ -89,7 +89,7 @@ The transmission engine is implemented as a simple state machine, as shown in \f
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=\textwidth]{statemachine-transmit}
+    \includegraphics[width=0.8\textwidth]{statemachine-transmit}
     \caption{State machine for the transmission engine.}
     \label{fig:statemachine-transmit}
 \end{figure}
@@ -136,7 +136,7 @@ The counters determine the addresses that are written to and read from, and are 
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.80\textwidth]{figures/wavediagram-fifo}
+    \includegraphics[width=0.7\textwidth]{figures/wavediagram-fifo}
     \caption{Wave diagram for the FIFO buffer, showing two consecutive writes followed by two consecutive reads.}
     \label{fig:wavediagram-fifo}
 \end{figure}
@@ -165,8 +165,15 @@ It is also responsible for handling all control flow.
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.7\textwidth]{statemachine-fetch-handler}
-    \caption{State machine for the Fetch Handler}
+    \includegraphics[width=0.7\textwidth]{implementation-fetch}
+    \caption{Detailed block-diagram of the Fetch module.}
+    \label{fig:implementation-fetch}
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.6\textwidth]{statemachine-fetch-handler}
+    \caption{State machine for the Fetch Handler.}
     \label{fig:statemachine-fetch-handler}
 \end{figure}
 
@@ -234,7 +241,7 @@ The control signals determine which module is activated, which modules the CellB
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.8\textwidth]{implementation-cell-writer-reader}
+    \includegraphics[width=\textwidth]{implementation-cell-writer-reader}
     \caption{
         Detailed block diagram of the Cell Writer Reader.
         Only the state part is shown as the type part is identical.
@@ -245,7 +252,7 @@ The control signals determine which module is activated, which modules the CellB
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.7\textwidth]{statemachine-cell-writer-reader}
+    \includegraphics[width=0.55\textwidth]{statemachine-cell-writer-reader}
     \caption{State machine controlling the Cell Writer Reader.}
     \label{fig:statemachine-cell-writer-reader}
 \end{figure}
@@ -286,8 +293,8 @@ The number of active rules can be set at runtime to reduce development time by s
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.9\textwidth]{statemachine-cell-fetcher}
-    \caption{State machine for the Cell Fetcher}
+    \includegraphics[width=0.8\textwidth]{statemachine-cell-fetcher}
+    \caption{State machine for the Cell Fetcher.}
     \label{fig:implementation-cell-fetcher}
 \end{figure}
 
@@ -298,8 +305,7 @@ The number of active rules can be set at runtime to reduce development time by s
         Detailed block diagram for the Development module.
         The two main pipeline stages are separated by a dashed line,
         while the substages of the pipeline within the second main stage are marked at the top.
-        The cell buffers are shown for pipeline completeness, but are not part of the Development module.
-        All external signals connect to the Control module.
+        The cell BRAMs are drawn inside the module for pipeline completeness.
         Control signals are not shown.
     }
     \label{fig:implementation-development}
@@ -307,7 +313,7 @@ The number of active rules can be set at runtime to reduce development time by s
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.8\textwidth]{statemachine-development}
+    \includegraphics[width=0.75\textwidth]{statemachine-development}
     \caption{State machine controlling the Development module.}
     \label{fig:statemachine-development}
 \end{figure}
@@ -326,7 +332,14 @@ When configuring the sblock matrix, cell types are used as an index for the LUTB
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=1\textwidth]{statemachine-cellular-automata}
+    \includegraphics[width=0.7\textwidth]{implementation-cellular-automata}
+    \caption{Detailed block diagram of the Cellular Automata.}
+    \label{fig:implementation-cellular-automata}
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=\textwidth]{statemachine-cellular-automata}
     \caption{State machine controlling the Cellular Automata.}
     \label{fig:statemachine-cellular-automata}
 \end{figure}
