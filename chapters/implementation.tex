@@ -19,8 +19,6 @@
     \label{fig:implementation-full}
 \end{sidewaysfigure}
 
-\todo{Green = BRAM}
-
 The platform is design as an interlocked pipeline.
 The main stages are Fetch, Decode and Execute, but due to interlocking, each stage can contain sub-pipelines or state machines.
 
@@ -32,6 +30,16 @@ Interlocking is implmented using special Run and Done signals.
 Run is asserted when all modules asserts Done.
 
 All state machines are of Mealy design with clocked output, unless noted otherwise.
+
+\section{General Concepts}
+
+\todo{Control signals not shown, only data}
+
+\todo{Interlocking: run and done signals (need wavediagram)}
+
+\todo{Timing / data passing between pipeline stages}
+
+\todo{Borders: Green = BRAM, grey = outside}
 
 \section{Communication}
 
