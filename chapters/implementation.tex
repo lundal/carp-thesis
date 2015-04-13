@@ -41,7 +41,9 @@ It consists of the Xilinx PCI Express endpoint core, reception and transmission 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.7\textwidth]{implementation-communication}
-    \caption{Detailed block diagram of the communication module.}
+    \caption[Communication module]{
+        Detailed block diagram of the communication module.
+    }
     \label{fig:implementation-communication}
 \end{figure}
 
@@ -75,7 +77,9 @@ The reception engine is implemented as a simple state machine, as shown in \figu
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.8\textwidth]{statemachine-receive}
-    \caption{State machine for the reception engine.}
+    \caption[Reception engine state machine]{
+        State machine for the reception engine.
+    }
     \label{fig:statemachine-receive}
 \end{figure}
 
@@ -93,7 +97,9 @@ The transmission engine is implemented as a simple state machine, as shown in \f
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.8\textwidth]{statemachine-transmit}
-    \caption{State machine for the transmission engine.}
+    \caption[Transmission engine state machine]{
+        State machine for the transmission engine.
+    }
     \label{fig:statemachine-transmit}
 \end{figure}
 
@@ -140,7 +146,7 @@ The counters determine the addresses that are written to and read from, and are 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.7\textwidth]{figures/wavediagram-fifo}
-    \caption[Wave diagram for the FIFO buffer.]{
+    \caption[FIFO buffer wave diagram]{
         Wave diagram for the FIFO buffer, showing two consecutive writes followed by two consecutive reads.
     }
     \label{fig:wavediagram-fifo}
@@ -171,14 +177,14 @@ It is also responsible for handling all control flow.
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.7\textwidth]{implementation-fetch}
-    \caption{Detailed block diagram of the Fetch module.}
+    \caption[Fetch module]{Detailed block diagram of the Fetch module.}
     \label{fig:implementation-fetch}
 \end{figure}
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.6\textwidth]{statemachine-fetch-handler}
-    \caption{State machine for the Fetch Handler.}
+    \caption[Fetch Handler state machine]{State machine for the Fetch Handler.}
     \label{fig:statemachine-fetch-handler}
 \end{figure}
 
@@ -247,7 +253,7 @@ The control signals determine which module is activated, which modules the CellB
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=\textwidth]{implementation-cell-writer-reader}
-    \caption[Detailed block diagram of the Cell Writer Reader.]{
+    \caption[Cell Writer Reader]{
         Detailed block diagram of the Cell Writer Reader.
         Only the state part is shown as the type part is identical.
         Cell BRAM A is drawn inside the module for completeness.
@@ -259,7 +265,7 @@ The control signals determine which module is activated, which modules the CellB
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.55\textwidth]{statemachine-cell-writer-reader}
-    \caption{State machine controlling the Cell Writer Reader.}
+    \caption{Cell Writer Reader state machine}
     \label{fig:statemachine-cell-writer-reader}
 \end{figure}
 
@@ -300,14 +306,16 @@ The number of active rules can be set at runtime to reduce development time by s
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.8\textwidth]{statemachine-cell-fetcher}
-    \caption{State machine for the Cell Fetcher.}
+    \caption[Cell Fetcher state machine]{
+        State machine for the Cell Fetcher.
+    }
     \label{fig:implementation-cell-fetcher}
 \end{figure}
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=\textwidth]{implementation-development}
-    \caption[Detailed block diagram of the Development module.]{
+    \caption[Development module]{
         Detailed block diagram of the Development module.
         The two main pipeline stages are separated by a dashed line,
         while the substages of the pipeline within the second main stage are marked at the top.
@@ -320,7 +328,9 @@ The number of active rules can be set at runtime to reduce development time by s
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.75\textwidth]{statemachine-development}
-    \caption{State machine controlling the Development module.}
+    \caption[Development module state machine]{
+        State machine controlling the Development module.
+    }
     \label{fig:statemachine-development}
 \end{figure}
 
@@ -339,14 +349,18 @@ When configuring the sblock matrix, cell types are used as an index for the LUTB
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.7\textwidth]{implementation-cellular-automata}
-    \caption{Detailed block diagram of the Cellular Automata.}
+    \caption[Cellular Automata]{
+        Detailed block diagram of the Cellular Automata.
+    }
     \label{fig:implementation-cellular-automata}
 \end{figure}
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=\textwidth]{statemachine-cellular-automata}
-    \caption{State machine controlling the Cellular Automata.}
+    \caption[Cellular Automata state machine]{
+        State machine controlling the Cellular Automata.
+    }
     \label{fig:statemachine-cellular-automata}
 \end{figure}
 
