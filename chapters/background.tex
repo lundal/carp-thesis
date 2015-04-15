@@ -119,10 +119,6 @@ Each byte is padded with two extra bits (8b/10b encoding) to allow clock recover
 
 \TODO
 
-\subsection{CAM-Brain Machine}
-
-\TODO
-
 \subsection{CAM-8}
 
 \begin{itemize}
@@ -140,4 +136,32 @@ Each byte is padded with two extra bits (8b/10b encoding) to allow clock recover
     \item Good at spatially moving data and interaction at lattice sites: Well suited for simulating physical systems using lattice-gas-like dynamics or localized interactions.
     \item Goal to bring computation closer to physics to improve computation
     \item Harness the astronomical computing power that is available in CA format
+\end{itemize}
+
+\subsection{CAM-Brain Machine}
+
+\begin{itemize}
+    \item FPGA based hardware that implements a GA to evolve CA based neural network with 1000 neurons in approx 1 second
+    \item Part of CAM-Brain project: Goal to build a brain with 1 billion neurons
+    \item New research field called "Brain Building"
+    \item Up to 65K modules can be interconnected in a large RAM
+    \item Modules are evolved and connected by human design
+    \item Artificial brain with up to 70M neurons
+    \item Updated at 130G cells per second. Enough for real-time robot control
+    \item CoDi-1bit (Collect and Distribute), maybe more in future
+    \item Spike Interval Information Coding: "spike train" to analog
+    \item Hough Spiker Algorithm: Analog to "spike train"
+    \item Goal to have 500 times faster update times compared to CAM-8 for (50-100 updates 10-20 times per second)
+    \item Cells can be neuron, axon or dendrite
+    \item Each module has 24x24x24 cells, can receive 1-bit signals from 188 other modules and send to 64640
+    \item Neuron has 4-bit accumulator and threshold function, inputs can be subtractive
+    \item Dendrites pass XOR of inputs
+    \item Axons pass input to all others
+    \item Dendrites and Axons grown interchangedly
+    \item Signals representation: Custom convolution function (SIIC)
+    \item "Function-level" evolvable hardware
+    \item Cells have 6-bit register and other logic for com
+    \item Each FPGA has 8x6x4 cells
+    \item Fast reconfiguration (<1ms)of the FPGA between growth, signaling and genetic phases to save resources
+    \item ...
 \end{itemize}
