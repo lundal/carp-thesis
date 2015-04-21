@@ -31,15 +31,22 @@ Run is asserted when all modules asserts Done.
 
 All state machines are of Mealy design with clocked output, unless noted otherwise.
 
-\section{General Concepts}
+\section {General Consepts}
 
 \todo{Control signals not shown, only data}
-
-\todo{Interlocking: run and done signals (need wavediagram)}
-
-\todo{Timing / data passing between pipeline stages}
-
 \todo{Borders: Green = BRAM, grey = outside}
+
+\subsection{Pipelining}
+
+The new hardware design makes extensive use of pipelining, and since many stages use a variable amount of cycles for a variety of reasons \todo{which? state machine, pipeline in pipeline, simpler}, interlocking is used in nearly all pipelines.
+Interlocking is implemented with two signals connected to each stage: Run and Done.
+When a stage does not require further cycles to finish, it asserts its Done signal and then waits for the Run signal before continuing.
+The Run signals for all stages are asserted when all Done signals are asserted.
+Each stage then resets its Done signal and the process repeats.
+
+\todo{figure (wave diagram)} shows an example for a three-stage pipeline where \TODO...
+
+\todo{data passing between stages (only valid one cycle)}
 
 \section{Communication}
 
