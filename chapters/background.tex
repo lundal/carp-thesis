@@ -112,6 +112,27 @@ However, the resulting circuits have often ended up using intrinsic properties o
 A problem with using modern FPGAs for EHW research is that some configuration bitstrings can destroy the FPGA by creating short-circuits \cite{ug380} \cite{xapp151}.
 This means that the bitstrings can not be used directly as the genotype without complicated tests to discard those that are dangerous.
 
+\subsection{Sblock}
+
+The sblock was introduced as part of a new EHW-friendly FPGA architecture in \cite{haddow2000sblock}.
+The architecture is a non-uniform CA with a von Neumann neighborhood, where the update function of each cell is independently configurable at run-time.
+The cells, known as sblocks, are very simple structures; they consist of a configurable look-up-table (LUT) and a flip-flop (FF), as shown in \figurename~\ref{fig:sblock}.
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.5\textwidth]{sblock}
+    \caption[Sblock]{
+        Detailed block diagram of an sblock.
+        The LUT can be reconfigured on-the-fly to implement any logical function.
+    }
+    \label{fig:sblock}
+\end{figure}
+
+The greatest benefit of using sblocks for EHW research is that there is no risk of damage or exploitation of intrinsic properties in the silicon.
+Additionaly, the simple structure and hardwired signal routing allows for very efficient area usage.
+The likelihood of a mass-produced sblock-FPGA arriving on the market in the near future is slim.
+However, it is possible to implement it virtually within an other FPGA.
+
 \section{PCI Express}
 
 The PCI Express interface was designed to tackle the arising trouble with clocked parallel buses like PCI.
