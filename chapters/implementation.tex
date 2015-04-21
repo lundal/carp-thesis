@@ -186,8 +186,10 @@ If there is not enough present, the program waits and then rechecks.
 
 \section{Fetch}
 
-Fetch is responsible for fetching the next instruction from either communication or internal memory.
-It is also responsible for handling all control flow.
+The Fetch module is responsible for retrieving the next instruction that should be decoded and then executed.
+It also handles all control flow.
+It is implemented as a two-stage interlocked pipeline consisting of a Fetch Communication module and a Fetch Handler module connected to an Instruction BRAM.
+This is shown in \figurename~\ref{fig:implementation-fetch}.
 
 \begin{figure}[!ht]
     \centering
@@ -196,6 +198,28 @@ It is also responsible for handling all control flow.
     \label{fig:implementation-fetch}
 \end{figure}
 
+Fetch Communication is responsible for converting data from the communication module into instructions while the Fetch Handler handles \todo{something that cover all operations}.
+Both stages are implemented as state machines, making interlocking necessary.
+
+\subsection{Fetch Communication}
+
+While instructions are 256-bit, the communication interface is only 32-bit.
+This means that the host system has to split each instruction into multiple 32-bit pieces.
+As detailed in Appendix \todo{add ISA}, many instructions make use of less than 256 bits.
+In fact, most instructions fit within the first 32 bits.
+Sending all 256 bits for each instruction is therefore a bit excessive.
+To optimize communication, the first 32-bit piece of each instruction has a field declaring the amount of following pieces required for reassembly.
+
+The job of the Fetch Communication module is to combine all the pieces back into full 256-bit instructions.
+It starts by reading the first 32-bit piece and setting all other bits to zero.
+Then, the 3-bit instruction length field is analysed to determine how many further pieces are part of the same instruction.
+The remaining pieces are then incorporated into the instruction, before it is passed on to the Fetch Handler.
+
+\subsection{Fetch Handler}
+
+The Fetch Handler has three modes of operation: FetchCom, FetchMem and StoreMem.
+The modes and transitions are implemented as a state machine, which is shown in \figurename~\ref{fig:statemachine-fetch-handler}.
+
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.6\textwidth]{statemachine-fetch-handler}
@@ -203,11 +227,9 @@ It is also responsible for handling all control flow.
     \label{fig:statemachine-fetch-handler}
 \end{figure}
 
-It has three modes of operation: FetchCom, FetchMem and StoreMem.
-
 In FetchCom mode, instructions are fetched from communication and sent to decode.
 Since a variable-length format is used, this may take multiple cycles.
-To make sure that instructions in the pipeline completes, NOPs are sent when the receive buffer is empty.
+To make sure that instructions does not get "stuck" in the pipeline due to no further instructions arriving at the communication interface, NOPs are sent when Fetch Communication is busy.
 When encountering a Store instruction, it enters StoreMem mode and for a Jump instructions it enters FetchMem mode.
 
 In FetchMem mode, instructions are fetched from InstructionBRAM and sent to decode.
