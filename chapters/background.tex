@@ -91,7 +91,7 @@
 
 A Field Programmable Gate Array (FPGA) is a type of reconfigurable hardware.
 It can implement any desired logical operation by configuring and connecting a number of look-up tables (LUTs) and flip-flops (FFs).
-FPGAs can also contain dedicated blocks for addition, multiplication, memory, and other functions.
+FPGAs can also contain dedicated blocks for addition, multiplication, storage, and other functions.
 These elements are grouped into configurable logic blocks (CLBs), which through a network of interconnects can be connected to each other or input/output pins.
 An example of this structure is shown in \figurename~\ref{fig:fpga}.
 Note that modern FPGAs consists of thousands of CLBs and hundreds of I/O pins \cite{ds160}.
@@ -109,7 +109,7 @@ Note that modern FPGAs consists of thousands of CLBs and hundreds of I/O pins \c
 FPGAs have been the subject of EHW research due to their reconfigurability, and several researchers have been successful in evolving working electronic circuits \cite{huelsbergen1998evolution} \cite{thompson1997evolved}.
 However, the resulting circuits have often ended up using intrinsic properties of the silicon and been very sensitive to environmental changes.
 
-The trouble with using modern FPGAs for EHW research is that some configuration bitstrings can destroy the FPGA \cite{ug380} \cite{xapp151}.
+A problem with using modern FPGAs for EHW research is that some configuration bitstrings can destroy the FPGA by creating short-circuits \cite{ug380} \cite{xapp151}.
 This means that the bitstrings can not be used directly as the genotype without complicated tests to discard those that are dangerous.
 
 \section{PCI Express}
