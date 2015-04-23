@@ -3,6 +3,8 @@ The original implementation was made by Djupdal in 2003.
 It was then extended with a range of various output methods by Aamodt in 2005.
 Finally, it was further extended and optimized in expectation of new hardware by Støvneng in 2014.
 
+%==============================================================================%
+
 \section{Conception}
 
 In 2002, NTNU invested in a CompactPCI computer with a NallaTech BenERA FPGA board to be used for research within the field of evolutionary hardware.
@@ -37,6 +39,8 @@ Afterwards, the new states in the SBM can be read back into BRAM B, swapped into
 
 The design is split into two clock domains; the communication unit uses 40 MHz to be able to interface with PCI, while the rest uses 80 MHz for higher performance.
 
+%==============================================================================%
+
 \section{Extension}
 
 There was one major bottleneck in the original design.
@@ -66,6 +70,8 @@ However, it only has storage space for one development step.
 The run-step function calculates the number of live cells after each SBM update by using a large adder tree.
 The numbers are stored in run-step BRAM for later usage by the fitness function, which is replacable.
 
+%==============================================================================%
+
 \section{Renovation}
 
 In expectation of receiving new hardware with a larger and faster FPGA, there was a demand to optimize the platform by taking advantage of the increased resource pool.
@@ -88,4 +94,3 @@ The only addition is the DFT, but nearly all units has been optimized, yielding 
 
 Unfortunately, due to some challenges with manufacturing, Støvneng was unable to get hold of the new hardware for the duration of his project.
 The system was therefore only verified in simulation, and the PCI communication unit was not upgraded for the PCI Express connection on the new board.
-

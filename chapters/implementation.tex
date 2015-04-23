@@ -31,7 +31,9 @@ Run is asserted when all modules asserts Done.
 
 All state machines are of Mealy design with clocked output, unless noted otherwise.
 
-\section {General Consepts}
+%==============================================================================%
+
+\section{General Consepts}
 
 \todo{Control signals not shown, only data}
 \todo{Borders: Green = BRAM, grey = outside}
@@ -60,6 +62,8 @@ The stages can then write directly to their output registers, instead of caching
 If a stage happens to require the output of the previous stage for multiple cycles however, input caching is needed.
 This causes no register usage reduction in the worst case, while the register usage is halved in the best case.
 The common case for this design is to only look at the input the first cycle for most signals, which should provide a nice reduction.
+
+%==============================================================================%
 
 \section{Communication}
 
@@ -197,6 +201,8 @@ It provides open, close, read and write functions similar to the old BenERA inte
 When a read or write operation is initiated, buffers are checked for available data or space.
 If there is not enough present, the program waits and then rechecks.
 
+%==============================================================================%
+
 \section{Fetch}
 
 The Fetch module is responsible for retrieving the next instruction that should be decoded and then executed.
@@ -258,6 +264,8 @@ Control flow is implemented by having N M-bit general counters and a JumpEqual i
 The counters can be incremented or reset using special instructions.
 The JumpEqual instruction is treated as a Jump instruction when the specified counter matches the specified value, otherwise it is discarded.
 
+%==============================================================================%
+
 \section{Decode}
 
 Decode is responsible for parsing instructions, setting control signals and passing instruction parameters to activated modules.
@@ -281,6 +289,8 @@ The control signals determine which module is activated, which modules the CellB
 %LUTWriter is responsible for writing a LUT entry to LUTBRAM.
 
 %The instruction parameter is simply stored to the BRAM.
+
+%==============================================================================%
 
 \section{Control}
 
@@ -318,6 +328,8 @@ The control signals determine which module is activated, which modules the CellB
     \caption{Cell Writer Reader state machine}
     \label{fig:statemachine-cell-writer-reader}
 \end{figure}
+
+%==============================================================================%
 
 \section{Development}
 
@@ -384,6 +396,8 @@ The number of active rules can be set at runtime to reduce development time by s
     \label{fig:statemachine-development}
 \end{figure}
 
+%==============================================================================%
+
 \section{Cellular Automata}
 
 The Cellular Automata module is responsible for configuring the sblock matrix with data from the Cell Buffer, step the sblocks and store the number of live cells, and read the new states back into the Cell Buffer.
@@ -418,6 +432,8 @@ When configuring the sblock matrix, cell types are used as an index for the LUTB
     \item ConfigReadback is not separate module, but statemachine in CA
 \end{itemize}
 
+%==============================================================================%
+
 \section{Fitness}
 
 \begin{itemize}
@@ -436,6 +452,8 @@ When configuring the sblock matrix, cell types are used as an index for the LUTB
     \item More customizable (describe parameters)
     \item Copies Data to internal buffer, since FIFO is delete-on-read (fig)
 \end{itemize}
+
+%==============================================================================%
 
 \todo{where? also tweak language}
 By default, neighbors which would be outside the matrix are treated as having a state and type of zero.
