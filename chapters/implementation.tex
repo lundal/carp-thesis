@@ -43,10 +43,23 @@ Interlocking is implemented with two signals connected to each stage: Run and Do
 When a stage does not require further cycles to finish, it asserts its Done signal and then waits for the Run signal before continuing.
 The Run signals for all stages are asserted when all Done signals are asserted.
 Each stage then resets its Done signal and the process repeats.
+An example is shown in \figurename~\ref{fig:wavediagram-pipeline}.
 
-\todo{figure (wave diagram)} shows an example for a three-stage pipeline where \TODO...
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{wavediagram-pipeline}
+    \caption[Pipeline wave diagram]{
+        Wave diagram showing pipeline interlocking signals for a 3-stage pipeline where the stages complete in one, two and three cycles respectively.
+    }
+    \label{fig:wavediagram-pipeline}
+\end{figure}
 
-\todo{data passing between stages (only valid one cycle)}
+Often, a multi-cycle stage only looks at its input in the first cycle to determine its execution path.
+This can be taken advantage of to reduce register usage by ruling that the data in the pipeline registers only have to be valid when Run is asserted.
+The stages can then write directly to their output registers, instead of caching partial output internally in extra registers.
+If a stage happens to require the output of the previous stage for multiple cycles however, input caching is needed.
+This causes no register usage reduction in the worst case, while the register usage is halved in the best case.
+The common case for this design is to only look at the input the first cycle for most signals, which should provide a nice reduction.
 
 \section{Communication}
 
