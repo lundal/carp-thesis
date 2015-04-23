@@ -38,6 +38,15 @@ All state machines are of Mealy design with clocked output, unless noted otherwi
 \todo{Control signals not shown, only data}
 \todo{Borders: Green = BRAM, grey = outside}
 
+\subsection{Parameterization}
+
+\begin{itemize}
+    \item Used pretty much everywhere
+    \item Most can be 1 to inf
+    \item Asserts where restrictions apply
+    \item List them all?
+\end{itemize}
+
 \subsection{Pipelining}
 
 The new hardware design makes extensive use of pipelining, and since many stages use a variable amount of cycles for a variety of reasons \todo{which? state machine, pipeline in pipeline, simpler}, interlocking is used in nearly all pipelines.
