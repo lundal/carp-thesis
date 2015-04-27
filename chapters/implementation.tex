@@ -343,15 +343,20 @@ Below are details about the different modules, in order of increasing complexity
 
 \subsection{Rule Writer}
 
-\TODO
-Simplest.
-Takes rule and stores it in Rule BRAM at given index.
+The purpose of the Rule Writer is to store new rules to the Rule BRAM within the Development module.
+It is, along with the LUT Writer, the simplest control module.
+When activated, it stores one rule to a specified index of the Rule BRAM.
+The index doubles as priority for a rule, with higher indexes having higher priority.
+
+Index zero is reserved for representing that no rules have triggered.
+Writing a rule to it has no effect as the rule testers are reset instead of testing the rule during development.
 
 \subsection{LUT Writer}
 
-\TODO
-Simplest.
-Takes LUT and stores it in LUT BRAM at given index.
+The purpose of the LUT Writer is to store new LUTs to the LUT BRAM within the Cellular Automaton module.
+It is, along with the Rule Writer, the simplest control module.
+When activated, it stores one LUT to a specified index of the LUT BRAM.
+The index signifies the cell type that should be converted into the LUT.
 
 \subsection{Information Sender}
 
