@@ -321,15 +321,60 @@ The control signals determine which module is activated, which modules the CellB
 
 \section{Control}
 
-\begin{itemize}
-    \item Most very basic, but Cell Writer Reader very complex
-    \item Rule Writer, LUT Writer pretty much the same
-    \item Rule Number Reader similar to parts of Cell Writer Reader
-    \item Fitness Sender
-    \item Info Sender
-\end{itemize}
+Control is a group of modules, shown in \figurename~\ref{fig:implementation-control}.
+Together, the modules control all inputs and outputs for the Cell Buffer, Cellular Automaton and Development modules.
+Each module is designed to do one spesific task and be independent of any other modules.
+This means that modules are mostly very simple and that it requires a low amount of effort to add new modules or to modify existing.
+\todo{tie in UNIX principles somehow?}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{implementation-control}
+    \caption[Control modules]{
+        Detailed block diagram of the Control modules.
+        Red signals are inputs while blue are outputs.
+        Control signals are not shown.
+    }
+    \label{fig:implementation-control}
+\end{figure}
+
+Below are details about the different modules, in order of increasing complexity.
+\todo{rewrite/remove this?}
+
+\subsection{Rule Writer}
+
+\TODO
+Simplest.
+Takes rule and stores it in Rule BRAM at given index.
+
+\subsection{LUT Writer}
+
+\TODO
+Simplest.
+Takes LUT and stores it in LUT BRAM at given index.
+
+\subsection{Information Sender}
+
+\TODO
+Used as part of the adaptive interface.
+Sends information about matrix size, bits per state/type, number of rules, amount of counters, fitness type, ++.
+
+\subsection{Fitness Sender}
+
+\TODO
+
+\subsection{Rule Vector Reader}
+
+\TODO
+
+\subsection{Rule Numbers Reader}
+
+\TODO
 
 \subsection{Cell Writer Reader}
+
+The Cell Writer Reader is easily the most complex control module.
+This is due to...
 
 \begin{itemize}
     \item Equivalent for Types
