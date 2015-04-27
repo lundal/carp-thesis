@@ -278,9 +278,26 @@ The JumpEqual instruction is treated as a Jump instruction when the specified co
 
 \section{Decode}
 
-Decode is responsible for parsing instructions, setting control signals and passing instruction parameters to activated modules.
+Decode is responsible for parsing instructions, setting up control signals and passing instruction parameters to activated modules.
+It is a very simple module, being essentially a giant switch statement with a case for each instruction.
+
+Control signals are sent to all toplevel modules except communication, fetch and fitness.
+\todo{why not fitness? dataflow-like}
+By default, all modules are given a no-operation signal and multiplexers stay unchanged.
+Then, depending on the instruction's operation code, the control signal for the appropriate module is set, parameters (if any) are extracted and passed on, and multiplexers are changed if needed.
+
+Each operation code corresponds to exactly one control signal for one module.
+Instructions can only activate one module.
+\todo{buffer reset}
+
+Control signals for every top-level module except for communication, fetch and fitness.
+Selects one module that should be run and sends instruction parameters to it.
 
 The control signals determine which module is activated, which modules the CellBufferMux and SendBufferMux will connect to, and if the CellBuffer should swap contents.
+
+\todo{This is all jumbled... REWRITE!}
+
+%==============================================================================%
 
 %\section{RuleWriter}
 
