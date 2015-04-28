@@ -361,9 +361,15 @@ The index signifies the cell type that should be converted into the LUT.
 
 \subsection{Information Sender}
 
-\TODO
-Used as part of the adaptive interface.
-Sends information about matrix size, bits per state/type, number of rules, amount of counters, fitness type, ++.
+Nearly all parts of the system are parameterized.
+The previous practice of manually ensuring that the parameters of both the design and API were in sync was both tiresome and prone to error.
+Therefore, the Information Sender provides a means for the API to automaticly query these parameters.
+
+When activated, it sends all parameters that might be useful to the API.
+This includes information about the CA such as the size, whether wrapping is enabled, and number of bits per state and type;
+information about counters available for control flow;
+maximum number of rules;
+and information about the fitness modules, such as the type and output size.
 
 \subsection{Fitness Sender}
 
