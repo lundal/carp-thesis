@@ -373,22 +373,35 @@ and information about the fitness modules, such as the type and output size.
 
 \subsection{Fitness Sender}
 
-\TODO
+\begin{itemize}
+    \item Sends words from fitness buffer
+    \item Number of words is decided by the fitness module
+\end{itemize}
 
 \subsection{Rule Vector Reader}
 
-\TODO
+\begin{itemize}
+    \item Reads one or more rule vectors from development
+    \item 32 hits per word (except maybe last)
+    \item First (rule 0) always hits
+\end{itemize}
 
 \subsection{Rule Numbers Reader}
 
-\TODO
+\begin{itemize}
+    \item Reads rule activations for all cells during the last devstep
+    \item Raster order, fits as many numbers into each word as possidle
+    \item Word-aligns between rows and numbers that would be split
+\end{itemize}
 
 \subsection{Cell Writer Reader}
 
 The Cell Writer Reader is easily the most complex control module.
-This is due to...
+This is due to the intricate interactions \todo{better word?} with the Cell Buffer required to change only selected cells.
+Additionally, it must convert variable-width types and states into fixed-width words in an efficient manner.
 
 \begin{itemize}
+    \item Read is basicly like Rule Numbers Reader
     \item Equivalent for Types
     \item Output is cropped and zero-extended
     \item Controlled by state machine
@@ -417,7 +430,13 @@ This is due to...
 
 \section{Cell Buffer}
 
-\TODO
+\begin{itemize}
+    \item BRAM A connects to Rule Writer Reader or Development
+    \item BRAM B connects to Cellular Atomaton or Development
+    \item One dual-port BRAM, first half is A, second is B
+    \item Each port reads one row
+    \item Can swap contents (flips the first address bit for both ports)
+\end{itemize}
 
 %==============================================================================%
 
