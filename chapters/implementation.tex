@@ -362,11 +362,17 @@ For more information on rule vectors, see Section~\ref{sec:development}.
 
 \subsection{Rule Numbers Reader}
 
-\begin{itemize}
-    \item Reads rule activations for all cells during the last devstep
-    \item Raster order, fits as many numbers into each word as possidle
-    \item Word-aligns between rows and numbers that would be split
-\end{itemize}
+The Rule Numbers Reader is tasked with reading each cell's most recently activated development rule and sending them to the host.
+The rule numbers are stored in the Rule Numbers BRAM of the Development module and are scanned in raster order\footnotemark.
+\footnotetext{
+    In raster scanning, two-dimensional data is read line-by-line, least significant to most significant.
+    This is extendable to 3D; first X is incremented, then Y, then Z.
+    \todo{better explanation}
+}
+
+Each word is fitted with as many rule numbers as possible without splitting them over multiple words or containing ones from different rows.
+Any remaining space is padded with zeroes.
+\todo{more details?}
 
 \subsection{Cell Writer Reader}
 
