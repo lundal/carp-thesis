@@ -353,10 +353,11 @@ and information about the fitness modules, such as the type and output size.
 
 \subsection{Fitness Sender}
 
-\begin{itemize}
-    \item Sends words from fitness buffer
-    \item Number of words is decided by the fitness module
-\end{itemize}
+The Fitness Sender is responsible for sending the output of the Fitness module to the host.
+As this is data is stored in the Fitness Buffer, is is a simple matter of moving it to the Transmission Buffer when the data is available and the buffer is ready.
+As described in section~\ref{sec:fitness}, the Fitness module declares how many words should be sent per output value.
+This is taken into account by the Fitness Sender when activated.
+\todo{do something with last sentence}
 
 \subsection{Rule Vector Reader}
 
@@ -524,6 +525,7 @@ When configuring the sblock matrix, cell types are used as an index for the LUTB
 %==============================================================================%
 
 \section{Fitness}
+\label{sec:fitness}
 
 \begin{itemize}
     \item Dataflow-ish (livecountbuffer to fitnessbuffer)
