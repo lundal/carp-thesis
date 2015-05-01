@@ -333,7 +333,7 @@ It is, along with the LUT Writer, the simplest control module.
 When activated, it stores one rule to a specified index of the Rule BRAM.
 The index doubles as priority for a rule, with higher indexes having higher priority.
 
-Index zero is reserved for representing that no rules have triggered.
+As explained in Section~\ref{sec:development}, index zero is reserved for representing that no rules have triggered.
 Writing a rule to it has no effect as the rule testers are reset instead of testing the rule during development.
 
 \subsection{LUT Writer}
@@ -360,7 +360,7 @@ and information about the fitness modules, such as the type and output size.
 
 The Fitness Sender is responsible for sending the output of the Fitness module to the host.
 As this is data is stored in the Fitness Buffer, is is a simple matter of moving it to the Transmission Buffer when the data is available and the buffer is ready.
-As described in section~\ref{sec:fitness}, the Fitness module declares how many words should be sent per output value.
+As described in Section~\ref{sec:fitness}, the Fitness module declares how many words should be sent per output value.
 This is taken into account by the Fitness Sender when activated.
 \todo{do something with last sentence}
 
