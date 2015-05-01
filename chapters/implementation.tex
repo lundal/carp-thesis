@@ -31,6 +31,8 @@ Run is asserted when all modules asserts Done.
 
 All state machines are of Mealy design with clocked output, unless noted otherwise.
 
+\todo{Rewrite this!}
+
 %==============================================================================%
 
 \section{General Consepts}
@@ -321,6 +323,8 @@ This means that modules are mostly very simple and that it requires a low amount
 
 Below are details about the different modules, in order of increasing complexity.
 \todo{rewrite/remove this?}
+\todo{send to system = put into transmission buffer}
+\todo{possible to create deadlocks due to waiting}
 
 \subsection{Rule Writer}
 
@@ -338,6 +342,7 @@ The purpose of the LUT Writer is to store new LUTs to the LUT BRAM within the Ce
 It is, along with the Rule Writer, the simplest control module.
 When activated, it stores one LUT to a specified index of the LUT BRAM.
 The index signifies the cell type that should be converted into the LUT.
+\todo{clarify}
 
 \subsection{Information Sender}
 
@@ -345,7 +350,7 @@ Nearly all parts of the system are parameterized.
 The previous practice of manually ensuring that the parameters of both the design and API were in sync was both tiresome and prone to error.
 Therefore, the Information Sender provides a means for the API to automaticly query these parameters.
 
-When activated, it sends all parameters that might be useful to the API.
+When activated, it puts all parameters that might be useful into the the Transmission Buffer.
 This includes information about the CA such as the size, whether wrapping is enabled, and number of bits per state and type;
 information about counters available for control flow;
 maximum number of rules;
