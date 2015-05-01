@@ -75,6 +75,25 @@ If a stage happens to require the output of the previous stage for multiple cycl
 This causes no register usage reduction in the worst case, while the register usage is halved in the best case.
 The common case for this design is to only look at the input the first cycle for most signals, which should provide a nice reduction.
 
+\subsection{Buffers}
+
+All buffers are implemented as first-in first-out (FIFO) queues using block RAM (BRAM) and two counters.
+The counters determine the addresses that are written to and read from, and are incremented when the write or read signals are asserted.
+\figurename~\ref{fig:wavediagram-fifo} shows how the FIFO is used to buffer two words.
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/wavediagram-fifo}
+    \caption[FIFO buffer wave diagram]{
+        Wave diagram for the FIFO buffer, showing two consecutive writes followed by two consecutive reads.
+    }
+    \label{fig:wavediagram-fifo}
+\end{figure}
+
+Notice how the read signal needs to be asserted before the clock tick when data is read to ensure correct consecutive reads.
+This is due to the BRAM used in the FIFO, which updates at clock ticks.
+To have correct data available for a read in the following cycle, the address therefore has to be updated before the clock tick (by asserting the read signal).
+
 %==============================================================================%
 
 \section{Communication}
@@ -180,38 +199,6 @@ There are currently four special requests implemented, as shown in Table~\ref{ta
 
 Note that each of the implemented special requests assumes a read request length of one DW.
 If the request has a greater length, the returned data is simply repeated to fill the packet.
-
-\subsection{Buffers}
-
-The buffers are implemented as first-in first-out (FIFO) queues using block RAM (BRAM) and two counters.
-The counters determine the addresses that are written to and read from, and are incremented when the write or read signals are asserted.
-\figurename~\ref{fig:wavediagram-fifo} shows how the FIFO is used to buffer two words.
-
-\begin{figure}[!ht]
-    \centering
-    \includegraphics[width=0.7\textwidth]{figures/wavediagram-fifo}
-    \caption[FIFO buffer wave diagram]{
-        Wave diagram for the FIFO buffer, showing two consecutive writes followed by two consecutive reads.
-    }
-    \label{fig:wavediagram-fifo}
-\end{figure}
-
-Notice how the read signal needs to be asserted before the clock tick when data is read to ensure correct consecutive reads.
-This is due to the BRAM used in the FIFO, which updates at clock ticks.
-To have correct data available for a read in the following cycle, the address therefore has to be updated before the clock tick (by asserting the read signal).
-
-\subsection{Software API}
-
-The communication part of the new software API is split into two parts.
-
-The first is a general interface for connecting to PCI and PCI Express devices without using a custom driver.
-It takes advantage of Linux' automatic population of /sys/devices/pci* with files representing the memory regions of all PCI and PCI Express devices.
-The directory is searched by vendor and device id, and the corresponding memory regions is memory-mapped into the program.
-
-The second is an interface specifically for the communication unit.
-It provides open, close, read and write functions similar to the old BenERA interface, in addition to implementing all special request functions in Table~\ref{tab:requests}.
-When a read or write operation is initiated, buffers are checked for available data or space.
-If there is not enough present, the program waits and then rechecks.
 
 %==============================================================================%
 
@@ -550,6 +537,26 @@ When configuring the sblock matrix, cell types are used as an index for the LUTB
     \item More customizable (describe parameters)
     \item Copies Data to internal buffer, since FIFO is delete-on-read (fig)
 \end{itemize}
+
+%==============================================================================%
+
+\section{Software API}
+
+\TODO
+
+\subsection{Communication}
+
+The communication part of the new software API is split into two parts:
+\todo{this lone sentence is kinda awkward}
+
+The first is a general interface for connecting to PCI and PCI Express devices without using a custom driver.
+It takes advantage of Linux' automatic population of /sys/devices/pci* with files representing the memory regions of all PCI and PCI Express devices.
+The directory is searched by vendor and device id, and the corresponding memory regions is memory-mapped into the program.
+
+The second is an interface specifically for the communication unit.
+It provides open, close, read and write functions similar to the old BenERA interface, in addition to implementing all special request functions in Table~\ref{tab:requests}.
+When a read or write operation is initiated, buffers are checked for available data or space.
+If there is not enough present, the program waits and then rechecks.
 
 %==============================================================================%
 
