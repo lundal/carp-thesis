@@ -366,11 +366,12 @@ This is taken into account by the Fitness Sender when activated.
 
 \subsection{Rule Vector Reader}
 
-\begin{itemize}
-    \item Reads one or more rule vectors from development
-    \item 32 hits per word (except maybe last)
-    \item First (rule 0) always hits
-\end{itemize}
+The Rule Vector Reader is tasked with reading the rule vectors created by the Development module and sending them to the host.
+Multiple rule vectors can be read with one instruction.
+Since rule vectors can be of any length, they are each split over multiple words, starting with the lowest indexes.
+The final word of each vector is padded with zeroes.
+\todo{this sentence is a bit off}
+For more information on rule vectors, see Section~\ref{sec:development}.
 
 \subsection{Rule Numbers Reader}
 
@@ -427,6 +428,7 @@ Additionally, it must convert variable-width types and states into fixed-width w
 %==============================================================================%
 
 \section{Development}
+\label{sec:development}
 
 Development is responsible for reading the cells in cell BRAM A, change them based on development rules specified by the user, and write the result to cell BRAM B.
 
