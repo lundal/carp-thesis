@@ -404,7 +404,19 @@ The combiner is a combinatorial unit that combines two signals of different leng
 This is implemented using a shifter and a mask that is the size of the short signal.
 First, the short input and mask is shifted into the desired position.
 Then, the long signal is anded with the inverted mask and ored with the short signal, producing the combined signal.
-The process is illustrated in \figurename~\todo{figure}.
+The process is illustrated in \figurename~\ref{fig:combiner}.
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{combiner}
+    \caption[Combiner operation]{
+        The three operations that power the combiner.
+        A is the short input, highlighted in green.
+        B is the long input, highlighted in orange.
+        The mask is highlighted in yellow.
+    }
+    \label{fig:combiner}
+\end{figure}
 
 \subsubsection{State Machine}
 
