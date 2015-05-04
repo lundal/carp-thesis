@@ -361,6 +361,7 @@ The final word of each vector is padded with zeroes.
 For more information on rule vectors, see Section~\ref{sec:development}.
 
 \subsection{Rule Numbers Reader}
+\label{sec:rule-numbers-reader}
 
 The Rule Numbers Reader is tasked with reading each cell's most recently activated development rule and sending them to the host.
 The rule numbers are stored in the Rule Numbers BRAM of the Development module and are scanned in raster order\footnotemark.
@@ -376,28 +377,45 @@ Any remaining space is padded with zeroes.
 
 \subsection{Cell Writer Reader}
 
-The Cell Writer Reader is easily the most complex control module.
-This is due to the intricate interactions \todo{better word?} with the Cell Buffer required to change only selected cells.
-Additionally, it must convert variable-width types and states into fixed-width words in an efficient manner.
+The purpose of the Cell Writer Reader is to perform read and write operations against Cell BRAM A, causing it to be the system's main input/output channel.
+It is possible to write states and types to either a single cell, a row of cells or the entire BRAM, while it it is possible to read from a single cell or the entire BRAM.
 
-\begin{itemize}
-    \item Read is basicly like Rule Numbers Reader
-    \item Equivalent for Types
-    \item Output is cropped and zero-extended
-    \item Controlled by state machine
-\end{itemize}
+It is easily the most complex control module, due to the intricate operations required to change only selected values in BRAM rows.
+Additionally, it must convert variable-width types and states into fixed-width words in an efficient manner when reading.
+
+The module consists of combiners which are used to combine new data with existing data from the Cell BRAM, repeaters to simplify the process of filling the entire Cell BRAM with a given state and type, shifters used to select output, and a state machine which controls everything.
+\figurename~\ref{fig:implementation-cell-writer-reader} shows how the components are connected.
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=\textwidth]{implementation-cell-writer-reader}
     \caption[Cell Writer Reader]{
         Detailed block diagram of the Cell Writer Reader.
-        Only the state part is shown as the type part is identical.
+        Only the state part is shown to reduce complexity; the type part is identical.
         Cell BRAM A is drawn inside the module for completeness.
         Control signals are not shown.
     }
     \label{fig:implementation-cell-writer-reader}
 \end{figure}
+
+\subsubsection{Combiner}
+
+The combiner is a combinatorial unit that combines two signals of different lengths by replacing one part of the long signal with the short signal.
+This is implemented using a shifter and a mask that is the size of the short signal.
+First, the short input and mask is shifted into the desired position.
+Then, the long signal is anded with the inverted mask and ored with the short signal, producing the combined signal.
+The process is illustrated in \figurename~\todo{figure}.
+
+\subsubsection{State Machine}
+
+The state machine consists of seven states, shown in \figurename~\ref{fig:statemachine-cell-writer-reader}.
+When an operation is received, the BRAM address is set and it transitions from idle to the corresponding state.
+Some states are dual-purpose due to the similarity of the operations, while others are not.
+Coincidentally, the dual-purpose states complete in one cycle while the others require multiple\footnotemark.
+\footnotetext{
+    Techically, the Send One state does not necessarily complete in one cycle since it will wait until there is available space in the Transmission Buffer.
+    However, it is the common case.
+}
 
 \begin{figure}[!ht]
     \centering
@@ -405,6 +423,12 @@ Additionally, it must convert variable-width types and states into fixed-width w
     \caption{Cell Writer Reader state machine}
     \label{fig:statemachine-cell-writer-reader}
 \end{figure}
+
+The dual-purpose states are as follows:
+Send One can send either a state or a type, Write State can write either one or a row of states, and Write Type can write either one or a row of types.
+The remaining states are:
+Fill writes the same state and type to all cells, Send All States reads all states in raster order, and Send All Types reads all types in raster order.
+The output formatting of the Send All states is equal to that of the Rule Numbers Reader, detailed in Section~\ref{sec:rule-numbers-reader}.
 
 %==============================================================================%
 
