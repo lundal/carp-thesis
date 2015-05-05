@@ -471,46 +471,13 @@ In development mode, both storage areas are connected to the Development module.
 \section{Development}
 \label{sec:development}
 
-Development is responsible for reading the cells in cell BRAM A, change them based on development rules specified by the user, and write the result to cell BRAM B.
+The Development Module is responsible for providing the ontogenic aspect of the system by allowing cells to be changed based on user-supplied development rules.
 
-It is implemented as a state machine controlling an interlocked two-stage pipeline.
-
-The first stage is CellFetch, which reads the cell neighborhoods for one row of cells per run.
-\todo{explain access pattern}
-This takes 3 cycles for 2D and 5 for 3D.
-
-The second stage is implemented as yet another pipeline.
-First, rules are fetched from RuleBRAM, then rules and cell neighborhoods are sent to the RuleTesters.
-To allow multiple rules to be tested each cycle, RuleTesters is split into two parts.
-The first part tests the different rules against each cell, while the second selects the result from the highest priority rule.
-After the first part, hits are output from RuleTesters to HitsToVector and HitsToNumbers.
-Finally, everything is stored to memory.
-\footnote{Rule vectors are only stored after the final rules and cells}
-
-The number of active rules can be set at runtime to reduce development time by skipping unused rules.
-\TODO
-\todo{CellFetch limiting factor for very few rules}
-\todo{vectors overwritten to allow development without reading them}
-
-\begin{itemize}
-    \item Rule 0 reserved.
-    \item Two-stag pipeline:
-    \begin{itemize}
-        \item CellFetch
-        \item RuleFetch, Test, HitsToVec/Num, Write (4-stage pipeline)
-    \end{itemize}
-    \item Last triggered rules are written to RuleNumbersBRAM
-    \item All triggered rules are written to RuleVectorBuffer (even overridden)
-\end{itemize}
-
-\begin{figure}[!ht]
-    \centering
-    \includegraphics[width=0.8\textwidth]{statemachine-cell-fetcher}
-    \caption[Cell Fetcher state machine]{
-        State machine for the Cell Fetcher.
-    }
-    \label{fig:implementation-cell-fetcher}
-\end{figure}
+\todo{overall implementation}.
+It is implemented as an interlocked two-stage pipeline controlled by a statemachine.
+Fetch neighborhood, test all rules, writeback.
+Pipeline-in-pipeline.
+\figurename~\ref{fig:implementation-development}.
 
 \begin{figure}[!ht]
     \centering
@@ -525,6 +492,8 @@ The number of active rules can be set at runtime to reduce development time by s
     \label{fig:implementation-development}
 \end{figure}
 
+Controlled by state machine \figurename~\ref{fig:statemachine-development}.
+
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.75\textwidth]{statemachine-development}
@@ -533,6 +502,51 @@ The number of active rules can be set at runtime to reduce development time by s
     }
     \label{fig:statemachine-development}
 \end{figure}
+
+\subsection{Cell Fetcher}
+
+The first stage is CellFetch, which reads the cell neighborhoods for one row of cells per run.
+From Cell Storage A.
+\todo{explain access pattern}
+This takes 3 cycles for 2D and 5 for 3D.
+\figurename~\ref{fig:statemachine-cell-fetcher}.
+\todo{CellFetch limiting factor for very few rules}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{statemachine-cell-fetcher}
+    \caption[Cell Fetcher state machine]{
+        State machine for the Cell Fetcher.
+    }
+    \label{fig:statemachine-cell-fetcher}
+\end{figure}
+
+\subsection{Rule Fetcher}
+
+\TODO
+One rule ahead to save cycle.
+The number of active rules can be set at runtime to reduce development time by skipping unused rules.
+Rules are fetched from RuleBRAM, then rules and cell neighborhoods are sent to the RuleTesters.
+
+\subsection{Rule Testers}
+
+\TODO
+Rule 0 reserved.
+To allow multiple rules to be tested each cycle, RuleTesters is split into two parts.
+The first part tests the different rules against each cell, while the second selects the result from the highest priority rule.
+After the first part, hits are output from RuleTesters to HitsToVector and HitsToNumbers.
+To Cell Storage B.
+
+\subsection{Hits to Numbers}
+
+\TODO
+Writes last triggered rule to each cell.
+
+\subsection{Hits to Vector}
+
+Rule vectors are only stored after the final rules and cells.
+All triggered rules are written to RuleVectorBuffer (even overridden)
+\todo{vectors overwritten to allow development without reading them}
 
 %==============================================================================%
 
