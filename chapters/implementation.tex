@@ -472,12 +472,12 @@ In development mode, both storage areas are connected to the Development module.
 \label{sec:development}
 
 The Development Module is responsible for providing the ontogenic aspect of the system by allowing cells to be changed based on user-supplied development rules.
+It uses Cell Storage A as input and stores the modified cells to Cell Storage B.
+\todo{somewhat funky}
 
-\todo{overall implementation}.
-It is implemented as an interlocked two-stage pipeline controlled by a statemachine.
-Fetch neighborhood, test all rules, writeback.
-Pipeline-in-pipeline.
-\figurename~\ref{fig:implementation-development}.
+The module is implemented as a two-stage interlocked pipeline controlled by a state machine.
+Stage one contains the Cell Fetcher, which retrieves cell neighborhoods from Cell BRAM A, and stage two contains a four-stage pipeline that tests development rules against the cell neighborhoods.
+This is illustrated in \figurename~\ref{fig:implementation-development}.
 
 \begin{figure}[!ht]
     \centering
@@ -492,7 +492,10 @@ Pipeline-in-pipeline.
     \label{fig:implementation-development}
 \end{figure}
 
-Controlled by state machine \figurename~\ref{fig:statemachine-development}.
+\TODO
+The state machine, shown in \figurename~\ref{fig:statemachine-development}, ensures the somewhat complex timing of the pipelines that is present due to speed optimizations.
+The state machine, shown in \figurename~\ref{fig:statemachine-development}, ensures proper timing of the somewhat complex pipeline.
+It is also responsible for setting input and output addresses and activating write signals.
 
 \begin{figure}[!ht]
     \centering
