@@ -444,15 +444,27 @@ The output formatting of the Send All states is equal to that of the Rule Number
 
 %==============================================================================%
 
-\section{Cell Buffer}
+\section{Cell Storage}
 
-\begin{itemize}
-    \item BRAM A connects to Rule Writer Reader or Development
-    \item BRAM B connects to Cellular Atomaton or Development
-    \item One dual-port BRAM, first half is A, second is B
-    \item Each port reads one row
-    \item Can swap contents (flips the first address bit for both ports)
-\end{itemize}
+\todo{Buffer -> Storage}
+
+The Cell Storage serves as the location for exchange of cell data between the CA, Development and Host.
+It contains two separate storage areas, the contents of which can be swapped.
+Each storage area can host a full matrix of cell states and types, and allows one row of each to be read each cycle.
+The main reason two storage areas are needed is the Development module.
+It requires a place to store its output without affecting its input during the development process.
+More on this in Section~\ref{sec:development}.
+
+The module is implemented as two dual-port BRAMs, one for states and one for types, each sized to twice the size of the matrix.
+To create two separate storage areas (A and B) with both states and types, the address of the first port is prefixed with 0 and the second with 1.
+The contents of the storage areas can then be made to appear swapped by simply inverting the prefix bits.
+
+To service all \todo{word} components, the Cell Storage is connected via a multiplexer.
+It has two modes; normal and development.
+In normal mode, storage A is connected to the Cell Writer Reader and storage B to the CA.
+In development mode, both storage areas are connected to the Development module.
+
+\todo{fig?}
 
 %==============================================================================%
 
