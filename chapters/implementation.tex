@@ -472,8 +472,7 @@ In development mode, both storage areas are connected to the Development module.
 \label{sec:development}
 
 The Development Module is responsible for providing the ontogenic aspect of the system by allowing cells to be changed based on user-supplied development rules.
-It uses Cell Storage A as input and stores the modified cells to Cell Storage B.
-\todo{somewhat funky}
+It uses Cell Storage A as input and outputs the modified cells to Cell Storage B.
 
 The module is implemented as a two-stage interlocked pipeline controlled by a state machine.
 Stage one contains the Cell Fetcher, which retrieves cell neighborhoods from Cell BRAM A, and stage two contains a four-stage pipeline that tests development rules against the cell neighborhoods.
@@ -492,10 +491,9 @@ This is illustrated in \figurename~\ref{fig:implementation-development}.
     \label{fig:implementation-development}
 \end{figure}
 
-\TODO
-The state machine, shown in \figurename~\ref{fig:statemachine-development}, ensures the somewhat complex timing of the pipelines that is present due to speed optimizations.
-The state machine, shown in \figurename~\ref{fig:statemachine-development}, ensures proper timing of the somewhat complex pipeline.
-It is also responsible for setting input and output addresses and activating write signals.
+The state machine, shown in \figurename~\ref{fig:statemachine-development}, ensures proper timing of the complex pipeline.
+It is responsible for setting input and output addresses, activating pipeline stages and setting write signals.
+A complete timing diagram can be seen in \figurename~\ref{fig:wavediagram-development}.
 
 \begin{figure}[!ht]
     \centering
@@ -506,14 +504,21 @@ It is also responsible for setting input and output addresses and activating wri
     \label{fig:statemachine-development}
 \end{figure}
 
+\begin{sidewaysfigure}[!pt]
+    \centering
+    \includegraphics[width=\textwidth]{wavediagram-development}
+    \caption[Development module wave diagram]{
+        Wave diagram for the Development module, showing the development process for an Nx2 matrix with five active rules.
+    }
+    \label{fig:wavediagram-development}
+\end{sidewaysfigure}
+
 \subsection{Cell Fetcher}
 
-The first stage is CellFetch, which reads the cell neighborhoods for one row of cells per run.
-From Cell Storage A.
-\todo{explain access pattern}
-This takes 3 cycles for 2D and 5 for 3D.
-\figurename~\ref{fig:statemachine-cell-fetcher}.
-\todo{CellFetch limiting factor for very few rules}
+The Cell Fetch reads the cell neighborhoods for one row of cells from Cell BRAM A per run.
+It is implemented as two state machines, one which sets the BRAM address and one which retrieves the output.
+The first can be seen in \figurename~\ref{fig:statemachine-cell-fetcher}.
+The other is equivalent to the first except for being delayed two states, thus having Wait 1 as initial state instead of Fetch Center.
 
 \begin{figure}[!ht]
     \centering
@@ -524,32 +529,42 @@ This takes 3 cycles for 2D and 5 for 3D.
     \label{fig:statemachine-cell-fetcher}
 \end{figure}
 
+By reading an entire row at a time, the neighbors along the X axis are fetched "for free" due to wrap-around, while the other axes require two extra reads each.
+This lands the runtime on 5 cycles for 2D matrices and 7 cycles for 3D, including BRAM latency.
+\todo{remove/change quotes?}
+\todo{CellFetch limiting factor for very few rules}
+
 \subsection{Rule Fetcher}
 
-\TODO
-One rule ahead to save cycle.
-The number of active rules can be set at runtime to reduce development time by skipping unused rules.
-Rules are fetched from RuleBRAM, then rules and cell neighborhoods are sent to the RuleTesters.
+The Rule Fetcher is responsible for fetching development rules from Rule BRAM and passing them to the Rule Testers.
+It takes into account the specified number of active rules to speed up the development process by only fetching those.
+It is possible to further improve performance by setting that multiple rules should be fetched and tested at the same time.
+In that case, those with indexes higher than the number of active rules within the last rule batch are replaced by rules with no effect.
 
 \subsection{Rule Testers}
 
-\TODO
-Rule 0 reserved.
-To allow multiple rules to be tested each cycle, RuleTesters is split into two parts.
-The first part tests the different rules against each cell, while the second selects the result from the highest priority rule.
-After the first part, hits are output from RuleTesters to HitsToVector and HitsToNumbers.
-To Cell Storage B.
+The Rule Testers are responsible for testing development rules received from the Rule Fetcher against cell neighborhoods received from the Cell Fetcher.
+They are unique in that they produce output after both one and two cycles.
+Information about rule activations, "hits", are passed on to hit processors after one cycle and the result of the rule application is passed on to Cell BRAM B after two cycles.
 
-\subsection{Hits to Numbers}
+There is a special case for rule zero.
+It is used as an internal reset by forcing a hit and setting the output cell to the input cell.
+This implementation was chosen because of its simplicity and ability to use zero to mean "unchanged" in hit processors.
+It also makes it possible to have no active rules.
 
-\TODO
-Writes last triggered rule to each cell.
+\subsection{Hit Processors}
 
-\subsection{Hits to Vector}
+There are two modules dedicated to providing information about the development procedure, Hits To Vector and Hits To Numbers.
+The input for both are hits passed on from the Rule Testers.
 
-Rule vectors are only stored after the final rules and cells.
-All triggered rules are written to RuleVectorBuffer (even overridden)
-\todo{vectors overwritten to allow development without reading them}
+Hits To Vector stores a vector where each bit signifies whether the rule of that index was triggered or not to the Rule Vector Buffer each devstep.
+\todo{explain devstep or find another term}
+Rules that have triggered but is later overridden by a rule with higher priority is still marked as having been triggered in the vector.
+If the buffer is full, it is reset instead of waiting to allow programs to disregard the data without causing deadlocks.
+
+Hits To Numbers stores the index of the last triggered rule for each cell to the Rule Numbers BRAM.
+Since rule zero is always marked as a hit, the BRAM is cleared each devstep before the actual rule numbers are written.
+\todo{explain devstep or find another term}
 
 %==============================================================================%
 
