@@ -570,24 +570,28 @@ Since rule zero is always marked as a hit, the BRAM is cleared each devstep befo
 
 \section{Cellular Automata}
 
-The Cellular Automata module is responsible for configuring the sblock matrix with data from the Cell Buffer, step the sblocks and store the number of live cells, and read the new states back into the Cell Buffer.
+The Cellular Automata module is the centerpiece of the system.
+It is what contains the sblock matrix and the control logic to service it.
+The module is responsible for configuring the sblock matrix with data from Cell BRAM B, step the sblocks and store the number of live cells afterwards, and write the new states back to Cell BRAM B.
 
-It is implemented as a state machine that is manipulating a matrix of sblocks connected to an adder tree.
-The adder tree is used to calculate the number of live cells after each step.
-The numbers are then stored in the Live Count Buffer.
-If the Live Count Buffer is full, data is overwritten, possibly corrupting fitness evaluation, until the buffers are reset.
-This design decision was made to allow the CA to run without being required to read fitness data.
-
-When configuring the sblock matrix, cell types are used as an index for the LUTBRAM to find the corresponding LUT entry.
+The implementation can be seen in \figurename~\ref{fig:implementation-cellular-automata}.
+It consists of a state machine, the Sblock Matrix and a Live Counter, in addition to storage for LUTs and a buffer for the Live Counter.
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.7\textwidth]{implementation-cellular-automata}
     \caption[Cellular Automata]{
         Detailed block diagram of the Cellular Automata.
+        Config Readback is a symbolic module for majority of the state machine.
     }
     \label{fig:implementation-cellular-automata}
 \end{figure}
+
+\subsection{State Machine}
+
+The state machine in \figurename~\ref{fig:statemachine-cellular-automata} is what powers this module.
+It is what controls both configuration, readback and stepping of the Sblock Matrix.
+Additionally, it sets write signals for the Live Count buffer.
 
 \begin{figure}[!ht]
     \centering
@@ -598,9 +602,42 @@ When configuring the sblock matrix, cell types are used as an index for the LUTB
     \label{fig:statemachine-cellular-automata}
 \end{figure}
 
-\begin{itemize}
-    \item ConfigReadback is not separate module, but statemachine in CA
-\end{itemize}
+Configuration is the process of taking cells from Cell BRAM B, converting them into LUTs and programming the sblocks.
+It operates on one row of cells/sblocks at a time.
+First, the cells are read from Cell BRAM B and the type of each are used as addresses for the 1-in N-out LUT BRAM to find the corresponding LUT.
+The LUTs are then loaded into shift registers and transfered to the sblocks piece by piece.
+Finally, the outputs of the sblocks are set to the states of the cells.
+
+Readback is the process of extracting the cell states from the Sblock Matrix and storing them back in Cell BRAM B.
+This operation also works on one row at a time.
+However, it is much simpler and faster than configuration since it simply directs the output of the sblocks to the Cell BRAM and sets the correct row.
+
+Stepping is simply the process of telling the Sblock Matrix to update all of its sblocks.
+Since it is common to step hundreds of times in a row, the step instruction has a parameter for the number of steps, up to a maximum of 65535 (a 16-bit number).
+
+\subsection{Sblock Matrix}
+
+The Sblock Matrix essentially contains enormous amounts of sblock as they are described in Section~\ref{sec:sblock}.
+The only difference is that the sblocks used here have support for configuring multiple bits of the LUT each cycle.
+However, to use the dedicated shift registers as configurable LUTs, there are some restrictions on the number of bits.
+Firstly, it can only be powers of two; secondly, it can be maximum 2 for 2D matrices and 8 for 3D.
+Keep in mind that each bit adds one extra signal for each sblock, which accumulates to a significant amount of routing resources.
+
+By default, neighbors which would be outside the matrix are treated as having zero for both state and type.
+However, it is possible to enable matrix wrapping to instead use the neighbors on the opposite side of the matrix.
+Having this option lets the user decide if programs should be able to exploit the matrix size to create oscillators or not.
+\todo{also applies to devstep}
+
+\subsection{Live Counter}
+
+The Live Counter is essentially a giant adder tree that is connected to the output of each sblock.
+It calculates the total number of live cells after each runstep and stores them in the Live Count Buffer.
+\todo{explain runstep or use other term}
+Due to the massive amount of sblocks, the calculation is spread out over many cycles, the exact number of which is dependant on the number of sblocks.
+However, the throughput remains at one total per cycle.
+
+If the Live Count Buffer happens to be full, it is reset instead of waiting, to allow programs to disregard the data without causing deadlocks.
+This will likely corrupt all fitness evaluation until the buffers are reset however.
 
 %==============================================================================%
 
