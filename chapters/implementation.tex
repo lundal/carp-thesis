@@ -681,9 +681,3 @@ It provides open, close, read and write functions similar to the old BenERA inte
 When a read or write operation is initiated, buffers are checked for available data or space.
 If there is not enough present, the program waits and then rechecks.
 
-%==============================================================================%
-
-\todo{where? also tweak language}
-By default, neighbors which would be outside the matrix are treated as having a state and type of zero.
-However, when matrix wrap is enabled, neighbors on the opposite side of the matrix are used instead.
-This applies to both runstep and devstep.
