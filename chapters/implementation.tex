@@ -644,22 +644,37 @@ This will likely corrupt all fitness evaluation until the buffers are reset howe
 \section{Fitness}
 \label{sec:fitness}
 
-\begin{itemize}
-    \item Dataflow-ish (livecountbuffer to fitnessbuffer)
-    \item Custom implementation, simple interface
-\end{itemize}
+The Fitness module is responsible for evaluating the output of the CA for use with evolutionary algorithms.
+Since fitness evaluation vary widely between applications, the interface of the Fitness module is designed to be simple and generic, such that the module is easy to replace.
+
+It is connected in a dataflow-like manner between the Live Count Buffer and the Fitness Buffer.
+Whenever there is enough data available in the Live Count Buffer, it should fetch that data, processes it, and store the result to the Fitness Buffer.
+The host can then later retrieve it by activating the Fitness Sender.
+
+To comply with the adaptive interface, there are a few things that the Fitness module needs to tell the other parts of the system.
+First is the number of words per result, required by the Fitness Sender.
+Second is a unique identifier that is reported to the host by the Information Sender.
+To allow further versatility, the module can also report synthesis parameters to the host.
+
+There are currently two implemented fitness modules.
+The Live Count Fitness and the DFT Fitness.
 
 \subsection{Live Count}
 
-\todo{simply copies from Live Count Buffer to Fitness Buffer}
+\TODO
+Very simple example.
+Simply copies from Live Count Buffer to Fitness Buffer (when buffers have data and room).
+Allows software-side fitness evaluation.
 
 \subsection{Discrete Fourier Transform}
 
-\begin{itemize}
-    \item Revised version of Ola Martin's
-    \item More customizable (describe parameters)
-    \item Copies Data to internal buffer, since FIFO is delete-on-read (fig)
-\end{itemize}
+\TODO
+DFT finds frequencies, can detect patterns in complex output.
+Revised version of Ola Martin's.
+More customizable (describe parameters).
+Copies Data to internal buffer, since FIFO is delete-on-read (fig).
+Twiddle generation.
+Real transform -> mirroring -> only half output needed.
 
 %==============================================================================%
 
