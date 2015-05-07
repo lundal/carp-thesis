@@ -560,7 +560,7 @@ The input for both are hits passed on from the Rule Testers.
 Hits To Vector stores a vector where each bit signifies whether the rule of that index was triggered or not to the Rule Vector Buffer each devstep.
 \todo{explain devstep or find another term}
 Rules that have triggered but is later overridden by a rule with higher priority is still marked as having been triggered in the vector.
-If the buffer is full, it is reset instead of waiting to allow programs to disregard the data without causing deadlocks.
+If the buffer is full, it is reset instead of waiting, to allow programs to disregard the data without causing deadlocks.
 
 Hits To Numbers stores the index of the last triggered rule for each cell to the Rule Numbers BRAM.
 Since rule zero is always marked as a hit, the BRAM is cleared each devstep before the actual rule numbers are written.
