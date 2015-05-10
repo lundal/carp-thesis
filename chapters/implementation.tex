@@ -111,7 +111,6 @@ It consists of the Xilinx PCI Express endpoint core, reception and transmission 
 \end{figure}
 
 The endpoint core completely handles the physical and data link layers, and all TLPs related to configuration and establishment of the PCI Express connection.
-Other TLPs, such as read and write requests, are presented on an AXI4-Stream interface \cite{ug672}.
 The reception engine is responsible for parsing TLPs and either writing received data to the reception buffer or notifying the transmission engine about a read request.
 The transmission engine is responsible for building completer TLPs to respond to read requests, using data from the transmission buffer.
 The request handler listens to the read requests provided by the reception engine, and can override the transmission engine to respond to special requests.
