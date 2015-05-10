@@ -12,7 +12,7 @@
         Detailed block diagram of the new hardware platform.
         Control is implemented as a group of modules, marked by a dotted border.
         Some signals are color-coded for increased readability.
-        Signals from Decode are colored red, while those to the Send and Cell Buffer Multiplexers are colored blue and purple respectively.
+        Signals from Decode are colored red, while those to the Send Buffer and Cell Storage Multiplexers are colored blue and purple respectively.
         Note the two different hues of purple for the different Cell BRAMs.
         Control signals are not shown.
     }
@@ -292,7 +292,7 @@ The control signals determine which module is activated, which modules the CellB
 \section{Control}
 
 Control is a group of modules, shown in \figurename~\ref{fig:implementation-control}.
-Together, the modules control all inputs and outputs for the Cell Buffer, Cellular Automaton and Development modules.
+Together, the modules control all inputs and outputs for the Cell Storage, Cellular Automaton and Development modules.
 Each module is designed to do one spesific task and be independent of any other modules.
 This means that modules are mostly very simple and that it requires a low amount of effort to add new modules or to modify existing.
 \todo{tie in UNIX principles somehow?}
@@ -446,8 +446,6 @@ The output formatting of the Send All states is equal to that of the Rule Number
 
 \section{Cell Storage}
 
-\todo{Buffer -> Storage}
-
 The Cell Storage serves as the location for exchange of cell data between the CA, Development and Host.
 It contains two separate storage areas, the contents of which can be swapped.
 Each storage area can host a full matrix of cell states and types, and allows one row of each to be read each cycle.
@@ -459,7 +457,7 @@ The module is implemented as two dual-port BRAMs, one for states and one for typ
 To create two separate storage areas (A and B) with both states and types, the address of the first port is prefixed with 0 and the second with 1.
 The contents of the storage areas can then be made to appear swapped by simply inverting the prefix bits.
 
-To service all \todo{word} components, the Cell Storage is connected via a multiplexer.
+To service all required components, the Cell Storage is connected via a multiplexer.
 It has two modes; normal and development.
 In normal mode, storage A is connected to the Cell Writer Reader and storage B to the CA.
 In development mode, both storage areas are connected to the Development module.
