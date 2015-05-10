@@ -656,21 +656,57 @@ First is the number of words per result, required by the Fitness Sender.
 Second is a unique identifier that is reported to the host by the Information Sender.
 To allow further versatility, the module can also report synthesis parameters to the host.
 
-There are currently two implemented fitness modules.
-The Live Count Fitness and the DFT Fitness.
+There are currently two implemented fitness modules: Live Count and DFT.
 
 \subsection{Live Count}
 
-\TODO
-Very simple example.
-Simply copies from Live Count Buffer to Fitness Buffer (when buffers have data and room).
-Allows software-side fitness evaluation.
+The Live Count fitness module is used to transfer the live counts to the host for software-side fitness evaluation.
+The implementation is as simple as it gets.
+The output of the Live Count Buffer is fed directly into the Fitness buffer, and the write and read signals are activated when the Live Count Buffer has data and the Fitness Buffer has space.
 
-\subsection{Discrete Fourier Transform}
+\subsection{DFT}
+
+The DFT fitness module uses a Discrete Fourier Transform to convert the the live count data into frequency spectrums.
+This has the advantage of being able to pick up certain information that might be near-impossible to detect otherwise.
+\todo{more?}
+
+This module is essentially a revised version of Støvneng's design in \cite{stovneng2014sblock}.
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=\textwidth]{implementation-dft}
+    \caption[DFT Fitness]{
+        Detailed block diagram of the DFT Fitness module.
+        The two pipeline stages are marked at the bottom.
+        Blue boxes are multiplexers.
+        Control signals are not shown.
+    }
+    \label{fig:implementation-dft}
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=\textwidth]{implementation-dsp}
+    \caption[DSP Wrapper]{
+        Detailed block diagram of the DSP Wrapper.
+        Red boxes are registers and blue boxes are multiplexers.
+    }
+    \label{fig:implementation-dsp}
+\end{figure}
 
 \TODO
+Refactored/streamlined.
+Adapted for FIFO.
+Twiddles are generated in vhdl during synthesis.
+More customizable (not just pow2, both for dsps and transform size)
+
+Buffer modes: Flush, Fill, Repeat.
+DSP modes: Flush, MultiplyAccumulate, Combine.
+2-stage interlocked pipeline.
+
+\TODO
+
 DFT finds frequencies, can detect patterns in complex output.
-Revised version of Ola Martin's.
 More customizable (describe parameters).
 Copies Data to internal buffer, since FIFO is delete-on-read (fig).
 Twiddle generation.
