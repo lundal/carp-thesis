@@ -41,12 +41,39 @@ Fitness is special in that it is not part of the main pipeline since it operates
 
 \subsection{Parameterization}
 
-\begin{itemize}
-    \item Used pretty much everywhere
-    \item Most can be 1 to inf
-    \item Asserts where restrictions apply
-    \item List them all?
-\end{itemize}
+Almost every part of the design is parameterized, usually with little restriction on the range of values.
+Where restrictions do apply, asserts have been placed in the code of the modules that do restrict them.
+These alert the user of correct values during sythesis, and pinpoints the code that must be changed in the event of an expansion.
+Keep in mind though that the ISA must likely be changed as well.
+The list of parameters is shown in Table~\ref{tab:parameters}.
+
+\begin{table}[!ht]
+    \renewcommand{\arraystretch}{1.3}
+    \centering
+    \begin{tabular}{l|c|l}
+        \bfseries Parameter & \bfseries Values & \bfseries Notes \\
+        \hline
+        Communication Buffer Size Lg & [$1,\infty$] & $log_2$ of buffer size \\
+        Communication Reverse Endian & $True,False$ & Required for x86 systems \\
+        Program Counter Bits         & [$1,16$]     & Restricted by ISA/Decode \\
+        Matrix Width                 & [$2,256$]    & Restricted by ISA/Decode \\
+        Matrix Height                & [$2,256$]    & Restricted by ISA/Decode \\
+        Matrix Depth                 & [$1,256$]    & Restricted by ISA/Decode \\
+        Matrix Wrap                  & $True,False$ & \\
+        Type Bits                    & [$1,32$]     & Restricted by ISA/Decode \\
+        State Bits                   & $1$          & Restricted by Sblocks \\
+        Counter Amount               & [$1,256$]    & Restricted by ISA/Fetch \\
+        Counter Bits                 & [$1,32$]     & Restricted by ISA/Fetch \\
+        LUT Configuration Bits       & $1,2,4,8$    & Restricted by Sblocks \\
+        Rule Amount                  & [$1,\infty$] & \\
+        Rules Tested In Parallel     & [$1,\infty$] & \\
+        Rule Vector Buffer Size      & [$1,\infty$] & \\
+        Fitness Buffer Size          & [$1,\infty$] & \\
+        Fitness Module Name          & $Special$    & Without "fitness\_" prefix \\
+    \end{tabular}
+    \caption[Parameters.]{Parameters with supported values.}
+    \label{tab:parameters}
+\end{table}
 
 \subsection{Pipelining}
 
