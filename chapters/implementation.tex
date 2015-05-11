@@ -278,6 +278,7 @@ When encountering a Store instruction, it enters StoreMem mode and for a Jump in
 In FetchMem mode, instructions are fetched from InstructionBRAM and sent to decode.
 The first InstructionBRAM address is specified by the Jump instruction, and then it is incremented by one after each instruction.
 When encountering a Break instruction, it enters FetchCom mode.
+As a safety precaution to prevent lock-ups, FetchCom mode is also entered if the program counter overflows.
 
 In StoreMem mode, instructions are fetched from communication and stored in InstructionBRAM.
 The first InstructionBRAM address is specified by the Store instruction, and then it is incremented by one after each instruction.
@@ -494,7 +495,7 @@ In development mode, both storage areas are connected to the Development module.
 \section{Development}
 \label{sec:development}
 
-The Development Module is responsible for providing the ontogenic aspect of the system by allowing cells to be changed based on user-supplied development rules.
+The Development Module is responsible for providing the ontogenic aspect of the system by allowing cells to be changed based on user-supplied development rules described in Appendix~\todo{ref}.
 It uses Cell Storage A as input and outputs the modified cells to Cell Storage B.
 
 The module is implemented as a two-stage interlocked pipeline controlled by a state machine.
@@ -635,7 +636,8 @@ Readback is the process of extracting the cell states from the Sblock Matrix and
 This operation also works on one row at a time.
 However, it is much simpler and faster than configuration since it simply directs the output of the sblocks to the Cell BRAM and sets the correct row.
 
-Stepping is simply the process of telling the Sblock Matrix to update all of its sblocks.
+Stepping is simply the process of telling the Sblock Matrix to update the state of each of its sblocks.
+The new state is determined by the using the neighbor states as the input to the LUT, according to the format detailed in Appendix~\todo{ref}.
 Since it is common to step hundreds of times in a row, the step instruction has a parameter for the number of steps, up to a maximum of 65535 (a 16-bit number).
 
 \subsection{Sblock Matrix}
