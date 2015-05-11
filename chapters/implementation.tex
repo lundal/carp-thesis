@@ -1,9 +1,21 @@
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.8\textwidth]{implementation-simple}
-    \caption[High-level system diagram]{High-level block diagram of the new hardware platform.}
+    \caption[High-level system diagram]{
+        High-level block diagram of the new hardware platform.
+    }
     \label{fig:implementation-simple}
 \end{figure}
+
+
+The new platform is nearly identical in overall structure to the previous, as shown in \figurename~\ref{fig:implementation-simple},
+However, there are a lot of underlying changes to reduce complexity and improve reliability and scaling.
+A more detailed view of the system in shown in \figurename~\ref{fig:implementation-full}.
+
+Conseptually, the platform is a three-stage interlocked pipeline with the stages Fetch, Decode and Execute, where the Execute stage includes the Control, Development and Cellular Automata modules.
+Only one module within each stage is activated at a time, and the interlocking allows each module to contain further pipelines without requiring complex hazard detection and evasion.
+%At one point there is a pipeline within a pipeline within a pipeline.
+Fitness is special in that it is not part of the main pipeline since it operates in a dataflow-like fashion.
 
 \begin{sidewaysfigure}[!pt]
     \centering
@@ -18,20 +30,6 @@
     }
     \label{fig:implementation-full}
 \end{sidewaysfigure}
-
-The platform is design as an interlocked pipeline.
-The main stages are Fetch, Decode and Execute, but due to interlocking, each stage can contain sub-pipelines or state machines.
-
-The Execute stage is special in that is is split into many sub-modules, where only one is activated at a time.
-The exception is Fitness, which is always active, since it operates in a dataflow-like fashion.
-A hazard detection unit could be implemented to increase performance by allowing multiple non-conflicting units run in parallell.
-
-Interlocking is implmented using special Run and Done signals.
-Run is asserted when all modules asserts Done.
-
-All state machines are of Mealy design with clocked output, unless noted otherwise.
-
-\todo{Rewrite this!}
 
 %==============================================================================%
 
