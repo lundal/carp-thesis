@@ -35,9 +35,10 @@ Fitness is special in that it is not part of the main pipeline since it operates
 
 \section{General Consepts}
 
-\todo{Control signals not shown, only data}
-\todo{Borders: Green = BRAM, grey = outside}
-\todo{BRAM vs Buffer. Move buffer description here?}
+Some consepts are used repeatedly througout the design.
+The main ones are parameterization, pipelining, buffers and states machines.
+The first three are general and are detailed in the following sections.
+The state machines vary from module to module and are therefore detailed where appropriate, but all are of Mealy design with clocked output.
 
 \subsection{Parameterization}
 
@@ -77,7 +78,7 @@ The list of parameters is shown in Table~\ref{tab:parameters}.
 
 \subsection{Pipelining}
 
-The new hardware design makes extensive use of pipelining, and since many stages use a variable amount of cycles for a variety of reasons \todo{which? state machine, pipeline in pipeline, simpler}, interlocking is used in nearly all pipelines.
+The new hardware design makes extensive use of pipelining, and since many stages use a variable amount of cycles for a variety of reasons, interlocking is used in nearly all pipelines.
 Interlocking is implemented with two signals connected to each stage: Run and Done.
 When a stage does not require further cycles to finish, it asserts its Done signal and then waits for the Run signal before continuing.
 The Run signals for all stages are asserted when all Done signals are asserted.
