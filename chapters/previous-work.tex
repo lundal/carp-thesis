@@ -5,7 +5,7 @@ Finally, it was further extended and optimized in expectation of new hardware by
 
 %==============================================================================%
 
-\section{Conception}
+\section{Djupdal}
 
 In 2002, NTNU invested in a CompactPCI computer with a NallaTech BenERA FPGA board to be used for research within the field of evolutionary hardware.
 The task of developing a platform for the system, based on a matrix of sblocks, fell to Djupdal \cite{djupdal2003sblock}.
@@ -16,7 +16,7 @@ It consists of the mentioned sblock matrix, block RAM (BRAM) for storing the sta
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.9\textwidth]{figures/overview-djupdal}
-    \caption[High-level block diagram of Djupdal's hardware platform.]{
+    \caption[Djupdal's hardware design.]{
         High-level block diagram of the hardware platform after Djupdal's original work.
     }
     \label{fig:overview-djupdal}
@@ -41,7 +41,7 @@ The design is split into two clock domains; the communication unit uses 40 MHz t
 
 %==============================================================================%
 
-\section{Extension}
+\section{Aamodt}
 
 There was one major bottleneck in the original design.
 To calculate the fitness of an individual, the state of each cell had to be transferred to the computer over the PCI interface.
@@ -55,7 +55,7 @@ The additions consists of a run-step function that calculates the number of live
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.9\textwidth]{figures/overview-aamodt}
-    \caption[High-level block diagram of Aamodt's hardware platform.]{
+    \caption[Aamodt's hardware design.]{
         High-level block diagram of the hardware platform after Aamodt's work.
         Additions are highlighted in green.
     }
@@ -72,7 +72,7 @@ The numbers are stored in run-step BRAM for later usage by the fitness function,
 
 %==============================================================================%
 
-\section{Renovation}
+\section{Støvneng}
 
 In expectation of receiving new hardware with a larger and faster FPGA, there was a demand to optimize the platform by taking advantage of the increased resource pool.
 Extending the platform into the third dimension was also a lucrative thought, as doing so allows more complex signal pathways to form within the cellular automata.
@@ -85,7 +85,7 @@ The only addition is the DFT, but nearly all units has been optimized, yielding 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.9\textwidth]{figures/overview-stovneng}
-    \caption[High-level block diagram of Støvneng's hardware platform.]{
+    \caption[Støvneng's hardware design.]{
         High-level block diagram of the hardware platform after Støvneng's work.
         Additions are highlighted in green, and optimizations and 3D modifications in orange.
     }
