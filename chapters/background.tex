@@ -49,26 +49,14 @@
 
 \section{Cellular Automata}
 
-\TODO
-
-\begin{itemize}
-    \item Massively parallel
-    \item Local interactions
-    \item Simple units
-    \item Discrete vs Continuous
-    \item Exhaustive enumeration vs Parameterized vs others
-    \item Synchronous vs not
-    \item Uniform vs not
-    \item Deterministic vs not
-    \item Direct programming vs Adaptive (evolution)
-    \item Input/Output
-    \item Scalability
-    \item Robustness
-\end{itemize}
+A cellular automaton (CA) is a computational structure made up of vast numbers of very simple functional elements called cells.
+It is an attempt to mimic the structure found in biological lifeforms, where complex results emerge from interactions between many simple cells.
+The key principles are massive parallelity, local interactions and simple computational units.
+As seen in \figurename~\ref{fig:computing-principles}, this is the direct opposite paradigme of the general-purpose serial architecture that is common in computers today.
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.90\textwidth]{computing-principles}
+    \includegraphics[width=0.85\textwidth]{computing-principles}
     \caption[Computing principles]{
         Graphical representation of how different computing paradigmes relate with regards to computing principles.
         (Reprinted from \cite{sipper1999emergence})
@@ -76,21 +64,57 @@
     \label{fig:computing-principles}
 \end{figure}
 
+There are many variations of CA, as detailed in \cite{sipper1999emergence}.
+
+\TODO
+Computation by emergence.
+Desired because of scalability and robustness.
+Hard for humans to comprehend how to program.
+Evolutionary often used.
+How to represent I/O is a problem.
+DFT is promising for analysis of output \cite{berg2013ca}.
+
+\TODO
+Here: Discrete, Deterministic, Synchronous, Non-uniform, Exhaustively Ennumerated CA with 3D von Neumann neighborhood.
+
+\begin{itemize}
+    \item Discrete vs Continuous values
+    \item Exhaustive enumeration vs Parameterized vs others
+    \item Synchronous vs asynchronous updates
+    \item Uniform vs non-uniform tranfer functions
+    \item Deterministic vs non-deterministic
+    \item Direct programming vs Adaptive (evolution)
+\end{itemize}
+
+\TODO
+Also possible to vary how cells are connected.
+Connection pattern is called neighborhood.
+
 \subsection{Neighborhoods}
+
+\TODO
+Lower dimensional CA can achieve the same as higher, if neighborhood is increased.
 
 \begin{itemize}
     \item Regular grid vs graph
     \item 1D vs 2D vs 3D
     \item Full vs von Neumann
+    \item Can include itself
 \end{itemize}
 
 \subsection{Complexity Classes}
+
+\TODO
+Lambda: Measure of how often transition function specifies a new state.
+With increasing lambda: class 1, 2, 4, 3.
+4 is the sweetspot.
+Has structures that can store data, long cycles that can compute.
 
 \begin{itemize}
     \item Class 1 - Uniform
     \item Class 2 - Repetitive patterns
     \item Class 3 - Chaos
-    \item Class 4 - Complex
+    \item Class 4 - Complex (The edge of chaos)
 \end{itemize}
 
 %==============================================================================%
