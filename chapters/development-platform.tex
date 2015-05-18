@@ -1,13 +1,21 @@
 \TODO
+Hoped for a chip with Spartan-6 LX145T (Støvneng planned for it).
+Could not be delivered.
+Got SP605 with LX45T instead.
+Same architecture, 70\% less logic.
+Scalable: Can simply reduce size of sblock matrix.
 
 \section{Spartan-6 SP605 Evaluation Platform}
 
 The Spartan-6 SP605 Evaluation Platform is essentially a board with the Spartan-6 LX45T FPGA wired to every useful peripheral imaginable.
-It has connections for PCI Express\footnote{
-        Even though the PCI Express finger has lines for power, they are not connected on the SP605. This means an external power source has to be connected.
-    }, ethernet, DVI, USB, flash card, JTAG, LEDs, switches, and more.
+It has connections for PCI Express\footnotemark, ethernet, DVI, USB, flash card, JTAG, LEDs, switches, and more.
 However, the only peripherals utilized in this paper are PCI Express and JTAG.
 An overview of the system is shown in \figurename~\ref{fig:sp605}.
+
+\footnotetext {
+    Even though the PCI Express finger has lines for power, they are not connected on the SP605.
+    This means an external power source has to be connected.
+}
 
 \begin{figure}[!ht]
     \centering
