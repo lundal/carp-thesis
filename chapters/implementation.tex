@@ -705,6 +705,7 @@ The constants, which are known as twiddle factors, rely only on the transform si
 This module is essentially a revised version of Støvneng's design in \cite{stovneng2014sblock}.
 It has been refactored, streamlined and adapted to fit into the new design.
 It is also more customizable, supporting parameters other than powers of two, and can generate twiddle factors by itself during synthesis instead of relying on an external program.
+The twiddle factors are stored in a fixed-point format since they range from $-1$ to $1$, and in the order they are needed.
 
 To allow the DFT to continue processing while results are transferred from the DFT to the Fitness Buffer, the module is divided into two pipeline stages.
 This can be seen in \figurename~\ref{fig:implementation-dft}.
