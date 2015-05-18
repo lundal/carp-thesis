@@ -12,14 +12,32 @@ POE: Phylogeny, Ontogeny, Epigenesis \cite{sipper1997poe}.
 NASA has high success in creating antennas \cite{hornby2006antenna}.
 Robot controllers.
 Platform for robot controller evolution \cite{haddow1999robot}.
+Evolutionary Algorithms (EAs).
 
 \subsection{Genetic Algoritmhs}
 
-\TODO
-Select, Cross, Mutate.
-Genotype to Phenotype.
+A genetic algorithm (GA) is a very common type of EA.
+It represents each solution as a genotype, a binary string used as a blueprint to create the solution itself, called a phenotype.
+The genotype is comparable to nature's DNA, and it is this genetic material which is modified in the evolutionary process.
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{ga}
+    \caption[Genetic Algorithm]{
+        A genetic algorithm.
+        The cycle is broken when the fitness is above a given threshold.
+    }
+    \label{fig:ga}
+\end{figure}
+
+The GA process is shown in \figurename~\ref{fig:ga}.
+First, a base population with random genotypes is generated.
+Then, each phenotype is constructed and evaluated using a fitness function.
+If a solution has a fitness score above a set threshold, the process stops.
+Otherwise, a new population is created by selecting solutions with high fitness scores, crossing their genotypes, and mutating the results, before repeating the process.
 
 \subsection{Evolution in Materio}
+\todo{replace with EWH?}
 
 \TODO
 Embodiment principles.
@@ -56,6 +74,7 @@ A cellular automaton (CA) is a computational structure made up of vast numbers o
 It is an attempt to mimic the structure found in biological lifeforms, where complex results emerge from interactions between many simple cells.
 The key principles are massive parallelity, local interactions and simple computational units.
 As seen in \figurename~\ref{fig:computing-principles}, this is the direct opposite paradigme of the general-purpose serial architecture that is common in computers today.
+However, CAs can be Turing complete \cite{neumann1966selfreplication, codd1968cellular}, and therefore perform the same tasks.
 
 \begin{figure}[!ht]
     \centering
@@ -108,6 +127,7 @@ Lower dimensional CA can achieve the same as higher, if neighborhood is increase
 \subsection{Complexity Classes}
 
 \TODO
+Wolfram: \cite{wolfram1984complexity}.
 Lambda: Measure of how often transition function specifies a new state.
 With increasing lambda: class 1, 2, 4, 3.
 4 is the sweetspot.
