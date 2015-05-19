@@ -139,19 +139,32 @@ Lower dimensional CA can achieve the same as higher, if neighborhood is increase
 
 \subsection{Complexity Classes}
 
-\TODO
-Wolfram: \cite{wolfram1984complexity}.
-Lambda: Measure of how often transition function specifies a new state.
-With increasing lambda: class 1, 2, 4, 3.
-4 is the sweetspot.
-Has structures that can store data, long cycles that can compute.
+Wolfram grouped CAs into four classes depending on their emergent behaviors \cite{wolfram1984complexity}:
+\todo{awkwardly short paraghaph}
 
 \begin{itemize}
-    \item Class 1 - Uniform
-    \item Class 2 - Repetitive patterns
-    \item Class 3 - Chaos
-    \item Class 4 - Complex (The edge of chaos)
+    \item Class 1 – Uniform:
+        The CA quickly results in a homogeneous state, regardless of initial condition.
+        It lacks the means to store data, as well as perform computation.
+    \item Class 2 – Repetitive:
+        The CA develops both periodic and static data structures.
+        However, after a number of cycles the states begin to repeat.
+        This makes complex computation impossible.
+    \item Class 3 – Chaotic:
+        The CA is not held back by repetition as with class 2, but the patterns are so chaotic that it is unable to support data structures.
+    \item Class 4 – Complex:
+        The CA supports complex data structures and has no discernible repetition.
+        It should be capable of universal computation.
 \end{itemize}
+
+Langton attempted to connect Wolframs classes to CA rule complexity \cite{langton1990edgeofchaos}.
+For this, he used a measure called $\lambda$, which essentially determines the ratio of rules that cause a cell to transition into any given state.
+
+\TODO
+Lambda: Measure of how often transition function specifies a new state.
+With increasing lambda: class 1, 2, 4, 3.
+Has structures that can store data, long cycles that can compute.
+This is a sweetspot in-between class 2 and 3, known as the edge of chaos.
 
 %==============================================================================%
 
