@@ -2,6 +2,8 @@
 EHW: Evolvable hardware.
 POE: Phylogeny, Ontogeny, Epigenesis \cite{sipper1997poe}.
 
+Features: Graceful degradation, Robustness, Redundancy.
+
 \TODO
 Phylogeny, named after evolution of the species "Phylogeny" is temporal evolution due to mutation, reproduction.
 Provides diverity for "survival of the fittest".
@@ -62,7 +64,6 @@ Evolve and test in hardware.
 \TODO
 Attractors.
 Adaptation.
-Graceful degradation.
 
 \subsection{Lindenmayer Systems}
 
@@ -84,7 +85,7 @@ A cellular automaton (CA) is a computational structure made up of vast numbers o
 It is an attempt to mimic the structure found in biological lifeforms, where complex results emerge from interactions between many simple cells.
 The key principles are massive parallelity, local interactions and simple computational units.
 As seen in \figurename~\ref{fig:computing-principles}, this is the direct opposite paradigme of the general-purpose serial architecture that is common in computers today.
-However, CAs can be Turing complete \cite{codd1968cellular, neumann1966selfreplication}, and therefore perform the same tasks.
+However, CAs have been shown to be Turing complete \cite{codd1968cellular, neumann1966selfreplication}, and can therefore perform the same tasks.
 
 \begin{figure}[!ht]
     \centering
@@ -96,15 +97,17 @@ However, CAs can be Turing complete \cite{codd1968cellular, neumann1966selfrepli
     \label{fig:computing-principles}
 \end{figure}
 
-There are many variations of CA, as detailed in \cite{sipper1999emergence}.
+There are many variations of CAs, which are discussed in great detail in \cite{sipper1999emergence}.
 
 \TODO
 Computation by emergence.
 Desired because of scalability and robustness.
 Hard for humans to comprehend how to program.
 Evolutionary often used.
-How to represent I/O is a problem.
-DFT is promising for analysis of output \cite{berg2013ca}.
+
+\TODO
+One of the greatest challenges with CAs is how to represent input and parse output.
+Discrete Fourier Transform (DFT) is promising for analysis of output \cite{berg2013ca}.
 
 \TODO
 Here: Discrete, Deterministic, Synchronous, Non-uniform, Exhaustively Ennumerated CA with 3D von Neumann neighborhood.
