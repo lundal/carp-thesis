@@ -4,6 +4,7 @@
 \usepackage[T1]{fontenc} % 8-bit fonts
 
 \usepackage{parskip} % Linebreaks between paragraphs
+\usepackage{pdfpages} % PDF includes
 
 \usepackage{lmodern} % Modern font
 
@@ -17,9 +18,6 @@
 \usepackage{colortbl} % Table cell coloring
 
 \usepackage{subcaption} % Subfigures
-
-%\usepackage{pgfplots} % Graph plots
-%\usepackage{pgfplotstable} % Table plots
 
 \graphicspath{{figures/}}
 
@@ -123,5 +121,23 @@
 
 \bibliographystyle{plain}
 \bibliography{references}
+
+\appendix
+
+\chapter{Test Descriptions}
+
+\TODO
+
+\chapter{Attached Files}
+
+\TODO
+
+\chapter{Instruction Set Architecture}
+
+%\includepdf[pages={-}]{includes/isa.pdf}
+
+\chapter{Specialization Project Report}
+
+%\includepdf[pages={-}]{includes/report.pdf}
 
 \end{document}
