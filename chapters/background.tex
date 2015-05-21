@@ -157,14 +157,20 @@ Wolfram grouped CAs into four classes depending on their emergent behaviors \cit
         It should be capable of universal computation.
 \end{itemize}
 
-Langton attempted to connect Wolframs classes to CA rule complexity \cite{langton1990edgeofchaos}.
-For this, he used a measure called $\lambda$, which essentially determines the ratio of rules that cause a cell to transition into any given state.
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.70\textwidth]{complexity-classes}
+    \caption[Complexity classes]{
+        The location of Wolframs complexity classes in $\lambda$ space.
+        (Adapted reprint from \cite{langton1990edgeofchaos})
+    }
+    \label{fig:complexity-classes}
+\end{figure}
 
-\TODO
-Lambda: Measure of how often transition function specifies a new state.
-With increasing lambda: class 1, 2, 4, 3.
-Has structures that can store data, long cycles that can compute.
-This is a sweetspot in-between class 2 and 3, known as the edge of chaos.
+Langton attempted to connect Wolframs classes to CA rule complexity \cite{langton1990edgeofchaos}.
+For this he used a measure called $\lambda$, which essentially determines the ratio of rules that cause a cell to transition into any given state.
+His findings, displayed in \figurename~\ref{fig:complexity-classes}, show that class 4 resides in a phase transition between the order of class 2 and the chaos of class 3, dubbed "The Edge of Chaos".
+\todo{more?}
 
 %==============================================================================%
 
