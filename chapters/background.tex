@@ -82,7 +82,11 @@ Used to generate plants and trees in media \CN.
 \section{Cellular Automata}
 
 A cellular automaton (CA) is a computational structure made up of vast numbers of very simple functional elements called cells.
-It is an attempt to mimic the structure found in biological lifeforms, where complex results emerge from interactions between many simple cells.
+Each cell contains a state and is connected to a handful of other cells to form neighborhoods.
+\todo{fig?}
+At given time intervals the cells then update their states based on a transfer function over the states in their neighborhoods.
+
+CAs are attempts to mimic the structures found in biological lifeforms, where complex results emerge from interactions between many simple cells.
 The key principles are massive parallelity, local interactions and simple computational units.
 As seen in \figurename~\ref{fig:computing-principles}, this is the direct opposite paradigme of the general-purpose serial architecture that is common in computers today.
 However, CAs have been shown to be Turing complete \cite{codd1968cellular, neumann1966selfreplication}, and can therefore perform the same tasks.
@@ -97,8 +101,6 @@ However, CAs have been shown to be Turing complete \cite{codd1968cellular, neuma
     \label{fig:computing-principles}
 \end{figure}
 
-There are many variations of CAs, which are discussed in great detail in \cite{sipper1999emergence}.
-
 \TODO
 Computation by emergence.
 Desired because of scalability and robustness.
@@ -109,21 +111,21 @@ Evolutionary often used.
 One of the greatest challenges with CAs is how to represent input and parse output.
 Discrete Fourier Transform (DFT) is promising for analysis of output \cite{berg2013ca}.
 
-\TODO
-Here: Discrete, Deterministic, Synchronous, Non-uniform, Exhaustively Ennumerated CA with 3D von Neumann neighborhood.
+There are many variations of CAs, which are discussed in great detail in \cite{sipper1999emergence}.
+Following is a brief summary:
+Cell states can be discrete or continuous values.
+The transfer function can be represented by exhaustive enumeration or a parameterized expression.
+The cells may be uniform by having the same transfer function, or non-uniform.
+Cell updates can be synchronous or asynchronous, and in the latter case the CA can be either deterministic or non-deterministic depending on the order in which cells update.
+The CA may be fully specified by direct programming or adaptively evolved using a GA or similar.
+Finally, there are numerous schemes that can be used to connect cells together to form neighborhoods.
 
-\begin{itemize}
-    \item Discrete vs Continuous values
-    \item Exhaustive enumeration vs Parameterized vs others
-    \item Synchronous vs asynchronous updates
-    \item Uniform vs non-uniform tranfer functions
-    \item Deterministic vs non-deterministic
-    \item Direct programming vs Adaptive (evolution)
-\end{itemize}
+Only a spesific form of CA is used in this thesis:
+Discrete, exhaustively enumerated, non-uniform, synchronous and deterministic.
+It is possible to use direct programming, but there are systems for adaptive evolution.
 
 \TODO
-Also possible to vary how cells are connected.
-Connection pattern is called neighborhood.
+with two- or three-dimensional von Neumann neighborhoods.
 
 \subsection{Neighborhoods}
 
