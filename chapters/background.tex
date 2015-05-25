@@ -101,15 +101,21 @@ However, CAs have been shown to be Turing complete \cite{codd1968cellular, neuma
     \label{fig:computing-principles}
 \end{figure}
 
-\TODO
-Computation by emergence.
-Desired because of scalability and robustness.
-Hard for humans to comprehend how to program.
-Evolutionary often used.
 
-\TODO
+\todo{rewrite}
+CAs are desired because of their scalability.
+Power challenges when scaling modern processors \CN.
+Possible to add more cores, but not all programs can use them.
+Local communication of CA circumvents this.
+Posibility for robustness and redundancy by routing computation around broken cells through dev/learning.
+
+\todo{rewrite}
+Some challenges: Programming and I/O.
+CAs compute by emergence using massive parallelity.
+Very hard for humans to comprehend, due to mostly serial thinking \CN.
+Therefore, evolutionary algorithms are often used.
 One of the greatest challenges with CAs is how to represent input and parse output.
-Discrete Fourier Transform (DFT) is promising for analysis of output \cite{berg2013ca}.
+Discrete Fourier Transform (DFT) over cell states is promising for analysis of output \cite{berg2013ca}.
 
 There are many variations of CAs, which are discussed in great detail in \cite{sipper1999emergence}.
 Following is a brief summary:
@@ -122,27 +128,40 @@ Finally, there are numerous schemes that can be used to connect cells together t
 
 Only a spesific form of CA is used in this thesis:
 Discrete, exhaustively enumerated, non-uniform, synchronous and deterministic.
-It is possible to use direct programming, but there are systems for adaptive evolution.
+It is possible to use direct programming, but there are systems in place for adaptive evolution.
 
 \TODO
 with two- or three-dimensional von Neumann neighborhoods.
 
 \subsection{Neighborhoods}
 
-\TODO
-Lower dimensional CA can achieve the same as higher, if neighborhood is increased.
+\todo{rewrite}
+A very important property of a CA is how cells are connected to form neighborhoods.
+Cells are essentially nodes in a graph.
+Neighborhood includes neighbors and possibly itself.
+It is common to use a grid structure in either one or two dimensions.
+More dimensions allow more complex signal routing (can go around/over/under).
+Lower dimensional grid CA can achieve the same as higher, if neighborhood is increased \CN.
 
-\begin{itemize}
-    \item Regular grid vs graph
-    \item 1D vs 2D vs 3D
-    \item Full vs von Neumann
-    \item Can include itself
-\end{itemize}
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.45\textwidth]{neighborhood}
+    \caption[Neighborhood]{
+        The von Neumann neighborhood in a two-dimensional grid CA.
+    }
+    \label{fig:neighborhood}
+\end{figure}
+
+\todo{rewrite}
+This thesis focus on the von Neumann neighborhood.
+For 2D grids, the von Neumann neighborhood shown in \figurename~\ref{fig:neighborhood} is common.
+It includes north, south, east, west and center cells.
+This can be extended to 3D by adding up and down.
 
 \subsection{Complexity Classes}
 
-Wolfram grouped CAs into four classes depending on their emergent behaviors \cite{wolfram1984complexity}:
-\todo{awkwardly short paraghaph}
+Wolfram observed that some CAs developed complex pattern while others decayed into uniformity or chaos.
+He therefore developed a set of four chasses to group them based on their emergent behavior \cite{wolfram1984complexity}:
 
 \begin{itemize}
     \item Class 1 – Uniform:
@@ -172,8 +191,9 @@ Wolfram grouped CAs into four classes depending on their emergent behaviors \cit
 Langton attempted to connect Wolframs classes to CA rule complexity \cite{langton1990edgeofchaos}.
 For this he used a measure called $\lambda$, which essentially determines the inverse ratio of rules that cause a cell to transition into any given state.
 %This means that all transitions are to a given state if $\lambda=0.0$, while there are none if $\lambda=1.0$.
-His findings, displayed in \figurename~\ref{fig:complexity-classes}, show that class 4 resides in a phase transition between the order of class 2 and the chaos of class 3, dubbed "The Edge of Chaos".
-\todo{more?}
+His findings, displayed in \figurename~\ref{fig:complexity-classes}, show that class 4 resides in a phase transition between the order of class 2 and the chaos of class 3.
+This is known as ``The Edge of Chaos''.
+
 
 %==============================================================================%
 
@@ -321,3 +341,7 @@ Format: Who? What? When? Main feature? Relation?
     \item Controllable object to attract attention and be proof-of-consept: Robokitty
     \item "An assemblage of evolved CA based neural net modules"
 \end{itemize}
+
+\subsection{Firefly}
+
+\TODO
