@@ -10,6 +10,27 @@ One test program for each instruction approx.
 
 \TODO
 
+Some parts scale with X: Dev, config, readback, livecount.
+
+Closest to Støvnengs CA:
+[rules tested in parallel] = 2.
+[lut configuration bits] = 8.
+
+Speed differences:
+4x rsf/live counter.
+1/2x config.
+1/8x readback.
+
+8x8x4: 7516 vs 6529 LUTs, 4439 vs 6011 regs, 42 vs 55 brams, (2048 LUTs as SRLs).
+8x8x8: 11452 vs 7668 LUTs, 5133 vs 5726 regs, 42 vs 50 brams, (4096 LUTs as SRLs).
+8x16x4: 11635 vs 8234 LUTs, 5133 vs 6531 regs, 42 vs 50 brams, (4096 LUTs as SRLs).
+10x10x8: 15899 LUTs, 6306 regs, 47 brams, (99.9\% of SRLs).
+
+Numbers are with LiveCount fitness.
+New design uses more LUTs, but less registers and brams.
+
+\todo{best performance}
+
 \section{Fitness}
 
 \TODO
