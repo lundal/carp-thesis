@@ -70,7 +70,7 @@ The list of parameters is shown in Table~\ref{tab:parameters}.
         Rules Tested In Parallel     & [$1,\infty$] & \\
         Rule Vector Buffer Size      & [$1,\infty$] & \\
         Fitness Buffer Size          & [$1,\infty$] & \\
-        Fitness Module Name          & $Special$    & Without "fitness\_" prefix \\
+        Fitness Module Name          & $Special$    & Without ``fitness\_'' prefix \\
     \end{tabular}
     \caption[Parameters.]{Parameters with supported values.}
     \label{tab:parameters}
@@ -272,7 +272,7 @@ The modes and transitions are implemented as a state machine, which is shown in 
 
 In FetchCom mode, instructions are fetched from communication and sent to decode.
 Since a variable-length format is used, this may take multiple cycles.
-To make sure that instructions does not get "stuck" in the pipeline due to no further instructions arriving at the communication interface, NOPs are sent when Fetch Communication is busy.
+To make sure that instructions does not get ``stuck'' in the pipeline due to no further instructions arriving at the communication interface, NOPs are sent when Fetch Communication is busy.
 When encountering a Store instruction, it enters StoreMem mode and for a Jump instructions it enters FetchMem mode.
 
 In FetchMem mode, instructions are fetched from InstructionBRAM and sent to decode.
@@ -553,7 +553,7 @@ The other is equivalent to the first except for being delayed two states, thus h
     \label{fig:statemachine-cell-fetcher}
 \end{figure}
 
-By reading an entire row at a time, the neighbors along the X axis are fetched "for free" due to wrap-around, while the other axes require two extra reads each.
+By reading an entire row at a time, the neighbors along the X axis are fetched ``for free'' due to wrap-around, while the other axes require two extra reads each.
 This lands the runtime on 5 cycles for 2D matrices and 7 cycles for 3D, including BRAM latency.
 \todo{remove/change quotes?}
 \todo{CellFetch limiting factor for very few rules}
@@ -569,11 +569,11 @@ In that case, those with indexes higher than the number of active rules within t
 
 The Rule Testers are responsible for testing development rules received from the Rule Fetcher against cell neighborhoods received from the Cell Fetcher.
 They are unique in that they produce output after both one and two cycles.
-Information about rule activations, "hits", are passed on to hit processors after one cycle and the result of the rule application is passed on to Cell BRAM B after two cycles.
+Information about rule activations, ``hits'', are passed on to hit processors after one cycle and the result of the rule application is passed on to Cell BRAM B after two cycles.
 
 There is a special case for rule zero.
 It is used as an internal reset by forcing a hit and setting the output cell to the input cell.
-This implementation was chosen because of its simplicity and ability to use zero to mean "unchanged" in hit processors.
+This implementation was chosen because of its simplicity and ability to use zero to mean ``unchanged'' in hit processors.
 It also makes it possible to have no active rules.
 
 \subsection{Hit Processors}
