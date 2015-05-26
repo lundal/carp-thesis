@@ -18,7 +18,7 @@ The two first are used in this thesis.
 
 %==============================================================================%
 
-\section{Artificial Evolution}
+\section{Evolution}
 
 \TODO
 NASA has high success in creating antennas \cite{hornby2006antenna}.
@@ -28,7 +28,7 @@ Evolutionary Algorithms (EAs).
 
 \subsection{Genetic Algoritmhs}
 
-A genetic algorithm (GA) is a very common type of EA.
+A Genetic Algorithm (GA) is a very common type of EA.
 It represents each solution as a genotype, a binary string used as a blueprint to create the solution itself, called a phenotype.
 The genotype is comparable to nature's DNA, and it is this genetic material which is modified in the evolutionary process.
 
@@ -59,32 +59,94 @@ Evolve and test in hardware.
 
 %==============================================================================%
 
-\section{Artificial Development}
+\section{Development}
 
-\TODO
-Attractors.
-Adaptation.
+The process that transforms a genotype into a phenotype is called development.
+It can be regarded as a form of decompression algorithm \cite{harding2008artificial}.
+In nature, the process is seen when a single cell transforms into a more complex multicellular organism, as visualized in \figurename~\ref{fig:development}.
+Unlike with a pure decompression algorithm however, biological systems also use information about their environments to tailor themselves to them.
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.5\textwidth]{development}
+    \caption[Development]{
+        Example of cells replicating and changing to develop a larger entity.
+        \todo{use actual ca figs?}
+    }
+    \label{fig:development}
+\end{figure}
+
+\todo{rewrite}
+Development is needed because a complete spesification of a complex organism would require too much information.
+It is several orders of magnitude greater than that of one cell and it's development rules.
+It can also be used to allow systems to repair themselves after sustaining damage.
+For the same reasons, artificial development is lucrative...
+Perhaps the most known and widely used artificial development systems are Lindenmayer Systems.
 
 \subsection{Lindenmayer Systems}
 
-\TODO
-\cite{prusinkiewicz1990lindenmayer}.
-Lindenmayer: Biologist and Botanist.
-System to describe the growth of plants.
-Especially branching structure.
-Start with an axiom.
-Recursively build larger shapes by applying development rules.
-Example: Sierpinski Triangle.
-Used to generate plants and trees in media \CN.
+Lindenmayer was a biologist and botanist that in 1968 introduced a system to describe the growth of plants \cite{lindenmayer1968models}.
+The Lindenmayer System (L-System) as it is known is a form of parallel generative grammar.
+Starting with an axiom, a string is built by iteratively applying all the grammar rules in parallel.
+The string is a representation of the structure of the object; each character symbolizes a branch, twist, turn, stretch or other feature.
+
+\begin{figure}[!ht]
+    \centering
+    \begin{subfigure}{0.32\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{dragon/00}
+        \caption{Iteration 0}
+    \end{subfigure}
+    \begin{subfigure}{0.32\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{dragon/02}
+        \caption{Iteration 2}
+    \end{subfigure}
+    \begin{subfigure}{0.32\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{dragon/04}
+        \caption{Iteration 4}
+    \end{subfigure}
+    \begin{subfigure}{0.32\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{dragon/06}
+        \caption{Iteration 6}
+    \end{subfigure}
+    \begin{subfigure}{0.32\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{dragon/08}
+        \caption{Iteration 8}
+    \end{subfigure}
+    \begin{subfigure}{0.32\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{dragon/10}
+        \caption{Iteration 10}
+    \end{subfigure}
+    \caption[Dragon curve]{
+        Heighway dragon curve generated with L-System using \cite{lsystemgenerator}.
+        The starting string is $FX$ and the rules are $X \rightarrow XRYFR$ and $Y \rightarrow LFXLY$ where $F$ is forward, $R$ is a right turn and $L$ is a left turn.
+    }
+    \label{fig:dragon-curve}
+\end{figure}
+
+In addition to plants, L-Systems are also suitable for generating other structures that grow and branch.
+\figurename~\ref{fig:dragon-curve} shows how they can be used to generate fractals, spesifically the dragon curve \cite{gardner1967heighway}.
+They have also been applied music composition \cite{manousakis2006musical}.
+
+%\cite{prusinkiewicz1990lindenmayer}.
 
 %==============================================================================%
 
 \section{Cellular Automata}
 
-A cellular automaton (CA) is a computational structure made up of vast numbers of very simple functional elements called cells.
+A Cellular Automaton (CA) is a computational structure made up of vast numbers of very simple functional elements called cells.
 Each cell contains a state and is connected to a handful of other cells to form neighborhoods.
 \todo{fig?}
-At given time intervals the cells then update their states based on a transfer function over the states in their neighborhoods.
+At given time intervals the cells then update their states based on a transfer function over the states in their neighborhoods.\footnotemark
+
+\footnotetext{
+    CAs are spesific cases of Random Boolean Networks \cite{gershenson2004rbn}.
+}
 
 CAs are attempts to mimic the structures found in biological lifeforms, where complex results emerge from interactions between many simple cells.
 The key principles are massive parallelity, local interactions and simple computational units.
@@ -104,10 +166,12 @@ However, CAs have been shown to be Turing complete \cite{codd1968cellular, neuma
 
 \todo{rewrite}
 CAs are desired because of their scalability.
+Can add cells and allow program to grow.
 Power challenges when scaling modern processors \CN.
 Possible to add more cores, but not all programs can use them.
 Local communication of CA circumvents this.
 Posibility for robustness and redundancy by routing computation around broken cells through dev/learning.
+CAs are also used as an environment for creating machines that replicate \cn{von neumann}.
 
 \todo{rewrite}
 Some challenges: Programming and I/O.
