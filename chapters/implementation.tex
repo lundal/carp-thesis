@@ -1,6 +1,6 @@
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.8\textwidth]{implementation-simple}
+    \includegraphics[width=0.78\textwidth]{implementation-simple}
     \caption[High-level system diagram]{
         High-level block diagram of the new hardware platform.
     }
@@ -87,7 +87,7 @@ An example is shown in \figurename~\ref{fig:wavediagram-pipeline}.
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.9\textwidth]{wavediagram-pipeline}
+    \includegraphics[width=0.86\textwidth]{wavediagram-pipeline}
     \caption[Pipeline wave diagram]{
         Wave diagram showing pipeline interlocking signals for a 3-stage pipeline where the stages complete in one, two and three cycles respectively.
     }
@@ -109,7 +109,7 @@ The counters determine the addresses that are written to and read from, and are 
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.7\textwidth]{figures/wavediagram-fifo}
+    \includegraphics[width=0.64\textwidth]{figures/wavediagram-fifo}
     \caption[FIFO buffer wave diagram]{
         Wave diagram for the FIFO buffer, showing two consecutive writes followed by two consecutive reads.
     }
@@ -129,7 +129,7 @@ It consists of the Xilinx PCI Express endpoint core, reception and transmission 
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.7\textwidth]{implementation-communication}
+    \includegraphics[width=0.72\textwidth]{implementation-communication}
     \caption[Communication module]{
         Detailed block diagram of the communication module.
     }
@@ -164,7 +164,7 @@ The reception engine is implemented as a simple state machine, as shown in \figu
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.8\textwidth]{statemachine-receive}
+    \includegraphics[width=0.84\textwidth]{statemachine-receive}
     \caption[Reception engine state machine]{
         State machine for the reception engine.
     }
@@ -236,7 +236,7 @@ This is shown in \figurename~\ref{fig:implementation-fetch}.
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.7\textwidth]{implementation-fetch}
+    \includegraphics[width=0.69\textwidth]{implementation-fetch}
     \caption[Fetch module]{Detailed block diagram of the Fetch module.}
     \label{fig:implementation-fetch}
 \end{figure}
@@ -325,7 +325,7 @@ This means that modules are mostly very simple and that it requires a low amount
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.7\textwidth]{implementation-control}
+    \includegraphics[width=0.72\textwidth]{implementation-control}
     \caption[Control modules]{
         Detailed block diagram of the Control modules.
         Red signals are inputs while blue are outputs.
@@ -413,8 +413,8 @@ The module consists of combiners which are used to combine new data with existin
 \figurename~\ref{fig:implementation-cell-writer-reader} shows how the components are connected.
 
 \begin{figure}[!ht]
-    \centering
-    \includegraphics[width=\textwidth]{implementation-cell-writer-reader}
+    \hspace{-0.02\textwidth}
+    \includegraphics[width=1.04\textwidth]{implementation-cell-writer-reader}
     \caption[Cell Writer Reader]{
         Detailed block diagram of the Cell Writer Reader.
         Only the state part is shown to reduce complexity; the type part is identical.
@@ -457,7 +457,7 @@ Coincidentally, the dual-purpose states complete in one cycle while the others r
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.55\textwidth]{statemachine-cell-writer-reader}
+    \includegraphics[width=0.56\textwidth]{statemachine-cell-writer-reader}
     \caption{Cell Writer Reader state machine}
     \label{fig:statemachine-cell-writer-reader}
 \end{figure}
@@ -503,8 +503,8 @@ Stage one contains the Cell Fetcher, which retrieves cell neighborhoods from Cel
 This is illustrated in \figurename~\ref{fig:implementation-development}.
 
 \begin{figure}[!ht]
-    \centering
-    \includegraphics[width=\textwidth]{implementation-development}
+    \hspace{-0.05\textwidth}
+    \includegraphics[width=1.10\textwidth]{implementation-development}
     \caption[Development module]{
         Detailed block diagram of the Development module.
         The two main pipeline stages are separated by a dashed line,
@@ -603,7 +603,7 @@ It consists of a state machine, the Sblock Matrix and a Live Counter, in additio
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.7\textwidth]{implementation-cellular-automata}
+    \includegraphics[width=0.68\textwidth]{implementation-cellular-automata}
     \caption[Cellular Automata]{
         Detailed block diagram of the Cellular Automata.
         Config Readback is a symbolic module for majority of the state machine.

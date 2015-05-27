@@ -1,4 +1,6 @@
-\documentclass[a4paper]{report}
+% DAIM example scaled to A4 (slightly smaller text and thus less pages)
+\documentclass[a4paper,twoside,12pt]{book}
+\usepackage[left=30mm,right=30mm,top=32mm,bottom=36mm]{geometry}
 
 \usepackage[utf8]{inputenc} % UTF-8
 \usepackage[T1]{fontenc} % 8-bit fonts
@@ -20,8 +22,6 @@
 \usepackage{subcaption} % Subfigures
 
 \graphicspath{{figures/}}
-
-% TODO: Remove before print?
 
 \hypersetup{
     colorlinks,
@@ -48,19 +48,19 @@
 
 \pagenumbering{roman}
 
-\newpage
+\cleardoublepage
 \phantomsection
 \addcontentsline{toc}{chapter}{Sammendrag}
 \chapter*{Sammendrag}
     \TODO
 
-\newpage
+\cleardoublepage
 \phantomsection
 \addcontentsline{toc}{chapter}{Abstract}
 \chapter*{Abstract}
     \TODO
 
-\newpage
+\cleardoublepage
 \phantomsection
 \addcontentsline{toc}{chapter}{Preface}
 \chapter*{Preface}
@@ -68,22 +68,20 @@
 
 \setcounter{tocdepth}{2}
 
-\newpage
+\cleardoublepage
 \phantomsection
 \addcontentsline{toc}{chapter}{\contentsname}
 \tableofcontents
 
-\newpage
+\cleardoublepage
 \phantomsection
 \addcontentsline{toc}{chapter}{\listfigurename}
 \listoffigures
 
-\newpage
+\cleardoublepage
 \phantomsection
 \addcontentsline{toc}{chapter}{\listtablename}
 \listoftables
-
-\newpage
 
 \pagenumbering{arabic}
 
@@ -119,7 +117,7 @@
     \label{ch:conclusion}
     \input{chapters/conclusion}
 
-\newpage
+\cleardoublepage
 \phantomsection
 \addcontentsline{toc}{chapter}{Bibliography}
 \bibliographystyle{plain}
