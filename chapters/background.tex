@@ -167,23 +167,25 @@ However, CAs have been shown to be Turing complete \cite{codd1968cellular, neuma
     \label{fig:computing-principles}
 \end{figure}
 
+CAs are attractive due to their inherent robustness and scalability when paired with development.
+In the event of broken cells, signals can simply be rerouted, and to increase the performance, extra cells can be added and the program grown; local communication ensures that there are no bottlenecks.
+This greatly contrasts modern processors where a broken part normally renders the entire chip unusable, and adding more cores are of limited benefit due to the shared-memory architecture.
+Increasing the clock rate is no longer an option either, due to the fixed power budget \cn{tdt1?}.
 
-\todo{rewrite}
-CAs are desired because of their scalability.
-Can add cells and allow program to grow.
-Power challenges when scaling modern processors \CN.
-Possible to add more cores, but not all programs can use them.
-Local communication of CA circumvents this.
-Posibility for robustness and redundancy by routing computation around broken cells through dev/learning.
-CAs are also used as an environment for creating machines that replicate \cite{neumann1966selfreplication}.
+A major challenge with CAs is programming.
+CAs compute by emergence using massive parallelity, while humans mostly solve problems serially \cite{newell1972problemsolving}.
+This makes it near impossible for humans to construct programs, unless for very simple problems.
+Genetic Algorithms are therefore often used.
 
-\todo{rewrite}
-Some challenges: Programming and I/O.
-CAs compute by emergence using massive parallelity.
-Very hard for humans to comprehend, due to mostly serial thinking \cite{newell1972problemsolving}.
-Therefore, evolutionary algorithms are often used.
-One of the greatest challenges with CAs is how to represent input and parse output.
-Discrete Fourier Transform (DFT) over cell states is promising for analysis of output \cite{berg2013ca}.
+Other major challenges are the representation of input and parsing of output.
+Both arise due to the CA's distributed nature.
+One posibility for input is \TODO.
+For output, the Discrete Fourier Transform (DFT) over all cell states appears promising \cite{berg2013ca}.
+
+CAs have been also been used in various research.
+They have been the environments for simulating lifeforms and creating replicating machines \cite{neumann1966selfreplication}.
+A very popular life simulator is Conway's Game of Life \cite{gardner1970life}.
+\todo{move me?}
 
 There are many variations of CAs, which are discussed in great detail in \cite{sipper1999emergence}.
 Following is a brief summary:
@@ -197,9 +199,6 @@ Finally, there are numerous schemes that can be used to connect cells together t
 Only a spesific form of CA is used in this thesis:
 Discrete, exhaustively enumerated, non-uniform, synchronous and deterministic.
 It is possible to use direct programming, but there are systems in place for adaptive evolution.
-
-\TODO
-with two- or three-dimensional von Neumann neighborhoods.
 
 \subsection{Neighborhoods}
 
