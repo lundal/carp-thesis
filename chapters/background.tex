@@ -65,6 +65,7 @@ The process that transforms a genotype into a phenotype is called development.
 It can be regarded as a form of decompression algorithm \cite{harding2008artificial}.
 In nature, the process is seen when a single cell transforms into a more complex multicellular organism, as visualized in \figurename~\ref{fig:development}.
 Unlike with a pure decompression algorithm however, biological systems also use information about their environments to tailor themselves to them.
+This is known as plasticity.
 
 \begin{figure}[!ht]
     \centering
@@ -76,19 +77,17 @@ Unlike with a pure decompression algorithm however, biological systems also use 
     \label{fig:development}
 \end{figure}
 
-\todo{rewrite}
-Development is needed because a complete spesification of a complex organism would require too much information.
-It is several orders of magnitude greater than that of one cell and it's development rules.
-It can also be used to allow systems to repair themselves after sustaining damage.
-For the same reasons, artificial development is lucrative...
-Perhaps the most known and widely used artificial development systems are Lindenmayer Systems.
+Development is needed because a complete spesification of a complex organism requires much more information than practically can be stored; it is several orders of magnitude greater than that of one cell and it's development rules.
+Plasticity and self-repairing abilities are merely bonuses, but have shown to be highly valuable properties.
+For the same reasons, artificial development is lucrative for building more complex computer systems that is also fault-tolerant and adaptable.
 
 \subsection{Lindenmayer Systems}
 
-Lindenmayer was a biologist and botanist that in 1968 introduced a system to describe the growth of plants \cite{lindenmayer1968models}.
-The Lindenmayer System (L-System) as it is known is a form of parallel generative grammar.
-Starting with an axiom, a string is built by iteratively applying all the grammar rules in parallel.
-The string is a representation of the structure of the object; each character symbolizes a branch, twist, turn, stretch or other feature.
+Perhaps the most known and widely used artificial development systems are Lindenmayer Systems (L-Systems).
+It was introduced by biologist and botanist Lindenmayer in 1968 to describe the growth of plants and fungi\cite{lindenmayer1968models}.
+The L-System is a form of parallel generative grammar; starting with an axiom, a string is built by iteratively applying all the grammar rules in parallel.
+The string is a representation of the structure of the object.
+Each character symbolizes a branch, twist, turn, stretch or other feature.
 
 \begin{figure}[!ht]
     \centering
@@ -124,10 +123,14 @@ The string is a representation of the structure of the object; each character sy
     \end{subfigure}
     \caption[Dragon curve]{
         Heighway dragon curve generated with L-System using \cite{lsystemgenerator}.
-        The starting string is $FX$ and the rules are $X \rightarrow XRYFR$ and $Y \rightarrow LFXLY$ where $F$ is forward, $R$ is a right turn and $L$ is a left turn.
+        The starting string is $FX$ and the rules are $X \rightarrow XRYFR$ and $Y \rightarrow LFXLY$ where $F$ is forward, $R$ is a right turn and $L$ is a left turn\footnotemark.
     }
     \label{fig:dragon-curve}
 \end{figure}
+
+\footnotetext{
+    \cite{lsystemgenerator} uses $+$, $-$ and a customizable angle instead of $L$ and $R$.
+}
 
 In addition to plants, L-Systems are also suitable for generating other structures that grow and branch.
 \figurename~\ref{fig:dragon-curve} shows how they can be used to generate fractals, spesifically the dragon curve \cite{gardner1967heighway}.
