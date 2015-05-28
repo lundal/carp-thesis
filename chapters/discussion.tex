@@ -14,20 +14,6 @@ CA shift registers are spread over whole FPGA.
 It is summed into one bram (livecount).
 Then spread all over, since DFT uses nearly all DSP slices.
 
-\section{Warnings}
-
-\begin{itemize}
-    \item Most are due to parameterization
-    \item Many from generated PCIE core
-    \item Nearly all filtered to make output more readable and make it easier to find bugs
-    \item Could not remove remaining due to limited filter system (don't want to cause trouble later)
-    \item 728 in ISE (684 filtered)
-    \item 502 in XST (457 filtered)
-    \item (3D)
-    \item Why the difference?
-    \item Also filtered "equivalent register removal" infos to reduce clutter
-\end{itemize}
-
 \section{Challenges}
 \label{sec:challenges}
 
@@ -48,4 +34,18 @@ Routing limits livecounter + rule testers.
     \item Hazard detection unit so multiple modules can run simultaneously
     \item DMA-based communication interface (better speed, requires driver, more advanced com module)
     \item Watchdog-timer/Stall-prevention
+\end{itemize}
+
+\section{Warnings}
+
+\begin{itemize}
+    \item Most are due to parameterization
+    \item Many from generated PCIE core
+    \item Nearly all filtered to make output more readable and make it easier to find bugs
+    \item Could not remove remaining due to limited filter system (don't want to cause trouble later)
+    \item 728 in ISE (684 filtered)
+    \item 502 in XST (457 filtered)
+    \item (3D)
+    \item Why the difference?
+    \item Also filtered "equivalent register removal" infos to reduce clutter
 \end{itemize}

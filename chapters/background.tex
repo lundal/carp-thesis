@@ -1,4 +1,6 @@
 \TODO
+Unconventional computation.
+Bio-inspired design methods.
 EHW: Evolvable hardware.
 POE: Phylogeny, Ontogeny, Epigenesis \cite{sipper1997poe}.
 
@@ -48,15 +50,6 @@ Then, each phenotype is constructed and evaluated using a fitness function.
 If a solution has a fitness score above a set threshold, the process stops.
 Otherwise, a new population is created by selecting solutions with high fitness scores, crossing their genotypes, and mutating the results, before repeating the process.
 
-\subsection{Evolution in Materio}
-\todo{replace with EWH?}
-
-\TODO
-Embodiment principles.
-Evolve in software, test in software.
-Evolve in software, test in hardware.
-Evolve and test in hardware.
-
 %==============================================================================%
 
 \section{Development}
@@ -80,6 +73,11 @@ This is known as plasticity.
 Development is needed because a complete spesification of a complex organism requires much more information than practically can be stored; it is several orders of magnitude greater than that of one cell and it's development rules.
 Plasticity and self-repairing abilities are merely bonuses, but have shown to be highly valuable properties.
 For the same reasons, artificial development is lucrative for building more complex computer systems that is also fault-tolerant and adaptable.
+
+\TODO
+Attractors.
+Self-assembly.
+Never ``complete''.
 
 \subsection{Lindenmayer Systems}
 
@@ -138,6 +136,16 @@ In addition to plants, L-Systems are also suitable for generating other structur
 They have also been applied music composition \cite{manousakis2006musical}.
 
 %\cite{prusinkiewicz1990lindenmayer}.
+
+%==============================================================================%
+
+\section{Evolution in Materio}
+
+\TODO
+Embodiment principles.
+Evolve in software, test in software.
+Evolve in software, test in hardware.
+Evolve and test in hardware.
 
 %==============================================================================%
 
@@ -261,6 +269,15 @@ For this he used a measure called $\lambda$, which essentially determines the in
 His findings, displayed in \figurename~\ref{fig:complexity-classes}, show that class 4 resides in a phase transition between the order of class 2 and the chaos of class 3.
 This is known as ``The Edge of Chaos''.
 
+\subsection{Development}
+
+\TODO
+CA + Dev + GA = True.
+Host performs GA to find development rules.
+Development used to create structures.
+Structures can then be run to perform computation.
+System overview figure.
+Moore's law.
 
 %==============================================================================%
 
@@ -273,6 +290,7 @@ These elements are grouped into configurable logic blocks (CLBs), which through 
 An example of this structure is shown in \figurename~\ref{fig:fpga}.
 Note that modern FPGAs consists of thousands of CLBs and hundreds of I/O pins \cite{ds160}.
 \todo{mention DSP slices}
+\todo{good platform for implementing CA}
 
 \begin{figure}[!ht]
     \centering
@@ -310,7 +328,7 @@ The cells, known as sblocks, are very simple structures; they consist of a confi
 The greatest benefit of using sblocks for EHW research is that there is no risk of damage or exploitation of intrinsic properties in the silicon.
 Additionaly, the simple structure and hardwired signal routing allows for very efficient area usage.
 The likelihood of a mass-produced sblock-FPGA arriving on the market in the near future is slim.
-However, it is possible to implement it virtually within an other FPGA.
+However, it is possible to implement it virtually within another FPGA, as in this thesis.
 
 %==============================================================================%
 

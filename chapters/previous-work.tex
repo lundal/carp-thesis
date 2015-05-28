@@ -3,6 +3,10 @@ The original implementation was made by Djupdal in 2003.
 It was then extended with a range of various output methods by Aamodt in 2005.
 Finally, it was further extended and optimized in expectation of new hardware by Støvneng in 2014.
 
+\todo{System overview}
+Functionality.
+Purpose.
+
 %==============================================================================%
 
 \section{Djupdal}
@@ -94,3 +98,32 @@ The only addition is the DFT, but nearly all units has been optimized, yielding 
 
 Unfortunately, due to some challenges with manufacturing, Støvneng was unable to get hold of the new hardware for the duration of his project.
 The system was therefore only verified in simulation, and the PCI communication unit was not upgraded for the PCI Express connection on the new board.
+
+%==============================================================================%
+
+\section{Problems}
+
+\TODO
+
+Problems:
+\begin{itemize}
+    \item Broken instructions
+    \item Unnecessarily complex code
+    \item Uses outdated features (tristates, reset)
+    \item API can only print, not supply data structures
+    \item No PCIe com module
+\end{itemize}
+
+Wanted features:
+\begin{itemize}
+    \item A functional system
+    \item More modular and maintainable
+    \item More configurable (not only powers of two) (for better resource utilization)
+    \item Adaptive API
+    \item Simpler build system
+    \item More advanced control flow
+    \item Toggle matrix wrapping
+\end{itemize}
+
+\TODO
+Decided to rebuild the entire platform.
