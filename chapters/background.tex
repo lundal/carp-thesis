@@ -384,12 +384,11 @@ Each byte is padded with two extra bits (8b/10b encoding) to allow clock recover
 
 \section{Related Work}
 
-\TODO
+This section describes work performed by others, which is related to that performed in this thesis.
 
-Format: Who? What? When? Main feature? Relation?
+% Format: Who? What? When? Main feature? Relation?
 
 \subsection{CAM-8}
-
 
 The Information Mechanics Group at MIT Laboratory for Computer Science has had a focus the question ``How can computation and computers best be adapted to the constraints and opportunities afforded my microscopic physics?''
 This has led to more than a decade of study of CAs, as their fine-grained computation with local interconnectivity are particularly good candidates for micro-physical efficiency.
@@ -423,6 +422,7 @@ This is a trade-off that compromises performance for the benefit of massively in
 For 1-bit cell states, the prototype is capable of $3 \cdot 10^9$ cell updates per second and can fit up to $5 \cdot 10^8$ cells.
 
 \todo{Maybe}
+The lookup table can be exchanged for a pipelined function.
 Instead of traditional fixed neighborhoods, CAM-8 uses advanced bit-shifting techniques to collect neighborhood data from the DRAM.
 Each node is connected to the front-end workstation through a tree network.
 Problem: Must encode computation into uniform and local spatial matrix.
@@ -430,29 +430,31 @@ Harness the astronomical computing power that is available in CA format
 
 \subsection{CAM-Brain Machine}
 
+In \cite{degaris2001cbm}, de Garis et al. introduces the CAM-Brain Machine (CBM), an FPGA-based platform that implements a CA-based neural network that is evolved using a GA.
+It is part of de Garis' ``Artificial Brain Project'', which goal is to build an artificial brain with 1 billion neurons.
+The CBM is a stepping stone in the right direction, and allows the formation an artificial brain with nearly 75 million neurons in a CA of 843 million cells.
+
+The CBM implements the Collect and Distribute (CoDi) based neural network model from \cite{gers1998codi}, which goal is to accelerate brain evolution and simulation speeds by a factor of 500 compared to CAM-8, to facilitate the higher update speeds required for real-time control of a robot.
+It is a 3D grid CA with four cell types: Neurons, axons, dendrites and empty.
+Neurons essentially perform a threshold function over their inputs, while axons carry the neural signals to other neurons, and dendrites consolidate the signals from multiple axons.
+The CA is initialized with evenly spaced neurons, and then developed by alternately growing axons and dendrites from the neurons.
+Which cells grow axons or dendrites are determined by artificial evolution.
+
+\todo{Maybe}
+The CBM consists of up to 64640 modules, each containing 24x24x24 cells split over 72 FPGAs, of which 1152 cells can be neurons.
+Modules are evolved separately, and then connected by human design.
+Updated at a rate of $1.3 \cdot 10^{11}$ cells per second.
+
 \begin{itemize}
     \item FPGA based hardware that implements a GA to evolve CA based neural network with 1000 neurons in approx 1 second
-    \item Part of CAM-Brain project: Goal to build a brain with 1 billion neurons
     \item New research field called "Brain Building"
-    \item Up to 65K modules can be interconnected in a large RAM
-    \item Modules are evolved and connected by human design
-    \item Artificial brain with up to 70M neurons
     \item Updated at 130G cells per second. Enough for real-time robot control
-    \item CoDi-1bit (Collect and Distribute), maybe more in future
     \item Spike Interval Information Coding: "spike train" to analog
     \item Hough Spiker Algorithm: Analog to "spike train"
-    \item Goal to have 500 times faster update times compared to CAM-8 for (50-100 updates 10-20 times per second)
-    \item Cells can be neuron, axon or dendrite
     \item Each module has 24x24x24 cells, can receive 1-bit signals from 188 other modules and send to 64640
     \item Neuron has 4-bit accumulator and threshold function, inputs can be subtractive
-    \item Dendrites pass XOR of inputs
-    \item Axons pass input to all others
-    \item Dendrites and Axons grown successively
     \item Signals representation: Custom convolution function (SIIC)
-    \item "Function-level" evolvable hardware
     \item Cells have 6-bit register and other logic for com
-    \item Each FPGA has 8x6x4 cells
-    \item Fast reconfiguration (<1ms)of the FPGA between growth, signaling and genetic phases to save resources
     \item Controllable object to attract attention and be proof-of-concept: Robokitty
     \item "An assemblage of evolved CA based neural net modules"
 \end{itemize}
