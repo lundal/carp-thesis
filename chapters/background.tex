@@ -390,22 +390,43 @@ Format: Who? What? When? Main feature? Relation?
 
 \subsection{CAM-8}
 
-\begin{itemize}
-    \item Cellular Automata Machine
-    \item Semi-parallel CA simulator
-    \item Indefinitely scalable 3D mesh-network multiprocessor
-    \item Optimized for large inexpensive simulations
-    \item Prototype faster than existing supercomputers
-    \item Hope to whet the apetite of researchers with computing power
-    \item Time-sharing of com resources interprocessor wires, allows scalability to be achieved with current tech
-    \item Node: DRAM with millions of cells, SRAM look-up table
-    \item Nodes update cells seqentially
-    \item 3G site updates per second
-    \item No traditional CA neighborhoods: Based on partitioning from lattice gas models (shifts bits around)
-    \item Good at spatially moving data and interaction at lattice sites: Well suited for simulating physical systems using lattice-gas-like dynamics or localized interactions.
-    \item Goal to bring computation closer to physics to improve computation
-    \item Harness the astronomical computing power that is available in CA format
-\end{itemize}
+
+The Information Mechanics Group at MIT Laboratory for Computer Science has had a focus the question ``How can computation and computers best be adapted to the constraints and opportunities afforded my microscopic physics?''
+This has led to more than a decade of study of CAs, as their fine-grained computation with local interconnectivity are particularly good candidates for micro-physical efficiency.
+To this end, they have created CA Machines (CAMs) that aim to use common computer parts in smart arrangements to provide CA computation performance akin to modern supercomputers.
+\cite{margolus1996cam8} describes their eighth iteration, known as the CAM-8.
+
+\begin{figure}[!ht]
+    \centering
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{cam8-a.pdf}
+        \caption{A single processing node}
+    \end{subfigure}
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{cam8-b.pdf}
+        \caption{Spatial array of CAM-8 nodes}
+    \end{subfigure}
+    \caption[CAM-8 system diagram]{
+        CAM-8 system diagram.
+        (Reprinted from \cite{margolus1996cam8})
+    }
+    \label{fig:cam-8}
+\end{figure}
+
+The CAM-8 implements a discrete, exhaustively enumerated, uniform, and synchronous 3D grid CA split over multiple nodes that run in parallel.
+Any number of nodes can be connected to form a CA of desired size, and an 8-module prototype showed to be on par with regular supercomputer simulations.
+As illustrated in \figurename~\ref{fig:cam-8}, each node contains DRAM that potentially holds millions of cells and an SRAM that holds the LUT for the current program.
+Within each node, cells are updated in sequence, making it a semi-parallel machine.
+This is a trade-off that compromises performance for the benefit of massively increased CA size and the ability to use common hardware.
+For 1-bit cell states, the prototype is capable of $3 \cdot 10^9$ cell updates per second and can fit up to $5 \cdot 10^8$ cells.
+
+\todo{Maybe}
+Instead of traditional fixed neighborhoods, CAM-8 uses advanced bit-shifting techniques to collect neighborhood data from the DRAM.
+Each node is connected to the front-end workstation through a tree network.
+Problem: Must encode computation into uniform and local spatial matrix.
+Harness the astronomical computing power that is available in CA format
 
 \subsection{CAM-Brain Machine}
 
