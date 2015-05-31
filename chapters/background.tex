@@ -28,7 +28,7 @@ Robot controllers.
 Platform for robot controller evolution \cite{haddow1999robot}.
 Evolutionary Algorithms (EAs).
 
-\subsection{Genetic Algoritmhs}
+\subsection{Genetic Algorithms}
 
 A Genetic Algorithm (GA) is a very common type of EA.
 It represents each solution as a genotype, a binary string used as a blueprint to create the solution itself, called a phenotype.
@@ -70,7 +70,7 @@ This is known as plasticity.
     \label{fig:development}
 \end{figure}
 
-Development is needed because a complete spesification of a complex organism requires much more information than practically can be stored; it is several orders of magnitude greater than that of one cell and it's development rules.
+Development is needed because a complete specification of a complex organism requires much more information than practically can be stored; it is several orders of magnitude greater than that of one cell and it's development rules.
 Plasticity and self-repairing abilities are merely bonuses, but have shown to be highly valuable properties.
 For the same reasons, artificial development is lucrative for building more complex computer systems that is also fault-tolerant and adaptable.
 
@@ -132,7 +132,7 @@ Each character symbolizes a branch, twist, turn, stretch or other feature.
 }
 
 In addition to plants, L-Systems are also suitable for generating other structures that grow and branch.
-\figurename~\ref{fig:dragon-curve} shows how they can be used to generate fractals, spesifically the dragon curve \cite{gardner1967heighway}.
+\figurename~\ref{fig:dragon-curve} shows how they can be used to generate fractals, specifically the dragon curve \cite{gardner1967heighway}.
 It is the pattern that emerges when a piece of paper is folded many times and then each fold is opened to a 90 degree angle.
 The corresponding L-System uses only two rules, and is a testament to how very simple development rules can create outstandingly complex shapes.
 L-Systems have also been applied to other tasks, such as music composition \cite{manousakis2006musical}.
@@ -157,19 +157,19 @@ Each cell contains a state and is connected to a handful of other cells to form 
 At given time intervals the cells then update their states based on a transfer function over the states in their neighborhoods.\footnotemark
 
 \footnotetext{
-    CAs are spesific cases of Random Boolean Networks \cite{gershenson2004rbn}.
+    CAs are specific cases of Random Boolean Networks \cite{gershenson2004rbn}.
 }
 
 CAs are attempts to mimic the structures found in biological lifeforms, where complex results emerge from interactions between many simple cells.
-The key principles are massive parallelity, local interactions and simple computational units.
-As seen in \figurename~\ref{fig:computing-principles}, this is the direct opposite paradigme of the general-purpose serial architecture that is common in computers today.
+The key principles are massive parallelism, local interactions and simple computational units.
+As seen in \figurename~\ref{fig:computing-principles}, this is the direct opposite paradigm of the general-purpose serial architecture that is common in computers today.
 However, CAs have been shown to be Turing complete \cite{codd1968cellular, neumann1966selfreplication}, and can therefore perform the same tasks.
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.82\textwidth]{computing-principles}
     \caption[Computing principles]{
-        Graphical representation of how different computing paradigmes relate with regards to computing principles.
+        Graphical representation of how different computing paradigms relate with regards to computing principles.
         (Reprinted from \cite{sipper1999emergence})
     }
     \label{fig:computing-principles}
@@ -181,13 +181,13 @@ This greatly contrasts modern processors where a broken part normally renders th
 Increasing the clock rate is no longer an option either, due to the fixed power budget \cn{tdt1?}.
 
 A major challenge with CAs is programming.
-CAs compute by emergence using massive parallelity, while humans mostly solve problems serially \cite{newell1972problemsolving}.
+CAs compute by emergence using massive parallelism, while humans mostly solve problems serially \cite{newell1972problemsolving}.
 This makes it near impossible for humans to construct programs, unless for very simple problems.
 Genetic Algorithms are therefore often used.
 
 Other major challenges are the representation of input and parsing of output.
 Both arise due to the CA's distributed nature.
-One posibility for input is \TODO.
+One possibility for input is \TODO.
 For output, the Discrete Fourier Transform (DFT) over all cell states appears promising \cite{berg2013ca}.
 
 CAs have been also been used in various research.
@@ -204,7 +204,7 @@ Cell updates can be synchronous or asynchronous, and in the latter case the CA c
 The CA may be fully specified by direct programming or adaptively evolved using a GA or similar.
 Finally, there are numerous schemes that can be used to connect cells together to form neighborhoods.
 
-Only a spesific form of CA is used in this thesis:
+Only a specific form of CA is used in this thesis:
 Discrete, exhaustively enumerated, non-uniform, synchronous and deterministic.
 It is possible to use direct programming, but there are systems in place for adaptive evolution.
 
@@ -236,7 +236,7 @@ This can be extended to 3D by adding up and down.
 \subsection{Complexity Classes}
 
 Wolfram observed that some CAs developed complex pattern while others decayed into uniformity or chaos.
-He therefore developed a set of four chasses to group them based on their emergent behavior \cite{wolfram1984complexity}:
+He therefore developed a set of four classes to group them based on their emergent behavior \cite{wolfram1984complexity}:
 
 \begin{itemize}
     \item Class 1 – Uniform:
@@ -293,7 +293,7 @@ Moore's law.
 \section{FPGA}
 
 A Field Programmable Gate Array (FPGA) is a type of reconfigurable hardware.
-It can implement any desired logical operation by configuring and connecting a number of look-up tables (LUTs) and flip-flops (FFs).
+It can implement any desired logical operation by configuring and connecting a number of lookup tables (LUTs) and flip-flops (FFs).
 FPGAs can also contain dedicated blocks for addition, multiplication, storage, and other functions.
 These elements are grouped into configurable logic blocks (CLBs), which through a network of interconnects can be connected to each other or input/output pins.
 An example of this structure is shown in \figurename~\ref{fig:fpga}.
@@ -314,15 +314,15 @@ Note that modern FPGAs consists of thousands of CLBs and hundreds of I/O pins \c
 FPGAs have been the subject of EHW research due to their reconfigurability, and several researchers have been successful in evolving working electronic circuits \cite{huelsbergen1998evolution, thompson1997evolved}.
 However, the resulting circuits have often ended up using intrinsic properties of the silicon and been very sensitive to environmental changes.
 
-A problem with using modern FPGAs for EHW research is that some configuration bitstrings can destroy the FPGA by creating short-circuits \cite{xapp151, ug380}.
-This means that the bitstrings can not be used directly as the genotype without complicated tests to discard those that are dangerous.
+A problem with using modern FPGAs for EHW research is that some configuration bit strings can destroy the FPGA by creating short-circuits \cite{xapp151, ug380}.
+This means that the bit strings can not be used directly as the genotype without complicated tests to discard those that are dangerous.
 
 \subsection{Sblock}
 \label{sec:sblock}
 
 The sblock was introduced as part of a new EHW-friendly FPGA architecture in \cite{haddow2000sblock}.
 The architecture is a non-uniform CA with a von Neumann neighborhood, where the update function of each cell is independently configurable at run-time.
-The cells, known as sblocks, are very simple structures; they consist of a configurable look-up-table (LUT) and a flip-flop (FF), as shown in \figurename~\ref{fig:sblock}.
+The cells, known as sblocks, are very simple structures; they consist of a configurable lookup table (LUT) and a flip-flop (FF), as shown in \figurename~\ref{fig:sblock}.
 
 \begin{figure}[!ht]
     \centering
@@ -335,7 +335,7 @@ The cells, known as sblocks, are very simple structures; they consist of a confi
 \end{figure}
 
 The greatest benefit of using sblocks for EHW research is that there is no risk of damage or exploitation of intrinsic properties in the silicon.
-Additionaly, the simple structure and hardwired signal routing allows for very efficient area usage.
+Additionally, the simple structure and hardwired signal routing allows for very efficient area usage.
 The likelihood of a mass-produced sblock-FPGA arriving on the market in the near future is slim.
 However, it is possible to implement it virtually within another FPGA, as in this thesis.
 
@@ -447,13 +447,13 @@ Harness the astronomical computing power that is available in CA format
     \item Neuron has 4-bit accumulator and threshold function, inputs can be subtractive
     \item Dendrites pass XOR of inputs
     \item Axons pass input to all others
-    \item Dendrites and Axons grown interchangedly
+    \item Dendrites and Axons grown successively
     \item Signals representation: Custom convolution function (SIIC)
     \item "Function-level" evolvable hardware
     \item Cells have 6-bit register and other logic for com
     \item Each FPGA has 8x6x4 cells
     \item Fast reconfiguration (<1ms)of the FPGA between growth, signaling and genetic phases to save resources
-    \item Controllable object to attract attention and be proof-of-consept: Robokitty
+    \item Controllable object to attract attention and be proof-of-concept: Robokitty
     \item "An assemblage of evolved CA based neural net modules"
 \end{itemize}
 
