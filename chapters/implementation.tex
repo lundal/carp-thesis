@@ -33,9 +33,9 @@ Fitness is special in that it is not part of the main pipeline since it operates
 
 %==============================================================================%
 
-\section{General Consepts}
+\section{General Concepts}
 
-Some consepts are used repeatedly througout the design.
+Some concepts are used repeatedly throughout the design.
 The main ones are parameterization, pipelining, buffers and states machines.
 The first three are general and are detailed in the following sections.
 The state machines vary from module to module and are therefore detailed where appropriate, but all are of Mealy design with clocked output.
@@ -44,7 +44,7 @@ The state machines vary from module to module and are therefore detailed where a
 
 Almost every part of the design is parameterized, usually with little restriction on the range of values.
 Where restrictions do apply, asserts have been placed in the code of the modules that do restrict them.
-These alert the user of correct values during sythesis, and pinpoints the code that must be changed in the event of an expansion.
+These alert the user of correct values during synthesis, and pinpoints the code that must be changed in the event of an expansion.
 Keep in mind though that the ISA must likely be changed as well.
 The list of parameters is shown in Table~\ref{tab:parameters}.
 
@@ -155,7 +155,7 @@ The endpoint core is configured with two memory regions, both 4 kB in size\footn
     The smallest memory region that can be memory-mapped is one page. The default page size in Linux is 4 kB.
 }
 The first memory region (BAR0) is used for normal communication, while the second (BAR1) is used for special requests.
-The separation is mostly conseptual as both regions are treated as one data stream.
+The separation is mostly conceptual as both regions are treated as one data stream.
 The difference is that the special request handler kicks in for read requests to BAR1.
 
 \subsection{Reception engine}
@@ -194,7 +194,7 @@ The transmission engine is implemented as a simple state machine, as shown in \f
 Until the reception engine signals a read request, the state machine remains in Idle.
 When a read request is signaled by the reception engine, the state machine begins to traverse the DW path.
 The DW0, DW1 and DW2 states each transmit one DW of the completer TLP header.
-Then if the special request signal is set, it procceds to CompleteSpecial, where it transmits data presented by the request handler.
+Then if the special request signal is set, it proceeds to CompleteSpecial, where it transmits data presented by the request handler.
 Otherwise, it proceeds to CompleteData where it transmits one DW of data from the transmission buffer each cycle.
 When the requested number of DWs has been transmitted it proceeds back to Idle.
 
@@ -296,8 +296,8 @@ The JumpEqual instruction is treated as a Jump instruction when the specified co
 Decode is responsible for parsing instructions, setting up control signals and passing instruction parameters to activated modules.
 It is a very simple module, being essentially a giant switch statement with a case for each instruction.
 
-Control signals are sent to all toplevel modules except communication, fetch and fitness.
-\todo{why not fitness? dataflow-like}
+Control signals are sent to all top-level modules except communication, fetch and fitness.
+\todo{why not fitness? Dataflow-like}
 By default, all modules are given a no-operation signal and multiplexers stay unchanged.
 Then, depending on the instruction's operation code, the control signal for the appropriate module is set, parameters (if any) are extracted and passed on, and multiplexers are changed if needed.
 
@@ -319,7 +319,7 @@ The control signals determine which module is activated, which modules the CellB
 
 Control is a group of modules, shown in \figurename~\ref{fig:implementation-control}.
 Together, the modules control all inputs and outputs for the Cell Storage, Cellular Automaton and Development modules.
-Each module is designed to do one spesific task and be independent of any other modules.
+Each module is designed to do one specific task and be independent of any other modules.
 This means that modules are mostly very simple and that it requires a low amount of effort to add new modules or to modify existing.
 \todo{tie in UNIX principles somehow?}
 
@@ -361,9 +361,9 @@ The index signifies the cell type that should be converted into the LUT.
 
 Nearly all parts of the system are parameterized.
 The previous practice of manually ensuring that the parameters of both the design and API were in sync was both tiresome and prone to error.
-Therefore, the Information Sender provides a means for the API to automaticly query these parameters.
+Therefore, the Information Sender provides a means for the API to automatically query these parameters.
 
-When activated, it puts all parameters that might be useful into the the Transmission Buffer.
+When activated, it puts all parameters that might be useful into the Transmission Buffer.
 This includes information about the CA such as the size, whether wrapping is enabled, and number of bits per state and type;
 information about counters available for control flow;
 maximum number of rules;
@@ -429,7 +429,7 @@ The module consists of combiners which are used to combine new data with existin
 The combiner is a combinatorial unit that combines two signals of different lengths by replacing one part of the long signal with the short signal.
 This is implemented using a shifter and a mask that is the size of the short signal.
 First, the short input and mask is shifted into the desired position.
-Then, the long signal is anded with the inverted mask and ored with the short signal, producing the combined signal.
+Then, the long signal is AND-ed with the inverted mask and OR-ed with the short signal, producing the combined signal.
 The process is illustrated in \figurename~\ref{fig:combiner}.
 
 \begin{figure}[!ht]
@@ -451,7 +451,7 @@ When an operation is received, the BRAM address is set and it transitions from i
 Some states are dual-purpose due to the similarity of the operations, while others are not.
 Coincidentally, the dual-purpose states complete in one cycle while the others require multiple\footnotemark.
 \footnotetext{
-    Techically, the Send One state does not necessarily complete in one cycle since it will wait until there is available space in the Transmission Buffer.
+    Technically, the Send One state does not necessarily complete in one cycle since it will wait until there is available space in the Transmission Buffer.
     However, it is the common case.
 }
 
@@ -495,7 +495,7 @@ In development mode, both storage areas are connected to the Development module.
 \section{Development}
 \label{sec:development}
 
-The Development Module is responsible for providing the ontogenic aspect of the system by allowing cells to be changed based on user-supplied development rules described in Appendix~\todo{ref}.
+The Development Module is responsible for providing the ontogenetic aspect of the system by allowing cells to be changed based on user-supplied development rules described in Appendix~\todo{ref}.
 It uses Cell Storage A as input and outputs the modified cells to Cell Storage B.
 
 The module is implemented as a two-stage interlocked pipeline controlled by a state machine.
@@ -508,7 +508,7 @@ This is illustrated in \figurename~\ref{fig:implementation-development}.
     \caption[Development module]{
         Detailed block diagram of the Development module.
         The two main pipeline stages are separated by a dashed line,
-        while the substages of the pipeline within the second main stage are marked at the top.
+        while the sub-stages of the pipeline within the second main stage are marked at the top.
         The cell BRAMs are drawn inside the module for pipeline completeness.
         Control signals are not shown.
     }
@@ -582,7 +582,7 @@ There are two modules dedicated to providing information about the development p
 The input for both are hits passed on from the Rule Testers.
 
 Hits To Vector stores a vector where each bit signifies whether the rule of that index was triggered or not to the Rule Vector Buffer each devstep.
-\todo{explain devstep or find another term}
+\todo{explain devstep or find another term – development phase?}
 Rules that have triggered but is later overridden by a rule with higher priority is still marked as having been triggered in the vector.
 If the buffer is full, it is reset instead of waiting, to allow programs to disregard the data without causing deadlocks.
 
@@ -606,7 +606,7 @@ It consists of a state machine, the Sblock Matrix and a Live Counter, in additio
     \includegraphics[width=0.68\textwidth]{implementation-cellular-automata}
     \caption[Cellular Automata]{
         Detailed block diagram of the Cellular Automata.
-        Config Readback is a symbolic module for majority of the state machine.
+        Config Readback is a symbolic module for the majority of the state machine.
     }
     \label{fig:implementation-cellular-automata}
 \end{figure}
@@ -657,7 +657,7 @@ Having this option lets the user decide if programs should be able to exploit th
 
 The Live Counter is essentially a giant adder tree that is connected to the output of each sblock.
 It calculates the total number of live cells after each runstep and stores them in the Live Count Buffer.
-\todo{explain runstep or use other term}
+\todo{explain runstep or use other term – cell update step?}
 Due to the massive amount of sblocks, the calculation is spread out over many cycles, the exact number of which is dependant on the number of sblocks.
 However, the throughput remains at one total per cycle.
 
@@ -691,12 +691,12 @@ The output of the Live Count Buffer is fed directly into the Fitness buffer, and
 
 \subsection{DFT}
 
-The DFT fitness module uses a Discrete Fourier Transform to convert the the live count data into frequency spectrums.
+The DFT fitness module uses a Discrete Fourier Transform to convert the live count data into frequency spectrums.
 This has the advantage of being able to pick up certain information that might be near-impossible to detect using conventional means.
 As shown in \todo{ref}, using a DFT to interpret CA output holds potential.
 
 A DFT of transform size N takes N complex numbers as input and produces N complex numbers as output.
-For transforms where input numbers are all real, the second half of the output mirrors the first half and can be safely ingored to save computation effort.
+For transforms where input numbers are all real, the second half of the output mirrors the first half and can be safely ignored to save computation effort.
 Each output value of the DFT is a linear combination of all input values.
 The constants, which are known as twiddle factors, rely only on the transform size and can therefore be computed ahead of time to reduce the complexity of the calculations.
 \todo{a bit funky}
@@ -710,7 +710,7 @@ The twiddle factors are stored in a fixed-point format since they range from $-1
 To allow the DFT to continue processing while results are transferred from the DFT to the Fitness Buffer, the module is divided into two pipeline stages.
 This can be seen in \figurename~\ref{fig:implementation-dft}.
 The first stage contains the DFT while the second contains the logic for transferring the result.
-The pipeline is interlocked, since both stages can run for hundreds of cycles, and is controlled by the statemachine in \todo{fig}.
+The pipeline is interlocked, since both stages can run for hundreds of cycles, and is controlled by the state machine in \todo{fig}.
 
 \begin{figure}[!ht]
     \centering
@@ -757,7 +757,7 @@ Adaptive x9001.
 Full system reset.
 Queries synthesis parameters at connect.
 PCI -> Com -> CARP.
-Compiled to staticly linked library (libcarp.a).
+Compiled to statically linked library (libcarp.a).
 Just dump files in programs and run make.
 Export to postscript (hex codes to color).
 Functions return data structures (can be printed).

@@ -36,7 +36,7 @@ It consists of the mentioned sblock matrix, block RAM (BRAM) for storing the sta
     \label{fig:overview-djupdal}
 \end{figure}
 
-The system is meant to be controlled by a computer running a genetic algoritm.
+The system is meant to be controlled by a computer running a genetic algorithm.
 A common flow of operation is to initialize the system with the genotype, develop it into its phenotype, run the SBM, and send the new states back to the computer.
 The computer then uses the newly received state data to calculate a fitness score.
 
@@ -60,11 +60,11 @@ The design is split into two clock domains; the communication unit uses 40 MHz t
 There was one major bottleneck in the original design.
 To calculate the fitness of an individual, the state of each cell had to be transferred to the computer over the PCI interface.
 Having a dedicated hardware unit would greatly improve the performance.
-Additionaly, it was desired to have more information about the development process.
+Additionally, it was desired to have more information about the development process.
 The task of realizing this fell to Aamodt \cite{aamodt2005sblock}.
 
 An overview of the hardware platform with Aamodt's additions is shown in \figurename~\ref{fig:overview-aamodt}.
-The additions consists of a run-step function that calculates the number of live cells, BRAM to store the numbers, a fitness function, and two information outputs from the development unit.
+The additions consists of a Run-Step Function (RSF) that calculates the number of live cells, BRAM to store the numbers, a fitness function, and two information outputs from the development unit.
 
 \begin{figure}[!ht]
     \centering
@@ -82,7 +82,7 @@ The development step BRAM is more detailed; it stores which rule was triggered f
 However, it only has storage space for one development step.
 
 The run-step function calculates the number of live cells after each SBM update by using a large adder tree.
-The numbers are stored in run-step BRAM for later usage by the fitness function, which is replacable.
+The numbers are stored in run-step BRAM for later usage by the fitness function, which is replaceable.
 
 %==============================================================================%
 
@@ -90,10 +90,10 @@ The numbers are stored in run-step BRAM for later usage by the fitness function,
 
 In expectation of receiving new hardware with a larger and faster FPGA, there was a demand to optimize the platform by taking advantage of the increased resource pool.
 Extending the platform into the third dimension was also a lucrative thought, as doing so allows more complex signal pathways to form within the cellular automata.
-It was also desired to have a discrete fourier transform (DFT) for interpretation of the RSF data; it should give very useful data according to Berg's research \cite{berg2013ca}.
+It was also desired to have a Discrete Fourier Transform (DFT) for interpretation of the RSF data; it should give very useful data according to Berg's research \cite{berg2013ca}.
 The task of realizing this was taken on by Støvneng \cite{stovneng2014sblock}.
 
-An overview of the hardware platform with Støvnengs additions and optimizations is shown in \figurename~\ref{fig:overview-stovneng}.
+An overview of the hardware platform with Støvneng's additions and optimizations is shown in \figurename~\ref{fig:overview-stovneng}.
 The only addition is the DFT, but nearly all units has been optimized, yielding a speedup of 4 for most operations.
 
 \begin{figure}[!ht]
@@ -119,7 +119,7 @@ Problems:
 \begin{itemize}
     \item Broken instructions
     \item Unnecessarily complex code
-    \item Uses outdated features (tristates, reset)
+    \item Uses outdated features (tristate buffers, reset)
     \item API can only print, not supply data structures
     \item No PCIe com module
 \end{itemize}
