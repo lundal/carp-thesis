@@ -25,10 +25,12 @@ Then spread all over, since DFT uses nearly all DSP slices.
 
 Further parameterization:
 Could parameterize number of rows accessed in Cell Storage to allow higher config and readback speeds.
+Make Live Counter easily replaceable (step function module)(like fitness module, improves flexibility), and allow it to use more cycles (reduces LUT usage).
 Also live counter to use more cycles but reduce LUT usage.
-However, LUT and register usage is not an issue; routing and available shift registers are.
+However, LUT and register usage are not issues for 3D; routing and available shift registers are.
 Shift registers set max number of cells.
 Routing limits livecounter + rule testers.
+In 2D, LUTs and like routing are the major issues.
 
 \begin{itemize}
     \item Hazard detection unit so multiple modules can run simultaneously
