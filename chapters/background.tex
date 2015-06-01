@@ -295,11 +295,9 @@ Moore's law.
 A Field Programmable Gate Array (FPGA) is a type of reconfigurable hardware.
 It can implement any desired logical operation by configuring and connecting a number of lookup tables (LUTs) and flip-flops (FFs).
 FPGAs can also contain dedicated blocks for addition, multiplication, storage, and other functions.
-These elements are grouped into configurable logic blocks (CLBs), which through a network of interconnects can be connected to each other or input/output pins.
+The resources are grouped into configurable logic blocks (CLBs), which through a network of interconnects can be connected to each other or input/output pins.
 An example of this structure is shown in \figurename~\ref{fig:fpga}.
 Note that modern FPGAs consists of thousands of CLBs and hundreds of I/O pins \cite{ds160}.
-\todo{mention DSP slices}
-\todo{good platform for implementing CA}
 
 \begin{figure}[!ht]
     \centering
@@ -313,9 +311,11 @@ Note that modern FPGAs consists of thousands of CLBs and hundreds of I/O pins \c
 
 FPGAs have been the subject of EHW research due to their reconfigurability, and several researchers have been successful in evolving working electronic circuits \cite{huelsbergen1998evolution, thompson1997evolved}.
 However, the resulting circuits have often ended up using intrinsic properties of the silicon and been very sensitive to environmental changes.
-
-A problem with using modern FPGAs for EHW research is that some configuration bit strings can destroy the FPGA by creating short-circuits \cite{xapp151, ug380}.
+A problem with using modern FPGAs is that some configuration bit strings can destroy the FPGA by creating short-circuits \cite{xapp151, ug380}.
 This means that the bit strings can not be used directly as the genotype without complicated tests to discard those that are dangerous.
+
+The regular structure of an FPGA makes it well suited as the basis for implementing CAs however, especially those using 2D grid neighborhoods.
+\todo{more?}
 
 \subsection{Sblock}
 \label{sec:sblock}

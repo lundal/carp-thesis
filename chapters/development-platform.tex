@@ -1,5 +1,5 @@
 \TODO
-Hoped for a chip with Spartan-6 LX145T (Støvneng planned for it).
+Hoped for a chip with Spartan-6 LX150T (Støvneng planned for it).
 Could not be delivered.
 Got SP605 with LX45T instead.
 Same architecture, 70\% less logic.
@@ -28,7 +28,10 @@ An overview of the system is shown in \figurename~\ref{fig:sp605}.
     \label{fig:sp605}
 \end{figure}
 
-The switch and jumper configurations of the SP605 are set to factory defaults per \cite{ug526}, with the exception of SW1 which is set to 10 (M0=1 and M1=0).
+The Spartan-6 is Xilinx' most cost-effective FPGA series.
+Its CLBs are divided into two independent slices, one of which is connected to a carry-chain.
+In addition to the standard slices which contain mainly LUTs and FFs, the Spartan-6 also contains a handful of specialized Digital Signal Processing (DSP) slices.
+These are optimized for pipelined wide multiplication and addition, which is required by many signal processing methods.
 
 \section{Hardware Setup}
 
@@ -46,6 +49,8 @@ The other is the host for the SP605, which is mounted in a PCI Express expansion
 \end{figure}
 
 The setup allows a new design to be uploaded and tested on the SP605 without disrupting the workflow of the main workstation due to the power-cycle required to reset the PCI Express connection after a new design has been uploaded.
+
+The switch and jumper configurations of the SP605 are set to factory defaults per \cite{ug526}, with the exception of SW1 which is set to 10 (M0=1 and M1=0).
 
 \section{Software Setup}
 

@@ -693,24 +693,18 @@ The output of the Live Count Buffer is fed directly into the Fitness buffer, and
 
 The DFT fitness module uses a Discrete Fourier Transform to convert the live count data into frequency spectrums.
 This has the advantage of being able to pick up certain information that might be near-impossible to detect using conventional means.
-As shown in \todo{ref}, using a DFT to interpret CA output holds potential.
+As shown in \cite{berg2013ca}, using a DFT to interpret CA output holds potential.
 
 A DFT of transform size N takes N complex numbers as input and produces N complex numbers as output.
 For transforms where input numbers are all real, the second half of the output mirrors the first half and can be safely ignored to save computation effort.
 Each output value of the DFT is a linear combination of all input values.
 The constants, which are known as twiddle factors, rely only on the transform size and can therefore be computed ahead of time to reduce the complexity of the calculations.
-\todo{a bit funky}
-\CN
+\todo{a bit funky, move to background?}
 
 This module is essentially a revised version of Støvneng's design in \cite{stovneng2014sblock}.
 It has been refactored, streamlined and adapted to fit into the new design.
 It is also more customizable, supporting parameters other than powers of two, and can generate twiddle factors by itself during synthesis instead of relying on an external program.
 The twiddle factors are stored in a fixed-point format since they range from $-1$ to $1$, and in the order they are needed.
-
-To allow the DFT to continue processing while results are transferred from the DFT to the Fitness Buffer, the module is divided into two pipeline stages.
-This can be seen in \figurename~\ref{fig:implementation-dft}.
-The first stage contains the DFT while the second contains the logic for transferring the result.
-The pipeline is interlocked, since both stages can run for hundreds of cycles, and is controlled by the state machine in \todo{fig}.
 
 \begin{figure}[!ht]
     \centering
@@ -724,13 +718,10 @@ The pipeline is interlocked, since both stages can run for hundreds of cycles, a
     \label{fig:implementation-dft}
 \end{figure}
 
-The DFT is calculated using the DSP slice wrappers seen in \figurename~\ref{fig:implementation-dsp} in multiply-accumulate mode.
-Afterwards, the real and imaginary parts of each output value are combined into a single positive number by adding the absolute value of both.
-The most optimal configuration would be two DSP slices per output value, one for each real and imaginary part.
-However, FPGAs have a limited number of DSP slices.
-For larger transform sizes, the DSPs therefore have to calculate multiple output values in sequence.
-Since the Live Count Buffer, as all FIFO buffers, is delete-on-read, an internal buffer is used to repeat the values.
-This Repeat Buffer is flushed and filled during the first run and then repeats the values to the DSPs during subsequent runs while also feeding the values back into itself.
+To allow the DFT to continue processing while results are transferred from the DFT to the Fitness Buffer, the module is divided into two pipeline stages.
+This can be seen in \figurename~\ref{fig:implementation-dft}.
+The first stage contains the DFT while the second contains the logic for transferring the result.
+The pipeline is interlocked, since both stages can run for hundreds of cycles.
 
 \begin{figure}[!ht]
     \centering
@@ -740,6 +731,24 @@ This Repeat Buffer is flushed and filled during the first run and then repeats t
         Red boxes are registers and blue boxes are multiplexers.
     }
     \label{fig:implementation-dsp}
+\end{figure}
+
+The DFT is calculated using the DSP slice wrappers seen in \figurename~\ref{fig:implementation-dsp} in multiply-accumulate mode.
+Afterwards, the real and imaginary parts of each output value are combined into a single positive number by adding the absolute value of both.
+The most optimal configuration would be two DSP slices per output value, one for each real and imaginary part.
+However, FPGAs have a limited number of DSP slices.
+For larger transform sizes, the DSPs therefore have to calculate multiple output values in sequence.
+Since the Live Count Buffer, as all FIFO buffers, is delete-on-read, an internal buffer is used to repeat the values.
+This Repeat Buffer is flushed and filled during the first calculation phase and then repeats the values to the DSPs during subsequent phases while also feeding the values back into itself.
+The state machine controlling the DFT is shown in \figurename~\ref{fig:statemachine-dft}.
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.78\textwidth]{statemachine-dft}
+    \caption[DFT State Machine]{
+        State machine controlling the DFT.
+    }
+    \label{fig:statemachine-dft}
 \end{figure}
 
 %==============================================================================%
