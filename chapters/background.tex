@@ -151,8 +151,8 @@ Evolve and test in hardware.
 
 \section{Cellular Automata}
 
-A Cellular Automaton (CA) is a computational structure made up of vast numbers of very simple functional elements called cells.
-Each cell contains a state and is connected to a handful of other cells to form neighborhoods.
+A Cellular Automaton (CA) is a computational structure made up of vast numbers of very simple functional elements called cells that are arranged in a grid.
+Each cell contains a state and is connected to a handful of nearby cells to form neighborhoods.
 \todo{fig?}
 At given time intervals the cells then update their states based on a transfer function over the states in their neighborhoods.\footnotemark
 
@@ -188,7 +188,7 @@ Genetic Algorithms are therefore often used.
 Other major challenges are the representation of input and parsing of output.
 Both arise due to the CA's distributed nature.
 One possibility for input is \TODO.
-For output, the Discrete Fourier Transform (DFT) over all cell states appears promising \cite{berg2013ca}.
+For output, the Discrete Fourier Transform (DFT) over the number of cells with a given states appears promising \cite{berg2013ca}.
 
 CAs have been also been used in various research.
 They have been the environments for simulating lifeforms and creating replicating machines \cite{neumann1966selfreplication}.
@@ -210,28 +210,25 @@ It is possible to use direct programming, but there are systems in place for ada
 
 \subsection{Neighborhoods}
 
-\todo{rewrite}
-A very important property of a CA is how cells are connected to form neighborhoods.
-Cells are essentially nodes in a graph.
-Neighborhood includes neighbors and possibly itself.
-It is common to use a grid structure in either one or two dimensions.
-More dimensions allow more complex signal routing (can go around/over/under).
-Lower dimensional grid CA can achieve the same as higher, if neighborhood is increased \CN.
+An important property of CAs is how cells are connected to form neighborhoods, as this defines what data will be available for the transfer functions and therefore changes the way data flows through the machine.
+It is common to connect directly adjacent cells, and sometimes those diagonally adjacent.
+Cells do not have to be part of their own neighborhoods, but it is common to have them be so.
+The von Neumann neighborhood shown in \figurename~\ref{fig:neighborhood} is commonly used for 2D CAs, and is also used by the design in this thesis.
+It includes the directly adjacent cells; north, south, east and west; and the cell itself.
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.42\textwidth]{neighborhood}
-    \caption[Neighborhood]{
-        The von Neumann neighborhood in a two-dimensional grid CA.
+    \caption[von Neumann Neighborhood]{
+        The von Neumann neighborhood in a 2D CA.
+        The cell states are shared with all directly adjacent cells.
     }
     \label{fig:neighborhood}
 \end{figure}
 
-\todo{rewrite}
-This thesis focus on the von Neumann neighborhood.
-For 2D grids, the von Neumann neighborhood shown in \figurename~\ref{fig:neighborhood} is common.
-It includes north, south, east, west and center cells.
-This can be extended to 3D by adding up and down.
+The von Neumann neighborhood is easily extendable to 3D by adding the cells directly above and below to the neighborhood.
+The extra dimension allow more complex signal routing since the signals can cross over or under each other, which hopefully allow more complex computation.
+It should however be possible to achieve the same complexity in fewer dimensions by increasing the neighborhood size \CN, but that would require more advanced transfer functions.
 
 \subsection{Complexity Classes}
 
@@ -314,7 +311,7 @@ However, the resulting circuits have often ended up using intrinsic properties o
 A problem with using modern FPGAs is that some configuration bit strings can destroy the FPGA by creating short-circuits \cite{xapp151, ug380}.
 This means that the bit strings can not be used directly as the genotype without complicated tests to discard those that are dangerous.
 
-The regular structure of an FPGA makes it well suited as the basis for implementing CAs however, especially those using 2D grid neighborhoods.
+The regular structure of an FPGA makes it well suited as the basis for implementing CAs however, especially those that are 2D.
 \todo{more?}
 
 \subsection{Sblock}
@@ -414,7 +411,7 @@ To this end, they have created CA Machines (CAMs) that aim to use common compute
     \label{fig:cam-8}
 \end{figure}
 
-The CAM-8 implements a discrete, exhaustively enumerated, uniform, and synchronous 3D grid CA split over multiple nodes that run in parallel.
+The CAM-8 implements a discrete, exhaustively enumerated, uniform, and synchronous 3D CA split over multiple nodes that run in parallel.
 Any number of nodes can be connected to form a CA of desired size, and an 8-module prototype showed to be on par with regular supercomputer simulations.
 As illustrated in \figurename~\ref{fig:cam-8}, each node contains DRAM that potentially holds millions of cells and an SRAM that holds the LUT for the current program.
 Within each node, cells are updated in sequence, making it a semi-parallel machine.
@@ -435,7 +432,7 @@ It is part of de Garis' ``Artificial Brain Project'', which goal is to build an 
 The CBM is a stepping stone in the right direction, and allows the formation an artificial brain with nearly 75 million neurons in a CA of 843 million cells.
 
 The CBM implements the Collect and Distribute (CoDi) based neural network model from \cite{gers1998codi}, which goal is to accelerate brain evolution and simulation speeds by a factor of 500 compared to CAM-8, to facilitate the higher update speeds required for real-time control of a robot.
-It is a 3D grid CA with four cell types: Neurons, axons, dendrites and empty.
+It is a 3D CA with four cell types: Neurons, axons, dendrites and empty.
 Neurons essentially perform a threshold function over their inputs, while axons carry the neural signals to other neurons, and dendrites consolidate the signals from multiple axons.
 The CA is initialized with evenly spaced neurons, and then developed by alternately growing axons and dendrites from the neurons.
 Which cells grow axons or dendrites are determined by artificial evolution.
