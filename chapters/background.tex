@@ -433,7 +433,7 @@ Harness the astronomical computing power that is available in CA format
 
 In \cite{degaris2001cbm}, de Garis et al. introduces the CAM-Brain Machine (CBM), an FPGA-based platform that implements a CA-based neural network that is evolved using a GA.
 It is part of de Garis' ``Artificial Brain Project'', which goal is to build an artificial brain with 1 billion neurons.
-The CBM is a stepping stone in the right direction, and allows the formation an artificial brain with nearly 75 million neurons in a CA of 843 million cells.
+The CBM is a stepping stone in the right direction, and allows the formation an artificial brain with nearly 75 million neurons in a CA of 843 million cells that is split across 64640 modules.
 
 The CBM implements the Collect and Distribute (CoDi) based neural network model from \cite{gers1998codi}, which goal is to accelerate brain evolution and simulation speeds by a factor of 500 compared to CAM-8, to facilitate the higher update speeds required for real-time control of a robot.
 It is a 3D CA with four cell types: Neurons, axons, dendrites and empty.
@@ -441,24 +441,8 @@ Neurons essentially perform a threshold function over their inputs, while axons 
 The CA is initialized with evenly spaced neurons, and then developed by alternately growing axons and dendrites from the neurons.
 Which cells grow axons or dendrites are determined by artificial evolution.
 
-\todo{Maybe}
-The CBM consists of up to 64640 modules, each containing 24x24x24 cells split over 72 FPGAs, of which 1152 cells can be neurons.
-Modules are evolved separately, and then connected by human design.
-Updated at a rate of $1.3 \cdot 10^{11}$ cells per second.
-
-\begin{itemize}
-    \item FPGA based hardware that implements a GA to evolve CA based neural network with 1000 neurons in approx 1 second
-    \item New research field called "Brain Building"
-    \item Updated at 130G cells per second. Enough for real-time robot control
-    \item Spike Interval Information Coding: "spike train" to analog
-    \item Hough Spiker Algorithm: Analog to "spike train"
-    \item Each module has 24x24x24 cells, can receive 1-bit signals from 188 other modules and send to 64640
-    \item Neuron has 4-bit accumulator and threshold function, inputs can be subtractive
-    \item Signals representation: Custom convolution function (SIIC)
-    \item Cells have 6-bit register and other logic for com
-    \item Controllable object to attract attention and be proof-of-concept: Robokitty
-    \item "An assemblage of evolved CA based neural net modules"
-\end{itemize}
+Brain building is still mostly in the ``proof of concept'' phase, so to attract attention to further research they designed a cute life-sized robot kitten that would be controlled by the CBM.
+The work to design and evolve it's brain architecture was expected to continue well into the 2000s, but was halted when the research institution went bankrupt in 2001 \cite{giles2001utopian}.
 
 \subsection{Firefly}
 
