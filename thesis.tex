@@ -1,3 +1,6 @@
+% Get rid of some pdf warnings
+\pdfminorversion=7
+
 % DAIM example scaled to A4 (slightly smaller text and thus less pages)
 \documentclass[a4paper,twoside,12pt]{book}
 \usepackage[left=30mm,right=30mm,top=32mm,bottom=36mm]{geometry}
@@ -133,19 +136,19 @@
 \appendix
 
 \chapter{Test Descriptions}
-
-\TODO
+    \label{app:test-descriptions}
+    \TODO
 
 \chapter{Attached Files}
-
-\TODO
+    \label{app:attached-files}
+    \TODO
 
 \chapter{Instruction Set Architecture}
-
-%\includepdf[pages={-}]{includes/isa.pdf}
+    \label{app:isa}
+    %\includepdf[pages={-}]{includes/isa.pdf}
 
 \chapter{Specialization Project Report}
-
-%\includepdf[pages={-}]{includes/report.pdf}
+    \label{app:specialization-project}
+    %\includepdf[pages={-}]{includes/report.pdf}
 
 \end{document}
