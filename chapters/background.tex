@@ -76,10 +76,28 @@ This is known as plasticity.
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.5\textwidth]{development}
+    \begin{subfigure}{0.2\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{development/00}
+        \caption{Iteration 0}
+    \end{subfigure}
+    \begin{subfigure}{0.2\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{development/01}
+        \caption{Iteration 1}
+    \end{subfigure}
+    \begin{subfigure}{0.2\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{development/02}
+        \caption{Iteration 2}
+    \end{subfigure}
+    \begin{subfigure}{0.2\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{development/03}
+        \caption{Iteration 3}
+    \end{subfigure}
     \caption[Development]{
-        Example of cells replicating and changing to develop a larger entity.
-        \todo{use actual ca figs?}
+        Example of cells replicating and changing to develop a larger and more complex entity.
     }
     \label{fig:development}
 \end{figure}
@@ -89,8 +107,10 @@ Plasticity and self-repairing abilities are merely bonuses, but have shown to be
 For the same reasons, artificial development is lucrative for building more complex computer systems that is also fault-tolerant and adaptable.
 
 Development is never necessarily ``finished''; it can continue during the entire lifespan of the system.
-\todo{explain attractors}
-The system will eventually end up in cycle or point attractors, but external variables will likely cause it to break from it and follow a different path.
+Over time, a dynamical system tends to end up in a state of equilibrium, an attractor \cite{heylighen2001selforg}.
+The attractor may be a single state, or a series of states that repeat to create a cycle.
+External interactions, for example suffering damage, will however likely cause the system to break from its current attractor in search for another.
+If the system ends up providing the same functionality, albeit possibly with a different structure, it is said to have self-repairing abilities, which is a lucrative property in the eyes of hardware engineers.
 
 \subsection{Lindenmayer Systems}
 
