@@ -172,21 +172,10 @@ L-Systems have also been applied to other tasks, such as music composition \cite
 
 %==============================================================================%
 
-\section{Evolution in Materio}
-
-\TODO
-Embodiment principles.
-Evolve in software, test in software.
-Evolve in software, test in hardware.
-Evolve and test in hardware.
-
-%==============================================================================%
-
 \section{Cellular Automata}
 
 A Cellular Automaton (CA) is a computational structure made up of vast numbers of very simple functional elements called cells that are arranged in a grid.
 Each cell contains a state and is connected to a handful of nearby cells to form neighborhoods.
-\todo{fig?}
 At given time intervals the cells then update their states based on a transfer function over the states in their neighborhoods.\footnotemark
 
 \footnotetext{
@@ -211,7 +200,7 @@ However, CAs have been shown to be Turing complete \cite{codd1968cellular, neuma
 CAs are attractive due to their inherent robustness and scalability when paired with development.
 In the event of broken cells, signals can simply be rerouted, and to increase the performance, extra cells can be added and the program grown; local communication ensures that there are no bottlenecks.
 This greatly contrasts modern processors where a broken part normally renders the entire chip unusable, and adding more cores are of limited benefit due to the shared-memory architecture.
-Increasing the clock rate is no longer an option either, due to the fixed power budget \cn{tdt1?}.
+Increasing the clock rate is no longer an option either, due to the fixed power budget \cn{TDT1?}.
 
 A major challenge with CAs is programming.
 CAs compute by emergence using massive parallelism, while humans mostly solve problems serially \cite{newell1972problemsolving}.
@@ -220,13 +209,11 @@ Genetic Algorithms are therefore often used.
 
 Other major challenges are the representation of input and parsing of output.
 Both arise due to the CA's distributed nature.
-One possibility for input is \todo{example or remove}.
 For output, the Discrete Fourier Transform (DFT) over the number of cells with a given state appears promising \cite{berg2013ca}.
 
 CAs have been also been used in various research.
 They have been the environments for simulating lifeforms and creating replicating machines \cite{neumann1966selfreplication}.
 A very popular life simulator is Conway's Game of Life \cite{gardner1970life}.
-\todo{move me maybe?}
 
 There are many variations of CAs, which are discussed in great detail in \cite{sipper1999emergence}.
 Following is a brief summary:
@@ -261,7 +248,7 @@ It includes the directly adjacent cells; north, south, east and west; and the ce
 
 The von Neumann neighborhood is easily extendable to 3D by adding the cells directly above and below to the neighborhood.
 The extra dimension allow more complex signal routing since the signals can cross over or under each other, which hopefully allow more complex computation.
-It should however be possible to achieve the same complexity in fewer dimensions by increasing the neighborhood size \CN, but that would require more advanced transfer functions.
+It should however be possible to achieve the same complexity in fewer dimensions by increasing the neighborhood size, but that would likely require much more advanced transfer functions.
 
 \subsection{Complexity Classes}
 
@@ -295,7 +282,7 @@ He therefore developed a set of four classes to group them based on their emerge
 
 Langton attempted to connect Wolframs classes to CA rule complexity \cite{langton1990edgeofchaos}.
 For this he used a measure called $\lambda$, which essentially determines the inverse ratio of rules that cause a cell to transition into any given state.
-%This means that all transitions are to a given state if $\lambda=0.0$, while there are none if $\lambda=1.0$.
+This means that all transitions are to a given state if $\lambda=0.0$, while there are none if $\lambda=1.0$.
 His findings, displayed in \figurename~\ref{fig:complexity-classes}, show that class 4 resides in a phase transition between the order of class 2 and the chaos of class 3.
 This is known as ``The Edge of Chaos''.
 
@@ -349,7 +336,6 @@ A problem with using modern FPGAs is that some configuration bit strings can des
 This means that the bit strings can not be used directly as the genotype without complicated tests to discard those that are dangerous.
 
 The regular structure of an FPGA makes it well suited as the basis for implementing CAs however, especially 2D ones.
-\todo{more?}
 
 \subsection{Sblock}
 \label{sec:sblock}
@@ -455,13 +441,6 @@ Within each node, cells are updated in sequence, making it a semi-parallel machi
 This is a trade-off that compromises performance for the benefit of massively increased CA size and the ability to use common hardware.
 For 1-bit cell states, the prototype is capable of $3 \cdot 10^9$ cell updates per second and can fit up to $5 \cdot 10^8$ cells.
 
-\todo{Maybe}
-The lookup table can be exchanged for a pipelined function.
-Instead of traditional fixed neighborhoods, CAM-8 uses advanced bit-shifting techniques to collect neighborhood data from the DRAM.
-Each node is connected to the front-end workstation through a tree network.
-Problem: Must encode computation into uniform and local spatial matrix.
-Harness the astronomical computing power that is available in CA format
-
 \subsection{CAM-Brain Machine}
 
 In \cite{degaris2001cbm}, de Garis et al. introduces the CAM-Brain Machine (CBM), an FPGA-based platform that implements a CA-based neural network that is evolved using a GA.
@@ -476,11 +455,6 @@ Which cells grow axons or dendrites are determined by artificial evolution.
 
 Brain building is still mostly in the ``proof of concept'' phase, so to attract attention to further research they designed a cute life-sized robot kitten that would be controlled by the CBM.
 The work to design and evolve it's brain architecture was expected to continue well into the 2000s, but was halted when the research institution went bankrupt in 2001 \cite{giles2001utopian}.
-
-\subsection{Firefly}
-
-\TODO
-Moshe Zipper: Evolution of Parallel Cellular Machines
 
 \subsection{BioWall}
 
