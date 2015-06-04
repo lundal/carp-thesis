@@ -12,7 +12,7 @@ The new platform is nearly identical in overall structure to the previous, as sh
 However, there are a lot of underlying changes to reduce complexity and improve reliability and scaling.
 A more detailed view of the system in shown in \figurename~\ref{fig:implementation-full}.
 
-Conseptually, the platform is a three-stage interlocked pipeline with the stages Fetch, Decode and Execute, where the Execute stage includes the Control, Development and Cellular Automata modules.
+Conseptually, the platform is a three-stage interlocked pipeline with the stages Fetch, Decode and Execute, where the Execute stage includes the Control, Development and CA modules.
 Only one module within each stage is activated at a time, and the interlocking allows each module to contain further pipelines without requiring complex hazard detection and evasion.
 %At one point there is a pipeline within a pipeline within a pipeline.
 Fitness is special in that it is not part of the main pipeline since it operates in a dataflow-like fashion.
@@ -241,14 +241,14 @@ This is shown in \figurename~\ref{fig:implementation-fetch}.
     \label{fig:implementation-fetch}
 \end{figure}
 
-Fetch Communication is responsible for converting data from the communication module into instructions while the Fetch Handler handles \todo{something that cover all operations}.
+Fetch Communication is responsible for converting data from the communication module into instructions while the Fetch Handler takes care of control flow and the instruction memory.
 Both stages are implemented as state machines, making interlocking necessary.
 
 \subsection{Fetch Communication}
 
 While instructions are 256-bit, the communication interface is only 32-bit.
 This means that the host system has to split each instruction into multiple 32-bit pieces.
-As detailed in Appendix \todo{add ISA}, many instructions make use of less than 256 bits.
+As detailed in Appendix~\ref{app:isa}, many instructions make use of less than 256 bits.
 In fact, most instructions fit within the first 32 bits.
 Sending all 256 bits for each instruction is therefore a bit excessive.
 To optimize communication, the first 32-bit piece of each instruction has a field declaring the amount of following pieces required for reassembly.
@@ -296,32 +296,21 @@ The JumpEqual instruction is treated as a Jump instruction when the specified co
 Decode is responsible for parsing instructions, setting up control signals and passing instruction parameters to activated modules.
 It is a very simple module, being essentially a giant switch statement with a case for each instruction.
 
-Control signals are sent to all top-level modules except communication, fetch and fitness.
-\todo{why not fitness? Dataflow-like}
+Control signals are sent to all top-level modules except communication and fetch which operate earlier in the pipeline, and fitness which operates in a dataflow-like manner.
 By default, all modules are given a no-operation signal and multiplexers stay unchanged.
-Then, depending on the instruction's operation code, the control signal for the appropriate module is set, parameters (if any) are extracted and passed on, and multiplexers are changed if needed.
+Then, depending on the instruction's operation code, the control signal for the appropriate module is set, parameters (if any) are extracted and passed on to the module, and multiplexers are changed if needed.
 
-Each operation code corresponds to exactly one control signal for one module.
-Instructions can only activate one module.
-\todo{buffer reset}
-\todo{active rules}
-
-Control signals for every top-level module except for communication, fetch and fitness.
-Selects one module that should be run and sends instruction parameters to it.
-
-The control signals determine which module is activated, which modules the CellBufferMux and SendBufferMux will connect to, and if the CellBuffer should swap contents.
-
-\todo{This is all jumbled... REWRITE!}
+Each instruction will cause exactly one module to be activated in the Execute stage.
+This is to keep the design clean and reduce inter-module dependencies.
 
 %==============================================================================%
 
 \section{Control}
 
 Control is a group of modules, shown in \figurename~\ref{fig:implementation-control}.
-Together, the modules control all inputs and outputs for the Cell Storage, Cellular Automaton and Development modules.
+Together, the modules control all inputs and outputs for the Cell Storage, CA and Development modules.
 Each module is designed to do one specific task and be independent of any other modules.
 This means that modules are mostly very simple and that it requires a low amount of effort to add new modules or to modify existing.
-\todo{tie in UNIX principles somehow?}
 
 \begin{figure}[!ht]
     \centering
@@ -334,10 +323,7 @@ This means that modules are mostly very simple and that it requires a low amount
     \label{fig:implementation-control}
 \end{figure}
 
-Below are details about the different modules, in order of increasing complexity.
-\todo{rewrite/remove this?}
-\todo{send to system = put into transmission buffer}
-\todo{possible to create deadlocks due to waiting}
+Following are detailed descriptions of the different modules, in order of increasing complexity.
 
 \subsection{Rule Writer}
 
@@ -351,11 +337,10 @@ Writing a rule to it has no effect as the rule testers are reset instead of test
 
 \subsection{LUT Writer}
 
-The purpose of the LUT Writer is to store new LUTs to the LUT BRAM within the Cellular Automaton module.
+The purpose of the LUT Writer is to store new LUTs to the LUT BRAM within the CA module.
 It is, along with the Rule Writer, the simplest control module.
 When activated, it stores one LUT to a specified index of the LUT BRAM.
-The index signifies the cell type that should be converted into the LUT.
-\todo{clarify}
+The index is equivalent to the cell type that should be given that LUT during CA configuration.
 
 \subsection{Information Sender}
 
@@ -372,34 +357,30 @@ and information about the fitness modules, such as the type and output size.
 \subsection{Fitness Sender}
 
 The Fitness Sender is responsible for sending the output of the Fitness module to the host.
-As this is data is stored in the Fitness Buffer, is is a simple matter of moving it to the Transmission Buffer when the data is available and the buffer is ready.
-As described in Section~\ref{sec:fitness}, the Fitness module declares how many words should be sent per output value.
-This is taken into account by the Fitness Sender when activated.
-\todo{do something with last sentence}
+This is a simple matter of moving data from the Fitness Buffer to the Transmission Buffer when data is available in the first and there is space in the second.
+The number of words that is transferred per activation is declared by the Fitness module (see Section~\ref{sec:fitness}).
+Keep in mind that the machine will go into a deadlock if insufficient data is produced for the Fitness buffer.
 
 \subsection{Rule Vector Reader}
 
-The Rule Vector Reader is tasked with reading the rule vectors created by the Development module and sending them to the host.
-Multiple rule vectors can be read with one instruction.
+The Rule Vector Reader is tasked with reading one or more rule vectors created by the Development module and sending them to the host.
 Since rule vectors can be of any length, they are each split over multiple words, starting with the lowest indexes.
 The final word of each vector is padded with zeroes.
-\todo{this sentence is a bit off}
 For more information on rule vectors, see Section~\ref{sec:development}.
+Keep in mind that the machine will go into a deadlock if insufficient data is produced for the Rule Vector buffer.
 
 \subsection{Rule Numbers Reader}
 \label{sec:rule-numbers-reader}
 
 The Rule Numbers Reader is tasked with reading each cell's most recently activated development rule and sending them to the host.
 The rule numbers are stored in the Rule Numbers BRAM of the Development module and are scanned in raster order\footnotemark.
-\footnotetext{
-    In raster scanning, two-dimensional data is read line-by-line, least significant to most significant.
-    This is extendable to 3D; first X is incremented, then Y, then Z.
-    \todo{better explanation}
-}
-
 Each word is fitted with as many rule numbers as possible without splitting them over multiple words or containing ones from different rows.
 Any remaining space is filled with zeroes.
-\todo{more details?}
+
+\footnotetext{
+    In raster scanning, two-dimensional data is read line-by-line, least significant to most significant.
+    This is extendable to 3D; increment X first, then Y, then Z.
+}
 
 \subsection{Cell Writer Reader}
 
@@ -495,7 +476,7 @@ In development mode, both storage areas are connected to the Development module.
 \section{Development}
 \label{sec:development}
 
-The Development Module is responsible for providing the ontogenetic aspect of the system by allowing cells to be changed based on user-supplied development rules described in Appendix~\todo{ref}.
+The Development Module is responsible for providing the ontogenetic aspect of the system by allowing cells to be changed based on user-supplied development rules described in Appendix~\ref{app:isa}.
 It uses Cell Storage A as input and outputs the modified cells to Cell Storage B.
 
 The module is implemented as a two-stage interlocked pipeline controlled by a state machine.
@@ -554,9 +535,8 @@ The other is equivalent to the first except for being delayed two states, thus h
 \end{figure}
 
 By reading an entire row at a time, the neighbors along the X axis are fetched ``for free'' due to wrap-around, while the other axes require two extra reads each.
-This lands the runtime on 5 cycles for 2D matrices and 7 cycles for 3D, including BRAM latency.
-\todo{remove/change quotes?}
-\todo{CellFetch limiting factor for very few rules}
+This lands the runtime on 5 cycles for 2D matrices and 7 cycles for 3D when including BRAM latency.
+The Cell Fetcher is therefore only a limiting factor when there are very few active rules.
 
 \subsection{Rule Fetcher}
 
@@ -594,7 +574,7 @@ Since rule zero is always marked as a hit, the BRAM is cleared each devstep befo
 
 \section{Cellular Automata}
 
-The Cellular Automata module is the centerpiece of the system.
+The CA module is the centerpiece of the system.
 It is what contains the sblock matrix and the control logic to service it.
 The module is responsible for configuring the sblock matrix with data from Cell BRAM B, step the sblocks and store the number of live cells afterwards, and write the new states back to Cell BRAM B.
 
@@ -604,8 +584,8 @@ It consists of a state machine, the Sblock Matrix and a Live Counter, in additio
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.68\textwidth]{implementation-cellular-automata}
-    \caption[Cellular Automata]{
-        Detailed block diagram of the Cellular Automata.
+    \caption[CA module]{
+        Detailed block diagram of the CA module.
         Config Readback is a symbolic module for the majority of the state machine.
     }
     \label{fig:implementation-cellular-automata}
@@ -620,8 +600,8 @@ Additionally, it sets write signals for the Live Count buffer.
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=\textwidth]{statemachine-cellular-automata}
-    \caption[Cellular Automata state machine]{
-        State machine controlling the Cellular Automata.
+    \caption[CA module state machine]{
+        State machine controlling the CA module.
     }
     \label{fig:statemachine-cellular-automata}
 \end{figure}
@@ -637,7 +617,7 @@ This operation also works on one row at a time.
 However, it is much simpler and faster than configuration since it simply directs the output of the sblocks to the Cell BRAM and sets the correct row.
 
 Stepping is simply the process of telling the Sblock Matrix to update the state of each of its sblocks.
-The new state is determined by the using the neighbor states as the input to the LUT, according to the format detailed in Appendix~\todo{ref}.
+The new state is determined by the using the neighbor states as the input to the LUT, according to the format detailed in Appendix~\ref{app:isa}.
 Since it is common to step hundreds of times in a row, the step instruction has a parameter for the number of steps, up to a maximum of 65535 (a 16-bit number).
 
 \subsection{Sblock Matrix}
@@ -777,7 +757,6 @@ Low latency mode: No sleep between buffer checks.
 \subsection{Communication}
 
 The communication part of the new software API is split into two parts:
-\todo{this lone sentence is kinda awkward}
 
 The first is a general interface for connecting to PCI and PCI Express devices without using a custom driver.
 It takes advantage of Linux' automatic population of /sys/devices/pci* with files representing the memory regions of all PCI and PCI Express devices.
