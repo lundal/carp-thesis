@@ -458,25 +458,27 @@ The work to design and evolve it's brain architecture was expected to continue w
 
 \subsection{BioWall}
 
-\TODO
-Focuses on the ontogenetic axis through embryonics.
-Machine that displayes the principles of embryonics to the public through visual and tactile interactions.
-5.3 meters wide.
-Supports 2D cellular systems: CAs or Neural nets.
-Limitless possibilities.
-Main example:
-BioWatch.
-Other examples:
-Game of Life.
-Replicating structures.
-von Neumann's universal constructor.
+The Logic Systems Laboratory at the Swiss Federal Institute of Technology have been working on bio-inspired hardware systems for many years, mainly focusing on the ontogenetic axis through embryonics.
+\cite{tempesti2002biowall} describes a machine whose purpose is to convey the principles of embryonics to the public through visual and tactile interactions.
+The machine, depicted in \figurename~\ref{fig:biowall}, is named BioWall due to its bio-inspired nature and sheer size at 5.3 x 0.6 x 0.5 meters.
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=\textwidth]{biowall}
     \caption[BioWall]{
-        The BioWall running BioWatch.
-        (Reprinted from \cite{tempesti2002biowall})
+        The BioWall, running BioWatch.
+        (Reprinted from \cite{biowalloverview})
     }
     \label{fig:biowall}
 \end{figure}
+
+The BioWall is made up of 3200 identical units which can be seen an artificial molecules that can be combined to form cells.
+Each unit consists of an FPGA, 64 LEDs and a touch sensor, allowing users to interact with the surface by touching it and receiving immediate response from the LED display.
+
+The main application for the screen is the BioWatch, a organism capable of counting hours, minutes and seconds.
+It is used to demonstrate the growth and self-repair capabilities of the system.
+20 x 25 molecules (units) are arranged into cells, each responsible for one digit.
+Users can then touch molecules to disable them, forcing the cell to move its functionality to a neighbor.
+
+The BioWall's cellular structure is well suited for many other bio-inspired applications as well.
+Examples are 2D CAs such as the Game of Life \cite{gardner1970life}, self-replicating structures and artificial neural networks.
