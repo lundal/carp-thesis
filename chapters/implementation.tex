@@ -735,24 +735,10 @@ The state machine controlling the DFT is shown in \figurename~\ref{fig:statemach
 
 \section{Software API}
 
+\todo{DRAFT}
+
 In accord with the hardware design, the software API has also been given a major overhaul.
-Everything has been rewritten from scratch to improve \TODO and ease of use.
-
-Functions return data structures instead of placing raw data into a buffer.
-
-\TODO
-Full rewrite
-Adaptive x9001.
-Full system reset.
-Queries synthesis parameters at connect.
-PCI -> Com -> CARP.
-Compiled to statically linked library (libcarp.a).
-Just dump files in programs and run make.
-Export to postscript (hex codes to color).
-Functions return data structures (can be printed).
-Testbench mode: Mocks info struct, exits on flush.
-Debug mode: Prints all com data.
-Low latency mode: No sleep between buffer checks.
+Everything has been rewritten from scratch to improve clarity, functionality and ease of use.
 
 \subsection{Communication}
 
@@ -760,10 +746,51 @@ The communication part of the new software API is split into two parts:
 
 The first is a general interface for connecting to PCI and PCI Express devices without using a custom driver.
 It takes advantage of Linux' automatic population of /sys/devices/pci* with files representing the memory regions of all PCI and PCI Express devices.
-The directory is searched by vendor and device id, and the corresponding memory regions is memory-mapped into the program.
+The directory is searched by vendor and device id, and the corresponding memory regions are memory-mapped into the program.
+Due to this direct interaction with device files, each program must be run with superuser rights.
 
 The second is an interface specifically for the communication unit.
 It provides open, close, read and write functions similar to the old BenERA interface, in addition to implementing all special request functions in Table~\ref{tab:requests}.
 When a read or write operation is initiated, buffers are checked for available data or space.
 If there is not enough present, the program waits and then rechecks.
 
+\subsection{Main API}
+
+Connect: Clears any remaining data in the buffer, queries synthesis information.
+Disconnect: Clears any remaining data in the buffer.
+Reset: Everything except for instruction memory is cleared.
+
+All instructions (one function for each). LUTs and development rules are sent as structs.
+
+Getter functions that parse data from the FPGA into data structures.
+
+\subsection{Supplementary API}
+
+Print: Information, matrix (states, types and rule numbers), rule vector.
+
+Postscript: Creates postscript image from a matrix (one layer), can supply a coloring function (that returns hex codes).
+
+\subsection{Compile Parameters}
+
+Testbench mode:
+Mock info struct with parameters in makefile.
+Program exits on buffer flush (triggered when a function that reads data is called).
+
+Low-latency mode:
+Recheck buffers immediately instead of waiting for one microsecond.
+
+Debug mode:
+Wait 100ms between buffer rechecks and print progress.
+Print all data cleared from the buffer.
+Notify of reset and clear.
+
+\subsection{Compilation System}
+
+Everything in libcarp is compiled to statically linked library (libcarp.a).
+
+Save programs in programs/.
+Include carp.h, optionally print.h and postscript.h.
+Run make (automatic link).
+
+Make test will run all programs whose name start with ``test\_''.
+All tests use a common test framework for asserts (testframework.cinclude).
