@@ -534,9 +534,12 @@ The other is equivalent to the first except for being delayed two states, thus h
     \label{fig:statemachine-cell-fetcher}
 \end{figure}
 
-By reading an entire row at a time, the neighbors along the X axis are fetched ``for free'' due to wrap-around, while the other axes require two extra reads each.
+By reading an entire row at a time, the neighbors along the X axis are fetched ``for free'', while the other axes require two extra reads each.
 This lands the runtime on 5 cycles for 2D matrices and 7 cycles for 3D when including BRAM latency.
 The Cell Fetcher is therefore only a limiting factor when there are very few active rules.
+
+By default, neighbors which would be outside the matrix are treated as having zero for both state and type.
+However, it is possible to enable matrix wrapping to instead use the neighbors on the opposite side of the matrix.
 
 \subsection{Rule Fetcher}
 
@@ -549,11 +552,12 @@ In that case, those with indexes higher than the number of active rules within t
 
 The Rule Testers are responsible for testing development rules received from the Rule Fetcher against cell neighborhoods received from the Cell Fetcher.
 They are unique in that they produce output after both one and two cycles.
-Information about rule activations, ``hits'', are passed on to hit processors after one cycle and the result of the rule application is passed on to Cell BRAM B after two cycles.
+Information about rule activations, ``hits'', are passed on to the hit processors after one cycle, and the result of the rule application is passed on to Cell BRAM B after two cycles.
+Rule hits undo any effects of previous hits so that it is impossible for two rules to have simultaneous partial effects, in cases where one modifies only the state and the other only the type.
 
 There is a special case for rule zero.
 It is used as an internal reset by forcing a hit and setting the output cell to the input cell.
-This implementation was chosen because of its simplicity and ability to use zero to mean ``unchanged'' in hit processors.
+This implementation was chosen because of its simplicity and the ability to use zero to mean ``unchanged'' in the hit processors.
 It also makes it possible to have no active rules.
 
 \subsection{Hit Processors}
@@ -561,14 +565,12 @@ It also makes it possible to have no active rules.
 There are two modules dedicated to providing information about the development procedure, Hits To Vector and Hits To Numbers.
 The input for both are hits passed on from the Rule Testers.
 
-Hits To Vector stores a vector where each bit signifies whether the rule of that index was triggered or not to the Rule Vector Buffer each devstep.
-\todo{explain devstep or find another term – development phase?}
+Hits To Vector stores a vector where each bit signifies whether the rule of that index was triggered or not to the Rule Vector Buffer after each development phase.
 Rules that have triggered but is later overridden by a rule with higher priority is still marked as having been triggered in the vector.
 If the buffer is full, it is reset instead of waiting, to allow programs to disregard the data without causing deadlocks.
 
 Hits To Numbers stores the index of the last triggered rule for each cell to the Rule Numbers BRAM.
-Since rule zero is always marked as a hit, the BRAM is cleared each devstep before the actual rule numbers are written.
-\todo{explain devstep or find another term}
+Since rule zero is always marked as a hit, the BRAM is reset to zeroes at the beginning of each development phase, and then overwritten by before the rule numbers are written.
 
 %==============================================================================%
 
@@ -630,14 +632,12 @@ Keep in mind that each bit adds one extra signal for each sblock, which accumula
 
 By default, neighbors which would be outside the matrix are treated as having zero for both state and type.
 However, it is possible to enable matrix wrapping to instead use the neighbors on the opposite side of the matrix.
-Having this option lets the user decide if programs should be able to exploit the matrix size to create oscillators or not.
-\todo{also applies to devstep}
+This option lets the user decide if programs should be able to exploit the matrix size when for example creating oscillators.
 
 \subsection{Live Counter}
 
 The Live Counter is essentially a giant adder tree that is connected to the output of each sblock.
-It calculates the total number of live cells after each runstep and stores them in the Live Count Buffer.
-\todo{explain runstep or use other term – cell update step?}
+It calculates the total number of live cells after each CA step and stores them in the Live Count Buffer.
 Due to the massive amount of sblocks, the calculation is spread out over many cycles, the exact number of which is dependant on the number of sblocks.
 However, the throughput remains at one total per cycle.
 
