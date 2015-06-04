@@ -299,24 +299,28 @@ For this he used a measure called $\lambda$, which essentially determines the in
 His findings, displayed in \figurename~\ref{fig:complexity-classes}, show that class 4 resides in a phase transition between the order of class 2 and the chaos of class 3.
 This is known as ``The Edge of Chaos''.
 
-\subsection{Evolution and Development}
+\subsection{Evolution and Development in CA}
 
-\TODO
-CA + Dev + GA = True.
-GA to find development rules.
-Development used to create CA structure.
-CA can then be run to perform computation.
-Moore's law.
-\figurename~\ref{fig:evo-devo-ca}.
+The problem with using EAs program CAs is that the search spaces are vast, even for the simplest binary ones ($2^{Neigborhood \cdot Cells}$ configurations\footnotemark).
+However, by adding development to the process, the search spaces can be dramatically reduced to manageable sizes while gaining other benefits such as scalable designs and robustness.
+
+\footnotetext{
+    The number of possible configurations for a relatively small 4x4x4 CA dwarfs the estimated number of particles in the universe.
+}
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.44\textwidth]{evo-devo-ca}
     \caption[CA system with evolution and development]{
-        Example CA system with evolution and development.
+        CA system with evolution and development.
     }
     \label{fig:evo-devo-ca}
 \end{figure}
+
+The essence of the process is illustrated in \figurename~\ref{fig:evo-devo-ca}:
+The GA defines development rules.
+Development is then used to define a CA structure.
+Finally, the CA is run to produce a fitness score that feeds back into the GA.
 
 %==============================================================================%
 
