@@ -735,10 +735,41 @@ The state machine controlling the DFT is shown in \figurename~\ref{fig:statemach
 
 \section{Software API}
 
-\todo{DRAFT}
-
 In accord with the hardware design, the software API has also been given a major overhaul.
 Everything has been rewritten from scratch to improve clarity, functionality and ease of use.
+\figurename~\ref{fig:api} illustrates the API structure: A main API is used to connect to the hardware platform, send instructions and receive data; and two optional APIs allow conversion of the received data into human-readable forms.
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=24\block]{api}
+    \caption[API]{
+        API structure.
+        The main API is colored green, optional APIs blue and dependencies yellow.
+    }
+    \label{fig:api}
+\end{figure}
+
+\subsection{Main API}
+
+\TODO
+
+Connect: Clears any remaining data in the buffer, queries synthesis information.
+Disconnect: Clears any remaining data in the buffer.
+Reset: Everything (\todo{program memory})
+
+All instructions (one function for each). LUTs and development rules are sent as structs.
+
+Getter functions that parse data sent from the FPGA into data structures.
+
+\subsection{Optional APIs}
+
+\TODO
+
+There are two optional APIs, both for converting data structures into output: Print and PostScript.
+
+Print: Information, matrix (states, types and rule numbers), rule vector.
+
+Postscript: Creates postscript image from a matrix (one layer), can supply a coloring function (that returns hex codes).
 
 \subsection{Communication}
 
@@ -754,23 +785,20 @@ It provides open, close, read and write functions similar to the old BenERA inte
 When a read or write operation is initiated, buffers are checked for available data or space.
 If there is not enough present, the program waits and then rechecks.
 
-\subsection{Main API}
+\subsection{Compilation}
 
-Connect: Clears any remaining data in the buffer, queries synthesis information.
-Disconnect: Clears any remaining data in the buffer.
-Reset: Everything except for instruction memory is cleared.
+The compilation system has been streamlined to allow users to simply add new files in \textbf{libcarp/} or \textbf{programs/}, and have them automatically be integrated into the API or compiled with the API respectively by calling \textbf{make}.
 
-All instructions (one function for each). LUTs and development rules are sent as structs.
+First, all files in \textbf{libcarp/} is compiled to the statically linked library \textbf{libcarp.a}.
+Then each file in \textbf{programs/} is compiled with references to all the header files in \textbf{libcarp/} and \textbf{libcarp.a}.
+Programs must include \textbf{carp.h} to use the main API and optionally \textbf{print.h} and \textbf{postscript.h} for the output APIs.
 
-Getter functions that parse data from the FPGA into data structures.
-
-\subsection{Supplementary API}
-
-Print: Information, matrix (states, types and rule numbers), rule vector.
-
-Postscript: Creates postscript image from a matrix (one layer), can supply a coloring function (that returns hex codes).
+To facilitate unit testing, all programs whose name start with \textbf{test\_} are executed in sequence when \textbf{make test} is called.
+\textbf{testframework.cinclude} is provided as a common assertion framework.
 
 \subsection{Compile Parameters}
+
+\TODO
 
 Testbench mode:
 Mock info struct with parameters in makefile.
@@ -783,14 +811,3 @@ Debug mode:
 Wait 100ms between buffer rechecks and print progress.
 Print all data cleared from the buffer.
 Notify of reset and clear.
-
-\subsection{Compilation System}
-
-Everything in libcarp is compiled to statically linked library (libcarp.a).
-
-Save programs in programs/.
-Include carp.h, optionally print.h and postscript.h.
-Run make (automatic link).
-
-Make test will run all programs whose name start with ``test\_''.
-All tests use a common test framework for asserts (testframework.cinclude).
