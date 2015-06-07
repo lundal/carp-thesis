@@ -755,7 +755,8 @@ The main API is used to connect, disconnect, and reset the hardware platform, as
 
 On connect, the API automatically clears any remaining data in the Transmission Buffer and queries the synthesis parameters with the Send Information instruction.
 The buffer is cleared once again on disconnect, in addition to the synthesis information.
-The reset function can be used to set the system into freshly booted state by clearing all counters, sblocks, buffers and BRAMs except for the instruction memory \todo{clear instruction memory}.
+The reset function can be used to set the system into freshly booted state by clearing all counters, sblocks, buffers and BRAMs except for the instruction memory.
+\todo{clear instruction memory}
 
 Each instruction is given its own function with one-to-one correlation of parameters.
 Data structures are used to represent the parameters where possible, such as for LUTs and development rules.
@@ -766,13 +767,13 @@ The getter functions are needed because of the hardware platform's separate inst
 
 \subsection{Optional APIs}
 
-\TODO
+The two currently implemented optional APIs are Print and PostScript.
+Both are used to convert data structures into human-readable formats.
 
-There are two optional APIs, both for converting data structures into output: Print and PostScript.
+The Print API allows terminal printouts of all data structures, which includes system information, rule vectors and matrices (types, states or rule numbers).
 
-Print: Information, matrix (states, types and rule numbers), rule vector.
-
-Postscript: Creates postscript image from a matrix (one layer), can supply a coloring function (that returns hex codes).
+The PostScript API allows programs to generate postscript figures from one layer of a matrix data structure (types, states or rule numbers).
+The caller specifies the coloring scheme that is used by providing a function that takes in a cell value and returns a hexadecimal RGB value.
 
 \subsection{Communication}
 
@@ -786,7 +787,7 @@ Due to this direct interaction with device files, each program must be run with 
 The second is an interface specifically for the communication unit.
 It provides open, close, read and write functions similar to the old BenERA interface, in addition to implementing all special request functions in Table~\ref{tab:requests}.
 When a read or write operation is initiated, buffers are checked for available data or space.
-If there is not enough present, the program waits and then rechecks.
+If there is not enough present, the program waits for 1 microsecond and then rechecks.
 
 \subsection{Compilation}
 
@@ -799,18 +800,15 @@ Programs must include \textbf{carp.h} to use the main API and optionally \textbf
 To facilitate unit testing, all programs whose name start with \textbf{test\_} are executed in sequence when \textbf{make test} is called.
 \textbf{testframework.cinclude} is provided as a common assertion framework.
 
-\subsection{Compile Parameters}
+\subsubsection{Flags}
 
-\TODO
+There are three compilation flags available: Debug, low-latency and testbench.
 
-Testbench mode:
-Mock info struct with parameters in makefile.
-Program exits on buffer flush (triggered when a function that reads data is called).
+Debug mode causes various information to be printed at certain times during execution, such as during reset and when the API must wait for buffer space or data.
+To prevent excessive prints from the buffer checks, the delay between each check is increased to 100 ms.
 
-Low-latency mode:
-Recheck buffers immediately instead of waiting for one microsecond.
+Low-latency mode causes the buffer check delay to be skipped entirely, creating a busy-wait loop.
+It can be used when low latency is crucial, but should be unneeded in most circumstances.
 
-Debug mode:
-Wait 100ms between buffer rechecks and print progress.
-Print all data cleared from the buffer.
-Notify of reset and clear.
+Testbench mode can be used to create test benches when the hardware platform is unavailable.
+Instead of connecting to the board, synthesis parameters are mocked at compile time and the program prints the contents of the instruction buffer as a test bench and exits when the first buffer flush is triggered.
