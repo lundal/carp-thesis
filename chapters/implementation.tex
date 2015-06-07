@@ -1,6 +1,6 @@
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.78\textwidth]{implementation-simple}
+    \includegraphics[width=39\block]{implementation-simple}
     \caption[High-level system diagram]{
         High-level block diagram of the new hardware platform.
     }
@@ -129,7 +129,7 @@ It consists of the Xilinx PCI Express endpoint core, reception and transmission 
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.72\textwidth]{implementation-communication}
+    \includegraphics[width=36\block]{implementation-communication}
     \caption[Communication module]{
         Detailed block diagram of the communication module.
     }
@@ -164,7 +164,7 @@ The reception engine is implemented as a simple state machine, as shown in \figu
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.84\textwidth]{statemachine-receive}
+    \includegraphics[width=42\block]{statemachine-receive}
     \caption[Reception engine state machine]{
         State machine for the reception engine.
     }
@@ -184,7 +184,7 @@ The transmission engine is implemented as a simple state machine, as shown in \f
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.8\textwidth]{statemachine-transmit}
+    \includegraphics[width=40\block]{statemachine-transmit}
     \caption[Transmission engine state machine]{
         State machine for the transmission engine.
     }
@@ -236,7 +236,7 @@ This is shown in \figurename~\ref{fig:implementation-fetch}.
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.69\textwidth]{implementation-fetch}
+    \includegraphics[width=34\block]{implementation-fetch}
     \caption[Fetch module]{Detailed block diagram of the Fetch module.}
     \label{fig:implementation-fetch}
 \end{figure}
@@ -265,7 +265,7 @@ The modes and transitions are implemented as a state machine, which is shown in 
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.6\textwidth]{statemachine-fetch-handler}
+    \includegraphics[width=30\block]{statemachine-fetch-handler}
     \caption[Fetch Handler state machine]{State machine for the Fetch Handler.}
     \label{fig:statemachine-fetch-handler}
 \end{figure}
@@ -314,7 +314,7 @@ This means that modules are mostly very simple and that it requires a low amount
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.72\textwidth]{implementation-control}
+    \includegraphics[width=36\block]{implementation-control}
     \caption[Control modules]{
         Detailed block diagram of the Control modules.
         Red signals are inputs while blue are outputs.
@@ -394,8 +394,8 @@ The module consists of combiners which are used to combine new data with existin
 \figurename~\ref{fig:implementation-cell-writer-reader} shows how the components are connected.
 
 \begin{figure}[!ht]
-    \hspace{-0.02\textwidth}
-    \includegraphics[width=1.04\textwidth]{implementation-cell-writer-reader}
+    \hspace{-1\block}
+    \includegraphics[width=52\block]{implementation-cell-writer-reader}
     \caption[Cell Writer Reader]{
         Detailed block diagram of the Cell Writer Reader.
         Only the state part is shown to reduce complexity; the type part is identical.
@@ -438,7 +438,7 @@ Coincidentally, the dual-purpose states complete in one cycle while the others r
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.56\textwidth]{statemachine-cell-writer-reader}
+    \includegraphics[width=28\block]{statemachine-cell-writer-reader}
     \caption{Cell Writer Reader state machine}
     \label{fig:statemachine-cell-writer-reader}
 \end{figure}
@@ -484,8 +484,8 @@ Stage one contains the Cell Fetcher, which retrieves cell neighborhoods from Cel
 This is illustrated in \figurename~\ref{fig:implementation-development}.
 
 \begin{figure}[!ht]
-    \hspace{-0.05\textwidth}
-    \includegraphics[width=1.10\textwidth]{implementation-development}
+    \hspace{-4\block}
+    \includegraphics[width=58\block]{implementation-development}
     \caption[Development module]{
         Detailed block diagram of the Development module.
         The two main pipeline stages are separated by a dashed line,
@@ -502,7 +502,7 @@ A complete timing diagram can be seen in \figurename~\ref{fig:wavediagram-develo
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.75\textwidth]{statemachine-development}
+    \includegraphics[width=38\block]{statemachine-development}
     \caption[Development module state machine]{
         State machine controlling the Development module.
     }
@@ -527,7 +527,7 @@ The other is equivalent to the first except for being delayed two states, thus h
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.8\textwidth]{statemachine-cell-fetcher}
+    \includegraphics[width=40\block]{statemachine-cell-fetcher}
     \caption[Cell Fetcher state machine]{
         State machine for the Cell Fetcher.
     }
@@ -585,7 +585,7 @@ It consists of a state machine, the Sblock Matrix and a Live Counter, in additio
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.68\textwidth]{implementation-cellular-automata}
+    \includegraphics[width=34\block]{implementation-cellular-automata}
     \caption[CA module]{
         Detailed block diagram of the CA module.
         Config Readback is a symbolic module for the majority of the state machine.
@@ -601,7 +601,7 @@ Additionally, it sets write signals for the Live Count buffer.
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=\textwidth]{statemachine-cellular-automata}
+    \includegraphics[width=50\block]{statemachine-cellular-automata}
     \caption[CA module state machine]{
         State machine controlling the CA module.
     }
@@ -688,7 +688,7 @@ The twiddle factors are stored in a fixed-point format since they range from $-1
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=\textwidth]{implementation-dft}
+    \includegraphics[width=48\block]{implementation-dft}
     \caption[DFT Fitness]{
         Detailed block diagram of the DFT Fitness module.
         The two pipeline stages are marked at the bottom.
@@ -704,8 +704,8 @@ The first stage contains the DFT while the second contains the logic for transfe
 The pipeline is interlocked, since both stages can run for hundreds of cycles.
 
 \begin{figure}[!ht]
-    \centering
-    \includegraphics[width=\textwidth]{implementation-dsp}
+    \hspace{-1\block}
+    \includegraphics[width=52\block]{implementation-dsp}
     \caption[DSP Wrapper]{
         Detailed block diagram of the DSP Wrapper.
         Red boxes are registers and blue boxes are multiplexers.
@@ -724,7 +724,7 @@ The state machine controlling the DFT is shown in \figurename~\ref{fig:statemach
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.78\textwidth]{statemachine-dft}
+    \includegraphics[width=38\block]{statemachine-dft}
     \caption[DFT State Machine]{
         State machine controlling the DFT.
     }
