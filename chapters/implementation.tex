@@ -794,7 +794,7 @@ If there is not enough present, the program waits for 1 microsecond and then rec
 The compilation system has been streamlined to allow users to simply add new files in \textbf{libcarp/} or \textbf{programs/}, and have them automatically be integrated into the API or compiled with the API respectively by calling \textbf{make}.
 
 First, all files in \textbf{libcarp/} is compiled to the statically linked library \textbf{libcarp.a}.
-Then each file in \textbf{programs/} is compiled with references to all the header files in \textbf{libcarp/} and \textbf{libcarp.a}.
+Then each file in \textbf{programs/} is compiled with references to all the header files in \textbf{libcarp/} and the compiled library.
 Programs must include \textbf{carp.h} to use the main API and optionally \textbf{print.h} and \textbf{postscript.h} for the output APIs.
 
 To facilitate unit testing, all programs whose name start with \textbf{test\_} are executed in sequence when \textbf{make test} is called.
