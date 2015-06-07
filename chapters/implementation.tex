@@ -751,15 +751,18 @@ Everything has been rewritten from scratch to improve clarity, functionality and
 
 \subsection{Main API}
 
-\TODO
+The main API is used to connect, disconnect, and reset the hardware platform, as well as execute instructions and parse received data into data structures.
 
-Connect: Clears any remaining data in the buffer, queries synthesis information.
-Disconnect: Clears any remaining data in the buffer.
-Reset: Everything (\todo{program memory})
+On connect, the API automatically clears any remaining data in the Transmission Buffer and queries the synthesis parameters with the Send Information instruction.
+The buffers are cleared once again on disconnect, in addition to the synthesis information.
+The reset function can be used to set the system into freshly booted state by clearing all counters, sblocks, buffers and BRAMs except for the instruction memory \todo{clear instruction memory}.
 
-All instructions (one function for each). LUTs and development rules are sent as structs.
+Each instruction is given its own function with one-to-one correlation of parameters.
+Data structures are used to represent the parameters where possible, such as for LUTs and development rules.
+The instructions are queued in a buffer until the program tries to receive data or manually flushes it, to allow for debugging and creating test benches from the instruction stream.
 
-Getter functions that parse data sent from the FPGA into data structures.
+For each instruction that should return data there is a corresponding getter function used to receive that data and parse it into data structures (where applicable).
+The getter functions are needed because of the hardware platform's separate instruction memory and control flow, causing the amount of instructions issued by the API to not necessarily correspond to the number of times the instruction is executed.
 
 \subsection{Optional APIs}
 
