@@ -26,7 +26,7 @@
 
 \dirtree{%
 .1 api.
-    .2 makefile.
+    .2 makefile \DTcomment{Build script}.
 }
 ~
 \dirtree{%
@@ -54,22 +54,22 @@
 ~
 \dirtree{%
 .1 api/programs.
-    .2 demo\_development.c.
-    .2 demo\_replicator.c.
-    .2 demo\_stacked.c.
-    .2 profile\_communication.c.
-    .2 test\_config\_readback.c.
-    .2 test\_counters.c.
-    .2 test\_development.c.
-    .2 test\_fill\_cells.c.
-    .2 test\_instructions\_storage.c.
-    .2 test\_sblockmatrix.c.
-    .2 test\_swap\_cell\_buffers.c.
-    .2 test\_write\_read\_state.c.
-    .2 test\_write\_read\_states.c.
-    .2 test\_write\_read\_type.c.
-    .2 test\_write\_read\_types.c.
-    .2 testframework.cinclude.
+    .2 demo\_development.c \DTcomment{Simple development example}.
+    .2 demo\_replicator.c \DTcomment{Simple replicator example}.
+    .2 demo\_stacked.c \DTcomment{Simple stacked-mode example}.
+    .2 profile\_communication.c \DTcomment{Profiles latency and throughput}.
+    .2 test\_config\_readback.c \DTcomment{Test 7}.
+    .2 test\_counters.c \DTcomment{Test 10}.
+    .2 test\_development.c \DTcomment{Test 6}.
+    .2 test\_fill\_cells.c \DTcomment{Test 4}.
+    .2 test\_instructions\_storage.c \DTcomment{Test 9}.
+    .2 test\_sblockmatrix.c \DTcomment{Test 8}.
+    .2 test\_swap\_cell\_buffers.c \DTcomment{Test 5}.
+    .2 test\_write\_read\_state.c \DTcomment{Test 2}.
+    .2 test\_write\_read\_states.c \DTcomment{Test 3}.
+    .2 test\_write\_read\_type.c \DTcomment{Test 0}.
+    .2 test\_write\_read\_types.c \DTcomment{Test 1}.
+    .2 testframework.cinclude \DTcomment{Framework used by all tests}.
 }
 
 \clearpage
@@ -77,15 +77,15 @@
 
 \dirtree{%
 .1 vhdl.
-    .2 carp.xise.
-    .2 filter.filter.
-    .2 makefile.
-    .2 parameters.conf.
+    .2 carp.xise \DTcomment{ISE project file}.
+    .2 filter.filter \DTcomment{Warning filter rules}.
+    .2 makefile \DTcomment{Build script}.
+    .2 parameters.conf \DTcomment{Synthesis parameters}.
 }
 ~
 \dirtree{%
 .1 vhdl/ipcores.
-    .2 sp605\_pcie.xco.
+    .2 sp605\_pcie.xco \DTcomment{PCI Express IP core configuration}.
 }
 ~
 \dirtree{%
@@ -116,11 +116,11 @@
 ~
 \dirtree{%
 .1 vhdl/modules/communication.
-    .2 communication.vhd.
-    .2 communication\_sim.vhd.
-    .2 rq\_special.vhd.
-    .2 rx\_engine.vhd.
-    .2 tx\_engine.vhd.
+    .2 communication.vhd \DTcomment{PCI Express communication module}.
+    .2 communication\_sim.vhd \DTcomment{Simulation version which exposes buffers}.
+    .2 rq\_special.vhd \DTcomment{Special Request Handler}.
+    .2 rx\_engine.vhd \DTcomment{Reception Engine: Parses TLPs}.
+    .2 tx\_engine.vhd \DTcomment{Transmission Engine: Builds TLPs}.
 }
 \clearpage
 \dirtree{%
