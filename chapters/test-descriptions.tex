@@ -1,0 +1,20 @@
+\begin{table}[!ht]
+    \renewcommand{\arraystretch}{1.4}
+    \centering
+    \begin{tabularx}{\textwidth}{c|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}p{0.25\textwidth}}
+        \bfseries Test & \bfseries Description & \bfseries Verifies \\
+        \hline
+        0 & Write types one by one, read them, check that types match & Write~One~Type, Read~One~Type \\
+        1 & Write types row by row, read all, check that types match & Write~Row~Types, Read~All~Types \\
+        2 & Write states one by one, read them, check that states match & Write~One~State, Read~One~State \\
+        3 & Write states row by row, read all, check that states match & Write~Row~States, Read~All~States \\
+        4 & Fill cells, check that all cells have correct type and state & Fill Cells \\
+        5 & Write states and types, swap, check that data is gone, swap again, check that data is back & Swap~Cell~Storage \\
+        6 & Write rules and types, develop, check rules have triggered and types have updated & Develop, Write~Rule, Read~Rule~Vectors, Read~Rule~Numbers \\
+        7 & Write states, configure the sblock matrix, read it back, check that states are unchanged & Config, Readback \\
+        8 & Write states, types and LUTs, configure sblock matrix, check states have changed & Step, Write~LUT \\
+        9 & Store program that sends 1 and then stops, jump to program address three times, check for three 1s & Store, End, Jump, Break \\
+        10 & Execute program that sends 1, increments counter and jumps to itself unless the counter is equal to three, check for three 1s & Jump~Equal, Counter~Reset, Counter~Increment \\
+    \end{tabularx}
+\end{table}
+
