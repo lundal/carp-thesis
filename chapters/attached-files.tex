@@ -1,0 +1,186 @@
+\TODO
+
+\section{Directory Structure}
+
+\dirtree{%
+.1 attachment.zip.
+    .2 api.
+        .3 libcarp.
+        .3 programs.
+    .2 vhdl.
+        .3 ipcores.
+        .3 modules.
+            .4 cellular\_automata.
+            .4 communication.
+            .4 development.
+            .4 fetch.
+            .4 fitness.
+            .4 utility.
+        .3 packages.
+        .3 sp605.
+        .3 testbenches\TODO.
+}
+
+\clearpage
+\section{API Files}
+
+\dirtree{%
+.1 api.
+    .2 makefile.
+}
+~
+\dirtree{%
+.1 api/libcarp.
+    .2 bitvector.c.
+    .2 bitvector.h.
+    .2 carp.c.
+    .2 carp.h.
+    .2 communication.c.
+    .2 communication.h.
+    .2 instructions.h.
+    .2 lut.h.
+    .2 matrix.c.
+    .2 matrix.h.
+    .2 pci.c.
+    .2 pci.h.
+    .2 postscript.c.
+    .2 postscript.h.
+    .2 print.c.
+    .2 print.h.
+    .2 rule.h.
+    .2 utility.c.
+    .2 utility.h.
+}
+~
+\dirtree{%
+.1 api/programs.
+    .2 demo\_development.c.
+    .2 demo\_replicator.c.
+    .2 demo\_stacked.c.
+    .2 profile\_communication.c.
+    .2 test\_config\_readback.c.
+    .2 test\_counters.c.
+    .2 test\_development.c.
+    .2 test\_fill\_cells.c.
+    .2 test\_instructions\_storage.c.
+    .2 test\_sblockmatrix.c.
+    .2 test\_swap\_cell\_buffers.c.
+    .2 test\_write\_read\_state.c.
+    .2 test\_write\_read\_states.c.
+    .2 test\_write\_read\_type.c.
+    .2 test\_write\_read\_types.c.
+    .2 testframework.cinclude.
+}
+
+\clearpage
+\section{VHDL Files}
+
+\dirtree{%
+.1 vhdl.
+    .2 carp.xise.
+    .2 filter.filter.
+    .2 makefile.
+    .2 parameters.conf.
+}
+~
+\dirtree{%
+.1 vhdl/ipcores.
+    .2 sp605\_pcie.xco.
+}
+~
+\dirtree{%
+.1 vhdl/modules.
+    .2 cell\_storage.vhd.
+    .2 cell\_storage\_mux.vhd.
+    .2 cell\_writer\_reader.vhd.
+    .2 decode.vhd.
+    .2 fitness\_sender.vhd.
+    .2 information\_sender.vhd.
+    .2 lut\_writer.vhd.
+    .2 resetter.vhd.
+    .2 rule\_numbers\_reader.vhd.
+    .2 rule\_vector\_reader.vhd.
+    .2 rule\_writer.vhd.
+    .2 send\_buffer\_mux.vhd.
+    .2 toplevel.vhd.in.
+}
+~
+\dirtree{%
+.1 vhdl/modules/cellular\_automata.
+    .2 cellular\_automata.vhd.
+    .2 live\_counter.vhd.
+    .2 lut\_configurable.vhd.
+    .2 sblock.vhd.
+    .2 sblock\_matrix.vhd.
+}
+~
+\dirtree{%
+.1 vhdl/modules/communication.
+    .2 communication.vhd.
+    .2 communication\_sim.vhd.
+    .2 rq\_special.vhd.
+    .2 rx\_engine.vhd.
+    .2 tx\_engine.vhd.
+}
+\clearpage
+\dirtree{%
+.1 vhdl/modules/development.
+    .2 cell\_fetcher.vhd.
+    .2 development.vhd.
+    .2 hits\_to\_numbers.vhd.
+    .2 hits\_to\_vector.vhd.
+    .2 rule\_fetcher.vhd.
+    .2 rule\_tester.vhd.
+    .2 rule\_tester\_multi.vhd.
+    .2 rule\_testers\_multi.vhd.
+}
+~
+\dirtree{%
+.1 vhdl/modules/fetch.
+    .2 fetch.vhd.
+    .2 fetch\_communication.vhd.
+    .2 fetch\_handler.vhd.
+}
+~
+\dirtree{%
+.1 vhdl/modules/fitness.
+    .2 dft.vhd.
+    .2 dsp\_wrapper.vhd.
+    .2 fitness\_dft.vhd.
+    .2 fitness\_live\_counter.vhd.
+    .2 twiddles.vhd.
+}
+~
+\dirtree{%
+.1 vhdl/modules/utility.
+    .2 bit\_counter\_32.vhd.
+    .2 bit\_counter\_N.vhd.
+    .2 bram\_1toN.vhd.
+    .2 bram\_tdp.vhd.
+    .2 combiner.vhd.
+    .2 fifo.vhd.
+    .2 selector.vhd.
+    .2 shifter.vhd.
+    .2 shifter\_dynamic.vhd.
+    .2 shift\_register.vhd.
+}
+~
+\dirtree{%
+.1 vhdl/packages.
+    .2 functions.vhd.
+    .2 instructions.vhd.
+    .2 types.vhd.
+}
+~
+\dirtree{%
+.1 vhdl/sp605.
+    .2 constraints.ucf.in.
+    .2 pcie\_wrapper.vhd.
+}
+~
+\dirtree{%
+.1 vhdl/testbenches \TODO.
+    .2 test\_config\_readback.vhd.
+    .2 test\_dft.vhd.
+    .2 test\_dsp\_wrapper.vhd.
+}
