@@ -3,7 +3,7 @@ Therefore, the platform has been thourougly verified through functional tests, p
 
 %==============================================================================%
 
-\section{Functionality}
+\section{Functional Tests}
 
 The functionality of the platform has been verified under normal use conditions with the tests described in Appendix~\ref{app:test-descriptions}.
 Each test has a short description and a list of the instructions that are verified given it passes.
@@ -11,111 +11,18 @@ Together, the 11 tests cover all system functionality except for fitness, which 
 The tests are implemented as separate programs, but use a shared test framework.
 A full system reset is performed before each test.
 
-All tests are passed for all configurations of the platform that have been implemented, which includes 5x5, 16x16, 32x32, 4x4x4, 8x8x4, 8x8x8, 8x16x8 and 10x10x8 matrix sizes; 5, 6 and 8 type bits; 2, 4, 6, 7 and 8 rules tested in parallel; and 1, 2, 4 and 8 LUT configuration bits.
+All tests are passed for all configurations of the platform that have been implemented, which includes 5x5, 16x16, 32x32, 4x4x4, 8x8x4, 8x8x8, 8x16x4 and 10x10x8 matrix sizes; 5, 6 and 8 type bits; 2, 4, 6, 7 and 8 rules tested in parallel; and 1, 2, 4 and 8 LUT configuration bits.
 This proves that the platform is functional and scalable.
 
-\subsection{Fitness}
+\subsection{DFT}
 
-\TODO
+Although the fitness modules have no test programs, the DFT module and the DSP wrapper has their own test benches to ensure that refactoring has not changed functionality.
 
-The new DFT module has its own test bench.
-
-It produces slightly different output than before; likely due differences is rounding/expressions between the VHDL and python implementations for generating the twiddle factors.
-
-However, compared to the output of numpy's real fft, the new output is about as precise.
+Testing shows that the DFT produces slightly different output than before.
+This is likely due differences is rounding or expression structures between the VHDL and python implementations for generating the twiddle factors.
+However, compared to the output of numpy's real fft, the new module is about as precise as the previous.
 
 \todo{DFT test results with standard variation / percentage error}
-The DFT module is however tested in simulation and compared to the numpy's real fft.
-
-%==============================================================================%
-
-\section{Performance}
-
-As with the previous 3D design, the performance of certain modules scale with the matrix width (X), as they operate on one row of cells at a time.
-The main ones are are development, configuration and readback.
-
-\TODO
-
-Closest to Støvnengs CA in 2D:
-[rules tested in parallel] = 2.
-[lut configuration bits] = 2.
-
-Speed differences:
-1/4x config.
-
-Closest to Støvnengs CA in 3D:
-[rules tested in parallel] = 2.
-[lut configuration bits] = 8.
-
-Speed differences:
-4x rsf/live counter.
-1/2x config.
-1/8x readback.
-
-
-\todo{best performance}
-
-\subsection{Communication}
-
-\TODO
-\tablename~\ref{tab:communication-performance}.
-
-\begin{table}[!ht]
-    \renewcommand{\arraystretch}{1.4}
-    \centering
-    \begin{tabular}{c|c|c}
-        \bfseries Mode & \bfseries Latency & \bfseries Throughput \\
-        \hline
-        Normal & \SI{60.3}{\micro\second} & 2.1 MB/s \\
-        Low-latency & \SI{7.3}{\micro\second} & 2.1 MB/s \\
-    \end{tabular}
-    \caption[Communication performance]{
-        Performance of the PCI Express communication unit.
-    }
-    \label{tab:communication-performance}
-\end{table}
-
-\TODO
-Likely due to minimum system sleep of around \SI{50}{\micro\second}.
-
-The throughput is not exceptional at around 1\% of the 256MB/s that the PCI Express endpoint block is capable of \cite{ug672}.
-This is likely due to the simplistic PIO scheme that require that all transfers go through the CPU.
-However, this is not as bad as one would first assume.
-Following is a short analysis of the desired throughput for the example program in \figurename~\ref{fig:example-program}.
-
-\begin{figure}[!ht]
-\begin{lstlisting}[xleftmargin=0.35\textwidth]
-initialize()
-while counter[0] != 128:
-    develop()
-    config()
-    step(128)
-    send_fitness()
-    swap_cell_storage()
-    counter[0]++
-\end{lstlisting}
-\caption[Example program] {
-    Example program.
-}
-\label{fig:example-program}
-\end{figure}
-
-Assume the following synthesis parameters:
-[LUT Configuration Bits] maximized to 8,
-[Rules Tested In Parallel] set to 8,
-[Rule Amount] set to 256,
-[Fitness] set to DFT with transform size of 128 and 16-bit output values,
-and the matrix sized to 10x10x8.
-
-That brings development speed to 3.2 cycles/cell and configuration speed to 1.6 cycles/cell (plus overhead)\footnotemark.
-The DFT work in parallel with the rest of the design, therefore adding no further delay, and produces 32 words of data after each 128 steps.
-With 800 cells, the time for each loop iteration then becomes a little over $3.2 \cdot 800 + 1.6 \cdot 800 + 128 = 3968$ cycles.
-32 words per 3968 cycles at 125 Mhz constitutes around 4 MB/s.
-The communication unit can therefore supply 50\% of the desired throughput, which should be acceptable for normal operation.
-
-\footnotetext{
-    The execution time of each instruction is detailed in Appendix~\ref{app:isa}.
-}
 
 %==============================================================================%
 

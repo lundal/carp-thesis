@@ -3,9 +3,6 @@ How it was to implement a CA system inside an FPGA.
 Distributed and local communication allows it to fills entire FPGA.
 Perfect for 2D structure, extra routing challenges with 3D.
 
-\begin{itemize}
-    \item Compromise between generics and custom types (VHDL-2008 not supported)
-\end{itemize}
 
 \TODO
 Many resources left.
@@ -68,8 +65,137 @@ At this point, routing becomes the main problem, as there are still many logic r
 
 %==============================================================================%
 
+\section{Performance}
+
+Previous hardware designs have been profiled by the test program in \figurename~\ref{fig:test-program}, with an 8x8 matrix and 6 development rules.
+It is mainly a stress-test of the CA stepping speed.
+The best speeds were 6.3 seconds in both \cite{djupdal2003sblock} and \cite{stovneng2014sblock}.
+
+\begin{figure}[!ht]
+\begin{lstlisting}[xleftmargin=0.34\textwidth]
+initialize()
+while counter[0] != 10000:
+    config()
+    step(50000)
+    readback()
+    swap_cell_storage()
+    read_types()
+    read_states()
+    develop()
+    counter[0]++
+\end{lstlisting}
+\caption[Test program] {
+    Updated test program from \cite{djupdal2003sblock}.
+}
+\label{fig:test-program}
+\end{figure}
+
+On the new platform, the program completes in 8.2 seconds.
+This is exactly twice of what it should take at 125 MHz.
+Further study show that the PCI Express Endpoint Block is to blame as it actually halves the frequency to 62.5 MHz at the user side.
+This fact is barely mentioned once in \cite{ug672} and is never referred to by the IP core generator or example design.
+It has also gone unnoticed in simulations since the communication module has been replaced with a special simulation version.
+Still, running at half speed, the platform is only about 30\% slower than the previous design for this test.
+During synthesis and implementation, the constraint of 125 MHz appears to have been applied to all signals though, which means that is possible to (again) separate the communication module into a slower clock domain and thus double the speed of the remaining design.
+This would make it 35\% faster than the previous design instead.
+
+
+\TODO
+
+As with the previous 3D design, the performance of certain modules scale with the matrix width (X), as they operate on one row of cells at a time.
+The main ones are are development, configuration and readback.
+
+Closest to Støvnengs CA in 2D:
+[rules tested in parallel] = 2.
+[lut configuration bits] = 2.
+
+Speed differences:
+1/4x config.
+
+Closest to Støvnengs CA in 3D:
+[rules tested in parallel] = 2.
+[lut configuration bits] = 8.
+
+Speed differences:
+4x rsf/live counter.
+1/2x config.
+1/8x readback.
+
+
+\todo{best performance}
+
+\subsection{Communication}
+
+\TODO
+\tablename~\ref{tab:communication-performance}.
+
+\begin{table}[!ht]
+    \renewcommand{\arraystretch}{1.4}
+    \centering
+    \begin{tabular}{c|c|c}
+        \bfseries Mode & \bfseries Latency & \bfseries Throughput \\
+        \hline
+        Normal & \SI{60.3}{\micro\second} & 2.1 MB/s \\
+        Low-latency & \SI{7.3}{\micro\second} & 2.1 MB/s \\
+    \end{tabular}
+    \caption[Communication performance]{
+        Performance of the PCI Express communication unit.
+    }
+    \label{tab:communication-performance}
+\end{table}
+
+\TODO
+Likely due to minimum system sleep of around \SI{50}{\micro\second}.
+
+The throughput is not exceptional at around 1\% of the 256MB/s that the PCI Express endpoint block is capable of \cite{ug672}.
+This is likely due to the simplistic PIO scheme that require that all transfers go through the CPU.
+However, this is not as bad as one would first assume.
+Following is a short analysis of the desired throughput for the example program in \figurename~\ref{fig:example-program}.
+
+\begin{figure}[!ht]
+\begin{lstlisting}[xleftmargin=0.35\textwidth]
+initialize()
+while counter[0] != 128:
+    develop()
+    config()
+    step(128)
+    send_fitness()
+    swap_cell_storage()
+    counter[0]++
+\end{lstlisting}
+\caption[Example program] {
+    Example program.
+}
+\label{fig:example-program}
+\end{figure}
+
+Assume the following synthesis parameters:
+[LUT Configuration Bits] maximized to 8,
+[Rules Tested In Parallel] set to 8,
+[Rule Amount] set to 256,
+[Fitness] set to DFT with transform size of 128 and 16-bit output values,
+and the matrix sized to 10x10x8.
+
+That brings development speed to 3.2 cycles/cell and configuration speed to 1.6 cycles/cell (plus overhead)\footnotemark.
+The DFT work in parallel with the rest of the design, therefore adding no further delay, and produces 32 words of data after each 128 steps.
+With 800 cells, the time for each loop iteration then becomes a little over $3.2 \cdot 800 + 1.6 \cdot 800 + 128 = 3968$ cycles.
+32 words per 3968 cycles at 125 Mhz constitutes around 4 MB/s.
+The communication unit can therefore supply 50\% of the desired throughput, which should be acceptable for normal operation.
+
+\footnotetext{
+    The execution time of each instruction is detailed in Appendix~\ref{app:isa}.
+}
+
+%==============================================================================%
+
 \section{Challenges}
 \label{sec:challenges}
+
+\TODO
+
+ISE lacks support for VHDL-2008, which is required to use custom types with generics.
+All array signals must therefore be converted to and from std\_logic\_vectors before exiting and after entering modules.
+Hopefully, this is implemented in a way that is organized and understandable.
 
 \TODO
 
@@ -83,17 +209,17 @@ Further parameterization:
 Could parameterize number of rows accessed in Cell Storage to allow higher config and readback speeds.
 Make Live Counter easily replaceable (step function module)(like fitness module, improves flexibility), and allow it to use more cycles (reduces LUT usage).
 Also live counter to use more cycles but reduce LUT usage.
+
 However, LUT and register usage are not issues for 3D; routing and available shift registers are.
 Shift registers set max number of cells.
 Routing limits livecounter + rule testers.
 In 2D, LUTs and like routing are the major issues.
 
-Proper DMA driver will allow allow programs to be run without sudo.
-
 \begin{itemize}
     \item Hazard detection unit so multiple modules can run simultaneously
-    \item DMA-based communication interface (better speed, requires driver, more advanced com module)
+    \item DMA-based communication interface (better speed, requires driver, more advanced com module, programs don't need sudo)
     \item Watchdog-timer/Stall-prevention
+    \item Introduce two clock domains again to double performance
 \end{itemize}
 
 %==============================================================================%
