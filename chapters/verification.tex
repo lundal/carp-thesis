@@ -37,31 +37,10 @@ Speed differences:
 1/2x config.
 1/8x readback.
 
-In 3D, each cell uses uses 8 SRL16, setting a hard limit on the number of cells to 800 (6400 / 6408 = 99.9\%)
-
-\begin{table}[!ht]
-    \renewcommand{\arraystretch}{1.4}
-    \centering
-    \begin{tabular}{c|c|c|c|c|c|c|c|c}
-        \bfseries Matrix & \multicolumn{2}{c|}{\bfseries SRL16} & \multicolumn{2}{c|}{\bfseries LUTs} & \multicolumn{2}{c|}{\bfseries Registers} & \multicolumn{2}{c}{\bfseries BRAMs} \\
-        \bfseries (XxYxZ) & \bfseries Total & \bfseries \% & \bfseries Old & \bfseries New & \bfseries Old & \bfseries New & \bfseries Old & \bfseries New \\
-        \hline
-        32x32 & 2048 & 32.0 & 14858 & 11277 & 16259 & 7043 & 38 & 53 \\
-        8x8x4 & 2048 & 32.0 & 6529 & 6265 & 6011 & 4495 & 55 & 47 \\
-        8x8x8 & 4096 & 63.9 & 7668 & 8374 & 5726 & 4913 & 50 & 47 \\
-        8x16x4 & 4096 & 63.9 & 8234 & 8252 & 6531 & 4957 & 50 & 47 \\
-        10x10x8 & 6400 & 99.9 & – & 11313 & – & 5832 & – & 52 \\
-    \end{tabular}
-    \caption[Resource usage]{
-        Resource usage compared to the old design with most equivalently configured setup and performance.
-        % The live counter is four times faster, configuration is half as fast, and readback is an eight as fast.
-    }
-\end{table}
-
-Numbers are with LiveCount fitness.
-New design uses more LUTs, but less registers and brams.
 
 \todo{best performance}
+
+\subsection{Communication}
 
 \begin{table}[!ht]
     \renewcommand{\arraystretch}{1.4}
@@ -75,6 +54,7 @@ New design uses more LUTs, but less registers and brams.
     \caption[Communication performance]{
         Performance of the PCI Express communication unit.
     }
+    \label{tab:communication-performance}
 \end{table}
 
 Likely due to minimum system sleep of around \SI{50}{\micro\second}.
