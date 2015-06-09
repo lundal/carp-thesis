@@ -126,17 +126,14 @@ Stacked demo?
 
 \subsection{Replicator}
 
-Self-replication in CA.
-Relatively simple rules can grow a structure of any size given enough development time.
+\figurename~\ref{fig:replicator} shows how development can be used to create simple self-replicating structures in a 2D CA that can grow to any desirable size given enough time.
+This example was manually designed using 17 development rules and 13 cell types.
+The source code is available in \textbf{programs/demo\_replicator.c}.
 
-Cyan cells shoot off from the corners to form new loops.
-
-\begin{itemize}
-    \item 21 rules and 13 states.
-    \item Green goes in circle to form border, red when complete (but not corners).
-    \item Cyan detaches from corners to form new circles.
-    \item X increases to the right, Y increases downwards.
-\end{itemize}
+In essence, green cells creates copies of themselves going around in a clockwise loop, while cyan cells shoot off from the corners to begin the creation of new loops.
+When the entire loop is formed, the center cell turns red.
+After the entire structure has formed, the next step would be to use it for computation by specifying LUTs for each cell type.
+However, that is outside the scope of this example.
 
 \begin{figure}[!ht]
     \centering
@@ -256,7 +253,9 @@ Cyan cells shoot off from the corners to form new loops.
         \caption{Step 20}
     \end{subfigure}
     \caption[Replicator] {
-        TODO
+        Simple 2D replicator.
+        %X increases to the right and Y downwards.
+        The images are created using the PostScript API.
     }
     \label{fig:replicator}
 \end{figure}
