@@ -14,6 +14,8 @@ CA shift registers are spread over whole FPGA.
 It is summed into one bram (livecount).
 Then spread all over, since DFT uses nearly all DSP slices.
 
+%==============================================================================%
+
 \section{Resource Usage}
 
 With a complete rewrite, it is interesting to see the differences in resource usage between equivalent setups.
@@ -64,10 +66,14 @@ A 10x10x8 matrix design uses 99.9\% of the 6408 shift registers on the Spartan-6
 It will even implement with [Rules Tested In Parallel] increased to 6 and [Fitness] set to DFT.
 At this point, routing becomes the main problem, as there are still many logic resources left.
 
+%==============================================================================%
+
 \section{Challenges}
 \label{sec:challenges}
 
 \TODO
+
+%==============================================================================%
 
 \section{Future work}
 
@@ -82,11 +88,15 @@ Shift registers set max number of cells.
 Routing limits livecounter + rule testers.
 In 2D, LUTs and like routing are the major issues.
 
+Proper DMA driver will allow allow programs to be run without sudo.
+
 \begin{itemize}
     \item Hazard detection unit so multiple modules can run simultaneously
     \item DMA-based communication interface (better speed, requires driver, more advanced com module)
     \item Watchdog-timer/Stall-prevention
 \end{itemize}
+
+%==============================================================================%
 
 \section{Warnings}
 
