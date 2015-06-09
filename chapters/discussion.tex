@@ -226,14 +226,15 @@ In 2D, LUTs and like routing are the major issues.
 
 \section{Warnings}
 
-\begin{itemize}
-    \item Most are due to parameterization
-    \item Many from generated PCIE core
-    \item Nearly all filtered to make output more readable and make it easier to find bugs
-    \item Could not remove remaining due to limited filter system (don't want to cause trouble later)
-    \item 728 in ISE (684 filtered)
-    \item 502 in XST (457 filtered)
-    \item (3D)
-    \item Why the difference?
-    \item Also filtered "equivalent register removal" infos to reduce clutter
-\end{itemize}
+During synthesis, the design produces a substantial amount of warnings, although significantly less than the previous.
+Most arise from unused signals due to the selected synthesis parameters and are completely benign.
+In addition, a good deal stem from the provided PCI Express Endpoint Core, which can also safely be ignored.
+
+In an effort to reduce clutter and direct focus at more important information, most of the benign warnings are blocked by a filter.
+The remaining could not be removed without possibly causing trouble later, due to a limited filter system.
+For a standard 3D design, this reduces the amount of warnings from around 500 to about 50 \footnotemark.
+
+\footnotetext{
+    Synthesizing from within ISE produces around 730 warnings opposed to using XST directly.
+    However, both are filtered down to about 50.
+}
