@@ -3,7 +3,6 @@ How it was to implement a CA system inside an FPGA.
 Distributed and local communication allows it to fills entire FPGA.
 Perfect for 2D structure, extra routing challenges with 3D.
 
-
 \TODO
 Many resources left.
 Scaling restricted by routing; almost all paths are critical.
@@ -67,39 +66,6 @@ At this point, routing becomes the main problem, as there are still many logic r
 
 \section{Performance}
 
-Previous hardware designs have been profiled by the test program in \figurename~\ref{fig:test-program}, with an 8x8 matrix and 6 development rules.
-It is mainly a stress-test of the CA stepping speed.
-The best speeds were 6.3 seconds in both \cite{djupdal2003sblock} and \cite{stovneng2014sblock}.
-
-\begin{figure}[!ht]
-\begin{lstlisting}[xleftmargin=0.34\textwidth]
-initialize()
-while counter[0] != 10000:
-    config()
-    step(50000)
-    readback()
-    swap_cell_storage()
-    read_types()
-    read_states()
-    develop()
-    counter[0]++
-\end{lstlisting}
-\caption[Test program] {
-    Updated test program from \cite{djupdal2003sblock}.
-}
-\label{fig:test-program}
-\end{figure}
-
-On the new platform, the program completes in 8.2 seconds.
-This is exactly twice of what it should take at 125 MHz.
-Further study show that the PCI Express Endpoint Block is to blame as it actually halves the frequency to 62.5 MHz at the user side.
-This fact is barely mentioned once in \cite{ug672} and is never referred to by the IP core generator or example design.
-It has also gone unnoticed in simulations since the communication module has been replaced with a special simulation version.
-Still, running at half speed, the platform is only about 30\% slower than the previous design for this test.
-During synthesis and implementation, the constraint of 125 MHz appears to have been applied to all signals though, which means that is possible to (again) separate the communication module into a slower clock domain and thus double the speed of the remaining design.
-This would make it 35\% faster than the previous design instead.
-
-
 \TODO
 
 As with the previous 3D design, the performance of certain modules scale with the matrix width (X), as they operate on one row of cells at a time.
@@ -120,7 +86,6 @@ Speed differences:
 4x rsf/live counter.
 1/2x config.
 1/8x readback.
-
 
 \todo{best performance}
 
@@ -186,6 +151,40 @@ The communication unit can therefore supply 50\% of the desired throughput, whic
     The execution time of each instruction is detailed in Appendix~\ref{app:isa}.
 }
 
+\subsection{Speed Test}
+
+Previous hardware designs have been profiled by the test program in \figurename~\ref{fig:test-program}, with an 8x8 matrix and 6 development rules.
+It is mainly a stress-test of the CA stepping speed.
+The best speeds were 6.3 seconds in both \cite{djupdal2003sblock} and \cite{stovneng2014sblock}.
+
+\begin{figure}[!ht]
+\begin{lstlisting}[xleftmargin=0.34\textwidth]
+initialize()
+while counter[0] != 10000:
+    config()
+    step(50000)
+    readback()
+    swap_cell_storage()
+    read_types()
+    read_states()
+    develop()
+    counter[0]++
+\end{lstlisting}
+\caption[Test program] {
+    Updated test program from \cite{djupdal2003sblock}.
+}
+\label{fig:test-program}
+\end{figure}
+
+On the new platform, the program completes in 8.2 seconds.
+This is exactly twice of what it should take at 125 MHz.
+Further study show that the PCI Express Endpoint Block is to blame as it actually halves the frequency to 62.5 MHz at the user side.
+This fact is barely mentioned once in \cite{ug672} and is never referred to by the IP core generator or example design.
+It has also gone unnoticed in simulations since the communication module has been replaced with a special simulation version.
+Still, running at half speed, the platform is only about 30\% slower than the previous design for this test.
+During synthesis and implementation, the constraint of 125 MHz appears to have been applied to all signals though, which means that is possible to (again) separate the communication module into a slower clock domain and thus double the speed of the remaining design.
+This would make it 35\% faster than the previous design instead.
+
 %==============================================================================%
 
 \section{Challenges}
@@ -202,6 +201,8 @@ Hopefully, this is implemented in a way that is organized and understandable.
 %==============================================================================%
 
 \section{Future work}
+
+Communication module.
 
 \TODO
 
