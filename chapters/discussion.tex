@@ -19,6 +19,11 @@ Then spread all over, since DFT uses nearly all DSP slices.
 As with the previous 3D design, the performance of certain modules scale with the matrix width (X), as they operate on one row of cells at a time.
 The main ones are are development, configuration and readback.
 
+However, LUT and register usage are not issues for 3D; routing and available shift registers are.
+Shift registers set max number of cells.
+Routing limits livecounter + rule testers.
+In 2D, LUTs and like routing are the major issues.
+
 Closest to Støvnengs CA in 2D:
 [rules tested in parallel] = 2.
 [lut configuration bits] = 2.
@@ -112,8 +117,7 @@ A faster communication module is of course desirable, but it requires much more 
 \subsection{Speed Test}
 
 Previous hardware designs have been profiled by the test program in \figurename~\ref{fig:test-program}, with an 8x8 matrix and 6 development rules.
-It is mainly a stress-test of the CA stepping speed.
-The best speeds were 6.3 seconds in both \cite{djupdal2003sblock} and \cite{stovneng2014sblock}.
+It is mainly a stress-test of the CA stepping speed, and the fastest speed was 6.3 seconds in both \cite{djupdal2003sblock} and \cite{stovneng2014sblock}.
 
 \begin{figure}[!ht]
 \begin{lstlisting}[xleftmargin=0.34\textwidth]
@@ -209,7 +213,7 @@ At this point, routing becomes the main problem, as there are still many logic r
 
 ISE lacks support for VHDL-2008, which is required to use custom types with generics.
 All array signals must therefore be converted to and from std\_logic\_vectors before exiting and after entering modules.
-Hopefully, this is implemented in a way that is organized and understandable.
+Hopefully, this is implemented in a way that is both organized and understandable.
 
 \TODO
 
@@ -217,26 +221,26 @@ Hopefully, this is implemented in a way that is organized and understandable.
 
 \section{Future work}
 
-Communication module.
+The most important issue that needs remediation is the downclocking caused by the PCI Express Endpoint, which halves the performance of the entire design.
+The relatively straightforward fix is to reintroduce a second clock domain.
+Clock domain traversals might be tricky however.
 
-\TODO
+The second most important issue, and by far the most challenging, is the relatively low throughput of the communication module.
+Improvement requires the use of DMA in combination with a custom device driver.
+It has the added benefit of allowing programs to run without superuser rights, although the driver will need them instead.
 
-Further parameterization:
-Could parameterize number of rows accessed in Cell Storage to allow higher config and readback speeds.
-Make Live Counter easily replaceable (step function module)(like fitness module, improves flexibility), and allow it to use more cycles (reduces LUT usage).
-Also live counter to use more cycles but reduce LUT usage.
+It is possible to further parameterize some parts of the design.
+First is the number of rows that can be read from Cell Storage, which will allow for higher CA configuration and readback speeds.
+Another is the number of cycles used by the Live Counter, which will allow the user to trade speed for less resource usage and easier routing.
+Finally, the Live Counter could be made exchangeable by an interface similar to fitness, to allow more complex evaluation of the output.
+It might even be baked into fitness.
 
-However, LUT and register usage are not issues for 3D; routing and available shift registers are.
-Shift registers set max number of cells.
-Routing limits livecounter + rule testers.
-In 2D, LUTs and like routing are the major issues.
+The current design only executes one instruction at a time to keep everything simple and organized.
+However, there are many circumstances where the next instruction do not impact the currently executing one and can be safely run in parallel to gain a small speedup.
+It should be possible to implement by letting a form of hazard detection module handle the interlocking signals for the main pipeline, such that the run signal is asserted as soon as all modules that the next instruction depends on are done.
 
-\begin{itemize}
-    \item Hazard detection unit so multiple modules can run simultaneously
-    \item DMA-based communication interface (better speed, requires driver, more advanced com module, programs don't need sudo)
-    \item Watchdog-timer/Stall-prevention
-    \item Introduce two clock domains again to double performance
-\end{itemize}
+Since some instructions have the ability to create deadlocks, some sort of watchdog-timer might be useful to allow recovery of the system.
+The only alternative is cycling the power, but that will break the PCI Express connection which necessitates a reboot of the host as well.
 
 %==============================================================================%
 
