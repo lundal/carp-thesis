@@ -39,8 +39,15 @@ Speed differences:
 
 \subsection{Communication}
 
-\TODO
-\tablename~\ref{tab:communication-performance}.
+\todo{intro?}
+
+The latency is measured by averaging the times for 100000 pings.
+Each ping is the execution a read\_type instruction followed by retrieval of the type.
+Since all retrieval functions check the amount of buffer data first, this totals to 2.5 round trips per ping.
+
+The throughput is measured by 1000 executions of read\_types instructions followed by retrieval of their data.
+The calculated number of words transferred are then compared to the time.
+The reads are interleaved so that an empty buffer is never encountered.
 
 \begin{table}[!ht]
     \renewcommand{\arraystretch}{1.4}
@@ -57,10 +64,12 @@ Speed differences:
     \label{tab:communication-performance}
 \end{table}
 
-\TODO
-Likely due to minimum system sleep of around \SI{50}{\micro\second}.
+The results are presented in \tablename~\ref{tab:communication-performance}.
+The latency appears to be decent in low-latency mode, which is almost equivalent to the first buffer check succeeding.
+Normal mode is around \SI{50}{\micro\second} slower as it fails the first check and therefore waits.
+The delay between checks is only set to \SI{1}{\micro\second}, but it is likely increased due to operating system scheduling.
 
-The throughput is not exceptional at around 1\% of the 256MB/s that the PCI Express endpoint block is capable of \cite{ug672}.
+The throughput is not exceptional at around 1\% of the 256MB/s that the PCI Express endpoint block is theoretically capable of \cite{ug672}.
 This is likely due to the simplistic PIO scheme that require that all transfers go through the CPU.
 However, this is not as bad as one would first assume.
 Following is a short analysis of the desired throughput for the example program in \figurename~\ref{fig:example-program}.
@@ -94,6 +103,7 @@ The DFT work in parallel with the rest of the design, therefore adding no furthe
 With 800 cells, the time for each loop iteration then becomes a little over $3.2 \cdot 800 + 1.6 \cdot 800 + 128 = 3968$ cycles.
 32 words per 3968 cycles at 125 Mhz constitutes around 4 MB/s.
 The communication unit can therefore supply 50\% of the desired throughput, which should be acceptable for normal operation.
+A faster communication module is of course desirable, but it requires much more advanced logic that communicates through DMA with a custom driver.
 
 \footnotetext{
     The execution time of each instruction is detailed in Appendix~\ref{app:isa}.
