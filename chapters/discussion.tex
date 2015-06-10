@@ -12,58 +12,6 @@ Then spread all over, since DFT uses nearly all DSP slices.
 
 %==============================================================================%
 
-\section{Resource Usage}
-
-With a complete rewrite, it is interesting to see the differences in resource usage between equivalent setups.
-Due to architectural differences, the performance of the new design can not be perfectly matched with that of the previous, but it should be close enough to determine the general trend.
-
-The most closely matching configuration is:
-[LUT Configuration Bits] maximized to 2 in 2D and 8 in 3D,
-[Rules Tested In Parallel] set to 2,
-[Type Bits] set to 5,
-[State Bits] set to 1,
-[Fitness] set to Live Count
-and buffer sizes set to 256.
-Other parameters do not significantly influence resource usage, functionality or performance.
-
-In 3D, the live counter is four times faster, configuration is half as fast, and readback is an eight as fast.
-In 2D, configuation is a quarter as fast for 32x32 matrices.
-Due to different scaling in the old 2D design, no other matrix sizes have equivalent performance and have therefore been left out of the comparison.
-The results are presented in \tablename~\ref{tab:resource-usage}.
-
-\begin{table}[!ht]
-    \renewcommand{\arraystretch}{1.4}
-    \centering
-    \begin{tabular}{c|c|c|c|c|c|c|c|c}
-        \bfseries Matrix & \multicolumn{2}{c|}{\bfseries SRL16} & \multicolumn{2}{c|}{\bfseries LUTs} & \multicolumn{2}{c|}{\bfseries Registers} & \multicolumn{2}{c}{\bfseries BRAMs} \\
-        \bfseries (XxYxZ) & \bfseries Total & \bfseries \% & \bfseries Old & \bfseries New & \bfseries Old & \bfseries New & \bfseries Old & \bfseries New \\
-        \hline
-        32x32 & 2048 & 32.0 & 14858 & 11277 & 16259 & 7043 & 38 & 53 \\
-        8x8x4 & 2048 & 32.0 & 6529 & 6265 & 6011 & 4495 & 55 & 47 \\
-        8x8x8 & 4096 & 63.9 & 7668 & 8374 & 5726 & 4913 & 50 & 47 \\
-        8x16x4 & 4096 & 63.9 & 8234 & 8252 & 6531 & 4957 & 50 & 47 \\
-        10x10x8 & 6400 & 99.9 & – & 11313 & – & 5832 & – & 52 \\
-    \end{tabular}
-    \caption[Resource usage]{
-        Resource usage without DFT compared to the old design with most equivalently configured setup and performance.
-        The old numbers are from \cite{stovneng2014sblock}.
-    }
-    \label{tab:resource-usage}
-\end{table}
-
-The new design appears to be slightly more efficient in 3D.
-It uses about the same amount of LUTs, but substantially fewer registers and slightly fewer BRAMs.
-This is a bit surprising considering the four times larger adder tree.
-In 2D, both LUT and register usage are drastically reduced.
-
-The size of the matrix is limited by the number of available 16-bit shift registers (SRL16s), as each sblock uses 2 in 2D and 8 in 3D.
-Since the new design is more finely tunable, larger matrices can be fitted onto the chip.
-A 10x10x8 matrix design uses 99.9\% of the 6408 shift registers on the Spartan-6 LX45T, and has been successfully implemented and tested with the above configuration.
-It will even implement with [Rules Tested In Parallel] increased to 6 and [Fitness] set to DFT.
-At this point, routing becomes the main problem, as there are still many logic resources left.
-
-%==============================================================================%
-
 \section{Performance}
 
 \TODO
@@ -177,13 +125,70 @@ while counter[0] != 10000:
 \end{figure}
 
 On the new platform, the program completes in 8.2 seconds.
-This is exactly twice of what it should take at 125 MHz.
+This is exactly twice of what it should take given 125 MHz speed.
 Further study show that the PCI Express Endpoint Block is to blame as it actually halves the frequency to 62.5 MHz at the user side.
-This fact is barely mentioned once in \cite{ug672} and is never referred to by the IP core generator or example design.
+This fact is barely mentioned in \cite{ug672} and is never referred to by the IP core generator or example design.
 It has also gone unnoticed in simulations since the communication module has been replaced with a special simulation version.
-Still, running at half speed, the platform is only about 30\% slower than the previous design for this test.
-During synthesis and implementation, the constraint of 125 MHz appears to have been applied to all signals though, which means that is possible to (again) separate the communication module into a slower clock domain and thus double the speed of the remaining design.
-This would make it 35\% faster than the previous design instead.
+
+During synthesis and implementation, the constraint of 125 MHz have been applied to all signals though, and the critical paths are about 7.9 ns.
+This means that is possible to (again) separate the communication module into a slower clock domain to return the remaining design to full speed.
+The new design would then be 35\% faster instead of 30\% slower for this test.
+
+Unfortunately, the late discovery of the problem leaves insufficient time to fix it, but it should be fairly straightforward.
+For the purpose of other speed and resource comparisons, the platform is therefore assumed to run at 125 MHz.
+
+%==============================================================================%
+
+\section{Resource Usage}
+
+With a complete rewrite, it is interesting to see the differences in resource usage between equivalent setups.
+Due to architectural differences, the performance of the new design can not be perfectly matched with that of the previous, but it should be close enough to determine the general trend.
+The following configuration assume that the design is running at the intended 125 MHz.
+
+The most closely matching configuration is:
+[LUT Configuration Bits] maximized to 2 in 2D and 8 in 3D,
+[Rules Tested In Parallel] set to 2,
+[Type Bits] set to 5,
+[State Bits] set to 1,
+[Fitness] set to Live Count
+and buffer sizes set to 256.
+Other parameters do not significantly influence resource usage, functionality or performance.
+
+In 3D, the live counter is four times faster, configuration is half as fast, and readback is an eight as fast.
+In 2D, configuation is a quarter as fast for 32x32 matrices.
+Due to different scaling in the old 2D design, no other matrix sizes have equivalent performance and have therefore been left out of the comparison.
+The results are presented in \tablename~\ref{tab:resource-usage}.
+
+\begin{table}[!ht]
+    \renewcommand{\arraystretch}{1.4}
+    \centering
+    \begin{tabular}{c|c|c|c|c|c|c|c|c}
+        \bfseries Matrix & \multicolumn{2}{c|}{\bfseries SRL16} & \multicolumn{2}{c|}{\bfseries LUTs} & \multicolumn{2}{c|}{\bfseries Registers} & \multicolumn{2}{c}{\bfseries BRAMs} \\
+        \bfseries (XxYxZ) & \bfseries Total & \bfseries \% & \bfseries Old & \bfseries New & \bfseries Old & \bfseries New & \bfseries Old & \bfseries New \\
+        \hline
+        32x32 & 2048 & 32.0 & 14858 & 11277 & 16259 & 7043 & 38 & 53 \\
+        8x8x4 & 2048 & 32.0 & 6529 & 6265 & 6011 & 4495 & 55 & 47 \\
+        8x8x8 & 4096 & 63.9 & 7668 & 8374 & 5726 & 4913 & 50 & 47 \\
+        8x16x4 & 4096 & 63.9 & 8234 & 8252 & 6531 & 4957 & 50 & 47 \\
+        10x10x8 & 6400 & 99.9 & – & 11313 & – & 5832 & – & 52 \\
+    \end{tabular}
+    \caption[Resource usage]{
+        Resource usage without DFT compared to the old design with most equivalently configured setup and performance.
+        The old numbers are from \cite{stovneng2014sblock}.
+    }
+    \label{tab:resource-usage}
+\end{table}
+
+The new design appears to be slightly more efficient in 3D.
+It uses about the same amount of LUTs, but substantially fewer registers and slightly fewer BRAMs.
+This is a bit surprising considering the four times larger adder tree.
+In 2D, both LUT and register usage are drastically reduced.
+
+The size of the matrix is limited by the number of available 16-bit shift registers (SRL16s), as each sblock uses 2 in 2D and 8 in 3D.
+Since the new design is more finely tunable, larger matrices can be fitted onto the chip.
+A 10x10x8 matrix design uses 99.9\% of the 6408 shift registers on the Spartan-6 LX45T, and has been successfully implemented and tested with the above configuration.
+It will even implement with [Rules Tested In Parallel] increased to 6 and [Fitness] set to DFT.
+At this point, routing becomes the main problem, as there are still many logic resources left.
 
 %==============================================================================%
 
