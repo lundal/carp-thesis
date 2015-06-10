@@ -26,25 +26,26 @@ In \cite{sipper1997poe}, Sipper et al. partition these technologies into a space
 \end{figure}
 
 The focus of this thesis is on the two first axes, phylogeny and ontogeny, in the form of artificial evolution and development.
-This chapter goes into details about the two concepts, some the technologies that can take advantage of them and those that are used in this thesis.
+This chapter goes into details about the two concepts, some of the technologies that can take advantage of them and other technologies that are used in this thesis.
 
 %==============================================================================%
 
 \section{Evolution}
 
-Evolution is the natural process that over time advances species by letting the fit survive and the weak perish.
-Essentially, each generation tries slight variations to try to gradually create a species that is more fitting to the environment, in effect creating a better solution to the problem of life.
+Evolution is the natural process that over time advances species by letting the fit survive to reproduce while the less fit perish.
+Essentially, each generation includes slight variations to gradually create a species that is more adapted to the environment by having the fit traits passed on to subsequent generations.
+In nature, this effectively creates more fit solutions to the problem of life, which is to reproduce in a changing environment.
 
-Similarly, artificial evolution can be used by computers to evolve solutions instead of manually creating them.
-Evolutionary Algorithms (EAs) can search millions of possible solutions, guided by their fitness scores, and find solutions that humans would never have imagined.
-In contrast to nature, where years usually pass between generations, powerful computers can create hundreds of generations every second and find good solutions in relative short time.
+Similarly, artificial evolution can be used by computers to evolve solutions instead of manually creating them, by the means of Evolutionary Algorithms (EAs) \cite{holland1992adaptation}.
+EAs can search millions of possible solutions, guided by their fitness scores, and find solutions that humans would never have imagined.
+In contrast to nature, where years usually pass between generations, powerful computers can create hundreds of generations every second and find good solutions in relatively short time.
 
 EAs have been successfully applied to many scientific tasks.
-For example, NASA has had great success with evolving antenna designs \cite{hornby2006antenna}, and Haddow and Tufte have evolved robot controllers \cite{haddow1999robot}.
+For example, NASA has had great success with evolving antenna designs \cite{hornby2006antenna}, and Floreano and Mondada have evolved robot controllers with homing navigation \cite{floreano1996evolution}.
 
 \subsection{Genetic Algorithms}
 
-A Genetic Algorithm (GA) is a very common type of EA.
+A very common type of EA is the Genetic Algorithm (GA) presented in \cite{golberg1989ga}.
 It represents each solution as a genotype, a binary string used as a blueprint to create the solution itself, called a phenotype.
 The genotype is comparable to nature's DNA, and it is this genetic material which is modified in the evolutionary process.
 
@@ -58,7 +59,7 @@ The genotype is comparable to nature's DNA, and it is this genetic material whic
     \label{fig:ga}
 \end{figure}
 
-The GA process is shown in \figurename~\ref{fig:ga}.
+The GA process is shown in \figurename~\ref{fig:ga} and works as follows:
 First, a base population with random genotypes is generated.
 Then, each phenotype is constructed and evaluated using a fitness function.
 If a solution has a fitness score above a set threshold, the process stops.
@@ -155,15 +156,10 @@ Each character symbolizes a branch, twist, turn, stretch or other feature.
     \end{subfigure}
     \caption[Dragon curve]{
         Heighway dragon curve generated with L-System using \cite{lsystemgenerator}.
-        The starting string is $FX$ and the rules are $X \rightarrow XRYFR$ and $Y \rightarrow LFXLY$ where $F$ is forward, $R$ is a right turn and $L$ is a left turn\footnotemark.
+        The starting string is $FX$ and the rules are $X \rightarrow XRYFR$ and $Y \rightarrow LFXLY$ where $F$ is forward, $R$ is a right turn and $L$ is a left turn.
     }
     \label{fig:dragon-curve}
 \end{figure}
-
-\footnotetext{
-    \cite{lsystemgenerator} uses $+$, $-$ and a customizable angle instead of $L$ and $R$.
-    \todo{remove?}
-}
 
 In addition to plants, L-Systems are also suitable for generating other structures that grow and branch.
 \figurename~\ref{fig:dragon-curve} shows how they can be used to generate fractals, specifically the dragon curve \cite{gardner1967heighway}.
@@ -446,13 +442,9 @@ For 1-bit cell states, the prototype is capable of $3 \cdot 10^9$ cell updates p
 
 In \cite{degaris2001cbm}, de Garis et al. introduces the CAM-Brain Machine (CBM), an FPGA-based platform that implements a CA-based neural network that is evolved using a GA.
 It is part of de Garis' ``Artificial Brain Project'', which goal is to build an artificial brain with 1 billion neurons.
-The CBM is a stepping stone in the right direction, and allows the formation an artificial brain with nearly 75 million neurons in a CA of 843 million cells that is split across 64640 modules.
-
-The CBM implements the Collect and Distribute (CoDi) based neural network model from \cite{gers1998codi}, which goal is to accelerate brain evolution and simulation speeds by a factor of 500 compared to CAM-8, to facilitate the higher update speeds required for real-time control of a robot.
-It is a 3D CA with four cell types: Neurons, axons, dendrites and empty.
-Neurons essentially perform a threshold function over their inputs, while axons carry the neural signals to other neurons, and dendrites consolidate the signals from multiple axons.
-The CA is initialized with evenly spaced neurons, and then developed by alternately growing axons and dendrites from the neurons.
-Which cells grow axons or dendrites are determined by artificial evolution.
+The CBM is a stepping stone in the right direction, and allows the formation an artificial brain with nearly 75 million neurons in a CA of 843 million cells.
+It consists of up to 64640 modules, each containing 24x24x24 cells split over 72 FPGAs, of which 1152 cells can be neurons.
+Modules are evolved separately using the Collect and Distribute based neural network model from \cite{gers1998codi}, and then connected by human design.
 
 Brain building is still mostly in the ``proof of concept'' phase, so to attract attention to further research they designed a cute life-sized robot kitten that would be controlled by the CBM.
 The work to design and evolve it's brain architecture was expected to continue well into the 2000s, but was halted when the research institution went bankrupt in 2001 \cite{giles2001utopian}.
@@ -483,3 +475,7 @@ Users can then touch molecules to disable them, forcing the cell to move its fun
 
 The BioWall's cellular structure is well suited for many other bio-inspired applications as well.
 Examples are 2D CAs such as the Game of Life \cite{gardner1970life}, self-replicating structures and artificial neural networks.
+
+\subsection{Firefly}
+
+\todo{if time}
