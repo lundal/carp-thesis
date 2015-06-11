@@ -3,44 +3,21 @@ How it was to implement a CA system inside an FPGA.
 Distributed and local communication allows it to fills entire FPGA.
 Perfect for 2D structure, extra routing challenges with 3D.
 
-\TODO
-Many resources left.
-Scaling restricted by routing; almost all paths are critical.
-CA shift registers are spread over whole FPGA.
-It is summed into one bram (livecount).
-Then spread all over, since DFT uses nearly all DSP slices.
-
 %==============================================================================%
 
 \section{Performance}
 
-\TODO
-
 As with the previous 3D design, the performance of certain modules scale with the matrix width (X), as they operate on one row of cells at a time.
 The main ones are are development, configuration and readback.
 
-However, LUT and register usage are not issues for 3D; routing and available shift registers are.
-Shift registers set max number of cells.
-Routing limits livecounter + rule testers.
-In 2D, LUTs and like routing are the major issues.
+In addition, synthesis parameters allow the performance of some components to be scaled up or down in trade for resource usage.
+[Rules Tested In Parallel] can be increased to greatly improve the performance of development.
+The speed is equivalent to the previous design when set to 2, but designs have been successfully implemented with values of up to 16, depending on matrix size and configuration.
+[LUT Configuration Bits] controls the speed of CA configuration, which at maximum value is currently a bit slower than the previous design.
+Lower values ease routing however, which allow implementation of designs with larger matrices.
 
-Closest to Støvnengs CA in 2D:
-[rules tested in parallel] = 2.
-[lut configuration bits] = 2.
-
-Speed differences:
-1/4x config.
-
-Closest to Støvnengs CA in 3D:
-[rules tested in parallel] = 2.
-[lut configuration bits] = 8.
-
-Speed differences:
-4x rsf/live counter.
-1/2x config.
-1/8x readback.
-
-\todo{best performance}
+The speed of the DFT can be adjusted by setting the number of DSP slices and the transform size.
+However, as the fitness module is exchangeable, parameters have to be specified at the top of the respective VHDL file.
 
 \subsection{Communication}
 
@@ -48,9 +25,13 @@ Speed differences:
 
 The latency is measured by averaging the times for 100000 pings.
 Each ping is the execution a read\_type instruction followed by retrieval of the type.
-Since all retrieval functions check the amount of buffer data first, this totals to 2.5 round trips per ping.
+Since all retrieval functions check the amount of buffer data first, this totals to 2.5 PCI Express round trips\footnotemark plus one one instruction execution per ping.
 
-The throughput is measured by 1000 executions of read\_types instructions followed by retrieval of their data.
+\footnotetext{
+    Sending to the board requires no confirmation, and can thus be seen as half of a round trip.
+}
+
+The throughput is measured by 1000 executions of the read\_types instruction followed by retrieval of their data.
 The calculated number of words transferred are then compared to the time.
 The reads are interleaved so that an empty buffer is never encountered.
 
@@ -114,7 +95,7 @@ A faster communication module is of course desirable, but it requires much more 
     The execution time of each instruction is detailed in Appendix~\ref{app:isa}.
 }
 
-\subsection{Speed Test}
+\subsection{Cellular Automaton}
 
 Previous hardware designs have been profiled by the test program in \figurename~\ref{fig:test-program}, with an 8x8 matrix and 6 development rules.
 It is mainly a stress-test of the CA stepping speed, and the fastest speed was 6.3 seconds in both \cite{djupdal2003sblock} and \cite{stovneng2014sblock}.
@@ -144,7 +125,7 @@ Further study show that the PCI Express Endpoint Block is to blame as it actuall
 This fact is barely mentioned in \cite{ug672} and is never referred to by the IP core generator or example design.
 It has also gone unnoticed in simulations since the communication module has been replaced with a special simulation version.
 
-During synthesis and implementation, the constraint of 125 MHz have been applied to all signals though, and the critical paths are about 7.9 ns.
+During synthesis and implementation, the constraint of 125 MHz have been applied to all signals though, and the critical paths require about 7.9 ns.
 This means that is possible to (again) separate the communication module into a slower clock domain to return the remaining design to full speed.
 The new design would then be 35\% faster instead of 30\% slower for this test.
 
@@ -162,6 +143,7 @@ The following configuration assume that the design is running at the intended 12
 The most closely matching configuration is:
 [LUT Configuration Bits] maximized to 2 in 2D and 8 in 3D,
 [Rules Tested In Parallel] set to 2,
+[Rule Amount] set to 256,
 [Type Bits] set to 5,
 [State Bits] set to 1,
 [Fitness] set to Live Count
@@ -201,8 +183,15 @@ In 2D, both LUT and register usage are drastically reduced.
 The size of the matrix is limited by the number of available 16-bit shift registers (SRL16s), as each sblock uses 2 in 2D and 8 in 3D.
 Since the new design is more finely tunable, larger matrices can be fitted onto the chip.
 A 10x10x8 matrix design uses 99.9\% of the 6408 shift registers on the Spartan-6 LX45T, and has been successfully implemented and tested with the above configuration.
-It will even implement with [Rules Tested In Parallel] increased to 6 and [Fitness] set to DFT.
-At this point, routing becomes the main problem, as there are still many logic resources left.
+It will even implement with [Rules Tested In Parallel] increased to 6 and [Fitness] set to a DFT using 32 out of the 58 available DSP slices.
+
+At this point, routing becomes the main problem, as there are still many logic resources left but nearly all paths are of critical length.
+Both the shift registers and DSP slices are spread across the entire FPGA.
+This means that values from the sblocks must be routed from the entire FPGA into one location when counting and then spread out to the entire FPGA again when computing the DFT.
+
+It 2D, the design clogs up before all shift registers can be used.
+The largest matrix that has therefore been successfully implemented is 50x50.
+This is with the above configuration, except for [LUT Configuration Bits] and [Rules Tested In Parallel] reduced to 1, but with [Fitness] set to DFT.
 
 %==============================================================================%
 
@@ -255,6 +244,6 @@ The remaining could not be removed without possibly causing trouble later, due t
 For a standard 3D design, this reduces the amount of warnings from around 500 to about 50 \footnotemark.
 
 \footnotetext{
-    Synthesizing from within ISE produces around 730 warnings opposed to using XST directly.
+    Synthesizing from within ISE produces around 730 warnings, opposed to the 500 when using XST directly.
     However, both are filtered down to about 50.
 }
