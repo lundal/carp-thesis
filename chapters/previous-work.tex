@@ -3,19 +3,18 @@ The original implementation was made by Djupdal in 2003.
 It was then extended with a range of various output methods by Aamodt in 2005.
 Finally, it was further extended and optimized in expectation of new hardware by Støvneng in 2014.
 
-\TODO
-Functionality.
-Purpose.
-\figurename~\ref{fig:overview-general}.
-
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=28\block]{figures/overview-general}
     \caption[System design]{
-        High-level system design.
+        General system design.
     }
     \label{fig:overview-general}
 \end{figure}
+
+The platform is more or less a ``proof of principle'' for how a CA can be combined with development and evolution to create a powerful bio-inspired system.
+The general system design, which is based on the setup in Section~\ref{sec:evo-devo-ca}, is depicted in \figurename~\ref{fig:overview-general}:
+An FPGA implements the CA and development process while evolution is performed by a host computer.
 
 %==============================================================================%
 
