@@ -1,22 +1,11 @@
 In this paper, NTNU's CA research platform has been completely re-engineered.
 The overall structure is equivalent, but the hardware design has been made more modular, configurable and structured, and the software API more adaptable, complete and user-friendly.
 The 2D and 3D designs have been unified and any external dependencies removed.
+It should also be easily extendable to larger FPGAs.
 
-It has been thoroughly tested in hardware and solves nearly all issues with the previous design.
-There are however some issues with the communication module, which is ironic as its implementation was the original task of the project.
-However, when the design is restored to 125 MHz, the raw CA performance should be 35\% higher in 2D and about 300\% higher in 3D at lower or equivalent resource usage.
+The platform has been thoroughly tested in hardware and all issues with the previous design that are listed in Table~\ref{tab:issues} have been resolved.
+There are however some performance setbacks with the communication module, which is slightly ironic as its implementation was the original task of the project.
+However, when the design is restored to 125 MHz, the raw CA performance should be about 35\% higher in 2D and 300\% higher in 3D at lower or equivalent resource usage.
 
-In essence, this thesis provides a complete tool for CA research and experimentation.
-It allows study of self-organization, adaptation and... \TODO
-
-It can be integrated into any system with a recent version of Linux and an available PCI Express socked.
-
-\todo{remove these notes}
-Complete tool for CA research.
-Tried and tested (examples).
-Good performance.
-Should be easily extendable for larger FPGAs.
-Can be integrated into current systems.
-Research platform for self-org, adaptation, ++
-List use cases.
-Thoroughly tested.
+In essence, this thesis provides a complete tool for CA research and experimentation, and allows study of self-organization, adaptation, replication and other applicable biological processes.
+It can be integrated into any computer system with a recent version of Linux and an available PCI Express socked.
