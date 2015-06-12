@@ -1,27 +1,56 @@
-\TODO
+% Motivation
+
+It is predicted that conventional CPU architectures will be unable to scale any further in about a decade \cite{esmaeilzadeh2011end}.
+Many engineers are therefore investigating radically different technologies in hope of finding viable alternatives.
+Some have looked towards nature; at biological organisms whose complexities far outweigh what humans have so far been able to engineer.
+Additionally, biological systems exhibit a wide range of characteristics that could possibly revolutionize computing, such as replication, learning, graceful degradation, robustness, redundancy, self-assembly and self-repair.
+
+% Method
+
+\todo{unfinished}
+
+This has formed the field of bio-inspired computation.
+The goal is to use biologically-inspired techniques in/to...
+
+Artificial evolution and development.
+Artificial neural networks, cellular automata.
+
 Unconventional machines – what are they?
 Hardware implementations are much faster than simulations.
 FPGAs are not as fast as ASICs, but a FPGA design is simple to port to ASIC.
 CARP is a proof-of-principle.
 
-Living organisms exhibit a range of desirable characteristics:
-Graceful degradation, Robustness, Redundancy, self-assembly.
-
-\todo{Motivation}
+Motivation:
 Research tool.
 Self-assembly.
 Performance/energy gain.
 
-\todo{Method}
+Method:
 Bio inspired.
 Evolution and development.
 
-\todo{Conseptual description of machine}
-CA + Development + Host API
+\todo{end unfinished}
 
-\todo{Implementation in FPGA}
+% Implementation
 
-The initial work was done by Dupdal, and was promptly extended by Aamodt.
+Bio-inspired computing has been an area of research at NTNU for more than a decade.
+In 2002, NTNU invested in dedicated FPGA hardware for the purpose of creating a platform for experimentation with Cellular Automata (CAs) in combination with artificial evolution and development.
+
+The initial work was done by Djupdal, and then extended by Aamodt shortly after.
+The CA was implemented as a matrix of sblocks, a form of reprogrammable CA cells, connected to a development unit capable of simulating cell growth and change.
+The hardware platform was connected to and controlled by a computer over a PCI connection.
+
+A general use-case for the platform is to have the computer run a Genetic Algorithm (GA), where the genotype represents the development rules and initial CA state.
+Development is then used to create a phenotype in the form of a CA structure, which can be used for computation and to produce a fitness value.
+
+In expectation of new hardware with a larger FPGA and faster PCI Express connection, Støvneng refurbished the design in 2014.
+He took advantage of the added resources to greatly improve the performance of the platform, giving a speedup of 4 or more for many operations.
+Additionally, he extended the CA into 3D and added a DFT.
+However, since the hardware did not arrive in time, the new design was only tested in simulation and the communication interface was not upgraded.
+
+The task of the specialization project leading up to this thesis was to finish the extended platform by implementing a new PCI Express communication module, and to verify the platforms functionality in hardware.
+The verificaton process uncovered many issues, some of which made the platform unusable, and others which made debugging and fixing very difficult.
+This led to the decision of rebuilding the entire platform from scratch, which is \todo{covered by -> better expression} this thesis.
 
 %==============================================================================%
 
