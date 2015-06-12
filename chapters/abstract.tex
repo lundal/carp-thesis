@@ -1,15 +1,22 @@
-\TODO
+Nature has many attractive properties that engineers hope to incorporate into man-made technology to revolutionize computing.
+Properties include, among other things, reproduction, learning, adaption and massive parallelism.
+One bio-inspired computational structure is the Cellular Automaton (CA), which mimic the massively parallel, distributed and locally interactive nature of multi-cellular organisms.
 
-Nature has many attractive properties such as self-repair, scalability, adaptation, massive parallelism, distributive...
+At NTNU, three master theses have gone into creating an Field-Programmable Gate Array (FPGA) platform whose goal is to allow research on CAs in combination with artificial evolution and development.
+The main principle is that a Genetic Algorithm (GA) is used to create development rules, which are used to create a CA structure, which can finally be executed to compute a fitness value.
+The fitness value is then fed back into the GA and the process repeated until a good solution is found.
 
-There are hopes that using bio-inspired methods to integrate those properties into man-made technology will revolutionize computing.
+In expectation of new hardware with a larger FPGA, the purpose of most recent thesis was to take advantage of increased resources to improve speed and to extend the CA into 3D.
+However, the hardware failed to be delivered on time due to manufacturing problems.
+This caused the new communication module to remain unimplemented and only allowed rudimentary simulation testing.
 
-NTNU has created an FPGA platform, whose goal is to allow research on CAs.
+In a specialization project leading up to this thesis, a new communication module was implemented and integrated into the platform, allowing proper hardware verification.
+It showed that the design had many issues, including failing instructions, extensive use of outdated features and separate versions for 2D and 3D CAs.
+In this thesis, the entire platform has therefore been revised and rebuilt.
 
-Due to many problems with existing design, the entire platform has been rebuilt with a more modular cleaner, and scalable design.
+The new platform solves all major issues with the previous and adds further enhancements like more advanced control flow and an adaptive software API.
+Higher and more fine-tunable build parameters allow wider adjustment of performance and make it possible to fit larger CAs within the FPGA.
 
-Additions include better control flow and adaptive API.
-
-The platform is shown to work correctly through unit tests and example programs.
-
-It is a complete system for further CA research.
+The functionality of all instructions is verified in hardware and a program that creates replicating structures is demonstrated, proving that the platform is complete and can immediately be taken into use for research.
+A clocking issue with the communication module is currently reducing the entire platform to half speed, but if fixed, the raw CA performance will be 35\% higher in 2D and 300\% higher in 3D compared to the previous design.
+For those performance configurations, resource usage is significantly lower in 2D and equivalent in 3D.
