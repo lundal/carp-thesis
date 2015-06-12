@@ -198,13 +198,14 @@ This is with the above configuration, except for [LUT Configuration Bits] and [R
 \section{Challenges}
 \label{sec:challenges}
 
-\TODO
-
 ISE lacks support for VHDL-2008, which is required to use custom types with generics.
 All array signals must therefore be converted to and from std\_logic\_vectors before exiting and after entering modules.
 Hopefully, this is implemented in a way that is both organized and understandable.
 
-\TODO
+It appears that the USB cable driver for JTAG provided by Xilinx has some problems with newer Linux kernels, and thus did not detect the board.
+Thankfully, a third-party driver was found at \cite{usbdriver} which proved to be compatible and solved the problem.
+
+\todo{more? copy from report?}
 
 %==============================================================================%
 
