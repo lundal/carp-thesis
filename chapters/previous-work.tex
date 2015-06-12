@@ -92,9 +92,6 @@ Extending the platform into the third dimension was also a lucrative thought, as
 It was also desired to have a Discrete Fourier Transform (DFT) for interpretation of the RSF data; it should give very useful data according to Berg's research \cite{berg2013ca}.
 The task of realizing this was taken on by Støvneng \cite{stovneng2014sblock}.
 
-An overview of the hardware platform with Støvneng's additions and optimizations is shown in \figurename~\ref{fig:overview-stovneng}.
-The only addition is the DFT, but nearly all units has been optimized, yielding a speedup of 4 for most operations.
-
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=42\block]{figures/overview-stovneng}
@@ -105,14 +102,15 @@ The only addition is the DFT, but nearly all units has been optimized, yielding 
     \label{fig:overview-stovneng}
 \end{figure}
 
+An overview of the hardware platform with Støvneng's additions and optimizations is shown in \figurename~\ref{fig:overview-stovneng}.
+The only addition is the DFT, but nearly all units has been optimized, yielding a speedup of 4 for most operations.
+
 Unfortunately, due to some challenges with manufacturing, Støvneng was unable to get hold of the new hardware for the duration of his project.
 The system was therefore only verified in simulation, and the PCI communication unit was not upgraded for the PCI Express connection on the new board.
 
 %==============================================================================%
 
 \section{Issues}
-
-\todo{move me maybe?}
 
 The original idea was to complete Støvneng's design by implementing the PCI Express module and driver in the specialization project leading up to this thesis, and then proceed to use the platform for research.
 However, after successful integration, verification of the platform revealed multiple serious issues, which are listed in Table~\ref{tab:issues}.
