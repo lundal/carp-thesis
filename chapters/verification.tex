@@ -20,9 +20,24 @@ Although the fitness modules have no test programs, the DFT module and the DSP w
 
 Testing shows that the DFT produces slightly different output than before.
 This is likely due differences is rounding or expression structures between the VHDL and python implementations for generating the twiddle factors.
-However, compared to the output of numpy's real fft, the new module is about as precise as the previous.
+However, as shown in \tablename~\ref{tab:dft-precision}, the new module is more precise for the default number of twiddle decimals and can be scaled to be even more precise.
 
-\todo{DFT test results with standard variation / percentage error}
+\begin{table}[!ht]
+    \renewcommand{\arraystretch}{1.4}
+    \centering
+    \begin{tabular}{c|c|c|c}
+        \bfseries DFT & \bfseries Twiddle & \multicolumn{2}{c}{\bfseries Absolute Error} \\
+        \bfseries Version & \bfseries Decimals & \bfseries Maximum & \bfseries Average \\
+        \hline
+        Old & 6 & 7 & 0.86 \\
+        New & 6 & 2 & 0.59 \\
+        New & 12 & 1 & 0.11 \\
+    \end{tabular}
+    \caption[DFT error]{
+        Absolute error of new and old DFTs compared to numpy's rfft.
+    }
+    \label{tab:dft-precision}
+\end{table}
 
 %==============================================================================%
 
