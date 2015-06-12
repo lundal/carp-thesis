@@ -3,38 +3,17 @@
 It is predicted that conventional CPU architectures will be unable to scale any further in about a decade \cite{esmaeilzadeh2011end}.
 Many engineers are therefore investigating radically different technologies in hope of finding viable alternatives.
 Some have looked towards nature; at biological organisms whose complexities far outweigh what humans have so far been able to engineer.
-Additionally, biological systems exhibit a wide range of characteristics that could possibly revolutionize computing, such as replication, learning, graceful degradation, robustness, redundancy, self-assembly and self-repair.
+Additionally, biological systems exhibit a wide range of characteristics that could possibly revolutionize computing, such as reproduction, learning, adaption, massive parallelism, graceful degradation, self-assembly and self-repair.
 
 % Method
 
-\todo{unfinished}
-
-This has formed the field of bio-inspired computation.
-The goal is to use biologically-inspired techniques in/to...
-
-Artificial evolution and development.
-Artificial neural networks, cellular automata.
-
-Unconventional machines – what are they?
-Hardware implementations are much faster than simulations.
-FPGAs are not as fast as ASICs, but a FPGA design is simple to port to ASIC.
-CARP is a proof-of-principle.
-
-Motivation:
-Research tool.
-Self-assembly.
-Performance/energy gain.
-
-Method:
-Bio inspired.
-Evolution and development.
-
-\todo{end unfinished}
+This has formed the field of bio-inspired computation, where the principles of nature in the form of artificial evolution, development and learning are used in the creation of computer systems.
+Some focus on mimicking the structure of the human brain in the form of artificial neural networks, while others focus on the emergent behaviors from thousands of individual cells in Cellular Automata (CAs).
 
 % Implementation
 
 Bio-inspired computing has been an area of research at NTNU for more than a decade.
-In 2002, NTNU invested in dedicated FPGA hardware for the purpose of creating a platform for experimentation with Cellular Automata (CAs) in combination with artificial evolution and development.
+In 2002, NTNU invested in dedicated FPGA hardware for the purpose of creating a platform for experimentation with CAs in combination with artificial evolution and development.
 
 The initial work was done by Djupdal, and then extended by Aamodt shortly after.
 The CA was implemented as a matrix of sblocks, a form of reprogrammable CA cells, connected to a development unit capable of simulating cell growth and change.
@@ -49,15 +28,14 @@ Additionally, he extended the CA into 3D and added a DFT.
 However, since the hardware did not arrive in time, the new design was only tested in simulation and the communication interface was not upgraded.
 
 The task of the specialization project leading up to this thesis was to finish the extended platform by implementing a new PCI Express communication module, and to verify the platforms functionality in hardware.
-The verificaton process uncovered many issues, some of which made the platform unusable, and others which made debugging and fixing very difficult.
-This led to the decision of rebuilding the entire platform from scratch, which is \todo{covered by -> better expression} this thesis.
+The verification process uncovered many issues, some of which made the platform unusable, and others which made debugging and fixing very difficult.
+This led to the decision of revising and rebuilding the entire platform from scratch in this thesis.
 
 %==============================================================================%
 
 \section{Outline}
 
 The thesis is organized as follows:
-\todo{more?}
 
 \begin{itemize}
     \item Chapter \ref{ch:background} –
