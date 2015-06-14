@@ -261,7 +261,7 @@ The remaining pieces are then incorporated into the instruction, before it is pa
 \subsection{Fetch Handler}
 
 The Fetch Handler has three modes of operation: FetchCom, FetchMem and StoreMem.
-The modes and transitions are implemented as a state machine, which is shown in \figurename~\ref{fig:statemachine-fetch-handler}.
+They are implemented as states in a state machine, as shown in \figurename~\ref{fig:statemachine-fetch-handler}.
 
 \begin{figure}[!ht]
     \centering
@@ -301,7 +301,7 @@ By default, all modules are given a no-operation signal and multiplexers stay un
 Then, depending on the instruction's operation code, the control signal for the appropriate module is set, parameters (if any) are extracted and passed on to the module, and multiplexers are changed if needed.
 
 Each instruction will cause exactly one module to be activated in the Execute stage.
-This is to keep the design clean and reduce inter-module dependencies.
+This is to keep the design clean and to reduce inter-module dependencies.
 
 %==============================================================================%
 
@@ -498,15 +498,6 @@ The state machine, shown in \figurename~\ref{fig:statemachine-development}, ensu
 It is responsible for setting input and output addresses, activating pipeline stages and setting write signals.
 A complete timing diagram can be seen in \figurename~\ref{fig:wavediagram-development}.
 
-\begin{figure}[!ht]
-    \centering
-    \includegraphics[width=38\block]{statemachine-development}
-    \caption[Development module state machine]{
-        State machine controlling the Development module.
-    }
-    \label{fig:statemachine-development}
-\end{figure}
-
 \begin{sidewaysfigure}[!pt]
     \centering
     \includegraphics[width=\textwidth]{wavediagram-development}
@@ -515,6 +506,15 @@ A complete timing diagram can be seen in \figurename~\ref{fig:wavediagram-develo
     }
     \label{fig:wavediagram-development}
 \end{sidewaysfigure}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=38\block]{statemachine-development}
+    \caption[Development module state machine]{
+        State machine controlling the Development module.
+    }
+    \label{fig:statemachine-development}
+\end{figure}
 
 \subsection{Cell Fetcher}
 
