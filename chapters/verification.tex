@@ -1,18 +1,19 @@
 A system would be useless if it did not operate according to specification.
-Therefore, the platform has been thourougly verified through functional tests, performance analysis and example programs.
+Therefore, the platform has been thourougly verified through functional tests and an example program.
 
 %==============================================================================%
 
 \section{Functional Tests}
 
 The functionality of the platform has been verified under normal use conditions with the tests described in Appendix~\ref{app:test-descriptions}.
-Each test has a short description and a list of the instructions that are verified given it passes.
+Each test has a short description and a list of the instructions that it verifies, given that it passes.
 Together, the 11 tests cover all system functionality except for fitness, which is designed to be application specific.
 The tests are implemented as separate programs, but use a shared test framework.
 A full system reset is performed before each test.
 
-All tests are passed for all configurations of the platform that have been implemented, which includes 5x5, 16x16, 32x32, 4x4x4, 8x8x4, 8x8x8, 8x16x4 and 10x10x8 matrix sizes; 5, 6 and 8 type bits; 2, 4, 6, 7 and 8 rules tested in parallel; and 1, 2, 4 and 8 LUT configuration bits.
-This proves that the platform is functional and scalable.
+All tests are passed for all configurations of the platform that have been implemented.
+This includes 5x5, 16x16, 32x32, 4x4x4, 8x8x4, 8x8x8, 8x16x4 and 10x10x8 matrix sizes; 5, 6 and 8 type bits; 2, 4, 6, 7 and 8 rules tested in parallel; and 1, 2, 4 and 8 LUT configuration bits.
+The platform is therefore evaluated to be functional and scalable.
 
 \subsection{DFT}
 

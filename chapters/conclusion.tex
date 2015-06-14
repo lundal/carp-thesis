@@ -4,6 +4,7 @@ The 2D and 3D designs have been unified and any external dependencies removed.
 It should also be easily extendable to larger FPGAs.
 
 The platform has been thoroughly tested in hardware and all issues with the previous design that are listed in Table~\ref{tab:issues} have been resolved.
+It can fit CAs of up to 50x50 cells in 2D and 10x10x8 cells in 3D on a Spartan-6 LX45T.
 There are however some performance setbacks with the communication module, which is slightly ironic as its implementation was the original task of the project.
 However, when the design is restored to 125 MHz, the raw CA performance should be about 35\% higher in 2D and 300\% higher in 3D at lower or equivalent resource usage.
 

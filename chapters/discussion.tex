@@ -8,7 +8,7 @@ Stacked mode.
 
 \section{Performance}
 
-As with the previous 3D design, the performance of certain modules scale with the matrix width (X), as they operate on one row of cells at a time.
+As with the previous 3D design, the performance of certain modules scale with the matrix width, as they operate on one row of cells at a time.
 The main ones are are development, configuration and readback.
 
 In addition, synthesis parameters allow the performance of some components to be scaled up or down in trade for resource usage.
@@ -26,7 +26,7 @@ However, as the fitness module is exchangeable, parameters have to be specified 
 
 The latency is measured by averaging the times for 100000 pings.
 Each ping is the execution a read\_type instruction followed by retrieval of the type.
-Since all retrieval functions check the amount of buffer data first, this totals to 2.5 PCI Express round trips\footnotemark plus one one instruction execution per ping.
+Since all retrieval functions check the amount of buffer data first, this totals to 2.5 PCI Express round trips\footnotemark plus one instruction execution per ping.
 
 \footnotetext{
     Sending to the board requires no confirmation, and can thus be seen as half of a round trip.
@@ -52,12 +52,12 @@ The reads are interleaved so that an empty buffer is never encountered.
 \end{table}
 
 The results are presented in \tablename~\ref{tab:communication-performance}.
-The latency appears to be decent in low-latency mode, which is almost equivalent to the first buffer check succeeding.
-Normal mode is around \SI{50}{\micro\second} slower as it fails the first check and therefore waits.
+The latency appears to be decent in low-latency mode, which is almost equivalent to succeeding the buffer check on the first try.
+Normal mode is around \SI{50}{\micro\second} slower as it fails the first check and therefore sleeps.
 The delay between checks is only set to \SI{1}{\micro\second}, but it is likely increased due to operating system scheduling.
 
 The throughput is not exceptional at around 1\% of the 256MB/s that the PCI Express endpoint block is theoretically capable of \cite{ug672}.
-This is likely due to the simplistic PIO scheme that require that all transfers go through the CPU.
+This is likely due to the simplistic PIO scheme that requires that all transfers are processed by the CPU.
 However, this is not as bad as one would first assume.
 Following is a short analysis of the desired throughput for the example program in \figurename~\ref{fig:example-program}.
 
@@ -86,7 +86,8 @@ Assume the following synthesis parameters:
 and the matrix sized to 10x10x8.
 
 That brings development speed to 3.2 cycles/cell and configuration speed to 1.6 cycles/cell (plus overhead)\footnotemark.
-The DFT work in parallel with the rest of the design, therefore adding no further delay, and produces 32 words of data after each 128 steps.
+The DFT work in parallel with the rest of the design, using less time, therefore adding no further delay.
+It produces 32 words of data after every 128 CA steps.
 With 800 cells, the time for each loop iteration then becomes a little over $3.2 \cdot 800 + 1.6 \cdot 800 + 128 = 3968$ cycles.
 32 words per 3968 cycles at 125 Mhz constitutes around 4 MB/s.
 The communication unit can therefore supply 50\% of the desired throughput, which should be acceptable for normal operation.
@@ -98,7 +99,7 @@ A faster communication module is of course desirable, but it requires much more 
 
 \subsection{Cellular Automaton}
 
-Previous hardware designs have been profiled by the test program in \figurename~\ref{fig:test-program}, with an 8x8 matrix and 6 development rules.
+Previous hardware designs have been profiled by the test program in \figurename~\ref{fig:test-program} when synthesized with an 8x8 matrix and 6 development rules.
 It is mainly a stress-test of the CA stepping speed, and the fastest speed was 6.3 seconds in both \cite{djupdal2003sblock} and \cite{stovneng2014sblock}.
 
 \begin{figure}[!ht]
@@ -122,12 +123,12 @@ while counter[0] != 10000:
 
 On the new platform, the program completes in 8.2 seconds.
 This is exactly twice of what it should take given 125 MHz speed.
-Further study show that the PCI Express Endpoint Block is to blame as it actually halves the frequency to 62.5 MHz at the user side.
-This fact is barely mentioned in \cite{ug672} and is never referred to by the IP core generator or example design.
+Further study show that the PCI Express Endpoint Core is to blame as it actually halves the frequency to 62.5 MHz at the user side.
+This fact is barely mentioned in \cite{ug672} and is never referred to by Xilinx' core generator or example design.
 It has also gone unnoticed in simulations since the communication module has been replaced with a special simulation version.
 
 During synthesis and implementation, the constraint of 125 MHz have been applied to all signals though, and the critical paths require about 7.9 ns.
-This means that is possible to (again) separate the communication module into a slower clock domain to return the remaining design to full speed.
+This means that it is possible to (again) separate the communication module into a slower clock domain to return the remaining design to full speed.
 The new design would then be 35\% faster instead of 30\% slower for this test.
 
 Unfortunately, the late discovery of the problem leaves insufficient time to fix it, but it should be fairly straightforward.
@@ -178,11 +179,11 @@ The results are presented in \tablename~\ref{tab:resource-usage}.
 
 The new design appears to be slightly more efficient in 3D.
 It uses about the same amount of LUTs, but substantially fewer registers and slightly fewer BRAMs.
-This is a bit surprising considering the four times larger adder tree.
-In 2D, both LUT and register usage are drastically reduced.
+This is a bit surprising considering the four times larger adder tree in the Live Counter.
+In 2D, both LUT and register usage are drastically reduced while BRAM usage has gone up.
 
 The size of the matrix is limited by the number of available 16-bit shift registers (SRL16s), as each sblock uses 2 in 2D and 8 in 3D.
-Since the new design is more finely tunable, larger matrices can be fitted onto the chip.
+Since the new design is more finely tunable, larger matrices can fit onto the chip.
 A 10x10x8 matrix design uses 99.9\% of the 6408 shift registers on the Spartan-6 LX45T, and has been successfully implemented and tested with the above configuration.
 It will even implement with [Rules Tested In Parallel] increased to 6 and [Fitness] set to a DFT using 32 out of the 58 available DSP slices.
 
@@ -203,7 +204,7 @@ ISE lacks support for VHDL-2008, which is required to use custom types with gene
 All array signals must therefore be converted to and from std\_logic\_vectors before exiting and after entering modules.
 Hopefully, this is implemented in a way that is both organized and understandable.
 
-It appears that the USB cable driver for JTAG provided by Xilinx has some problems with newer Linux kernels, and thus did not detect the board.
+It appears that the USB cable driver for JTAG provided by Xilinx has some problems with newer Linux kernels; it certainly does not detect the board in the current hardware setup.
 Thankfully, a third-party driver was found at \cite{usbdriver} which proved to be compatible and solved the problem.
 
 \todo{more? copy from report?}
@@ -212,9 +213,8 @@ Thankfully, a third-party driver was found at \cite{usbdriver} which proved to b
 
 \section{Future work}
 
-The most important issue that needs remediation is the downclocking caused by the PCI Express Endpoint, which halves the performance of the entire design.
-The relatively straightforward fix is to reintroduce a second clock domain.
-Clock domain traversals might be tricky however.
+The most important issue that needs remediation is the downclocking caused by the PCI Express Endpoint Core, which halves the performance of the entire design.
+The relatively straightforward fix is to reintroduce a second clock domain, but clock domain traversals might be tricky.
 
 The second most important issue, and by far the most challenging, is the relatively low throughput of the communication module.
 Improvement requires the use of DMA in combination with a custom device driver.
@@ -227,8 +227,8 @@ Finally, the Live Counter could be made exchangeable by an interface similar to 
 It might even be baked into fitness.
 
 The current design only executes one instruction at a time to keep everything simple and organized.
-However, there are many circumstances where the next instruction do not impact the currently executing one and can be safely run in parallel to gain a small speedup.
-It should be possible to implement by letting a form of hazard detection module handle the interlocking signals for the main pipeline, such that the run signal is asserted as soon as all modules that the next instruction depends on are done.
+However, there are many circumstances where the next instruction do not impact the currently executing one and can safely be run in parallel to gain a small speedup.
+It should be possible to implement this by letting a form of hazard detection module handle the interlocking signals for the main pipeline, such that the run signal is asserted as soon as all modules that the next instruction depends on are done.
 
 Since some instructions have the ability to create deadlocks, some sort of watchdog-timer might be useful to allow recovery of the system.
 The only alternative is cycling the power, but that will break the PCI Express connection which necessitates a reboot of the host as well.
@@ -239,10 +239,10 @@ The only alternative is cycling the power, but that will break the PCI Express c
 
 During synthesis, the design produces a substantial amount of warnings, although significantly less than the previous.
 Most arise from unused signals due to the selected synthesis parameters and are completely benign.
-In addition, a good deal stem from the provided PCI Express Endpoint Core, which can also safely be ignored.
+In addition, a good deal stem from the provided PCI Express Endpoint Core, which can also be safely ignored.
 
 In an effort to reduce clutter and direct focus at more important information, most of the benign warnings are blocked by a filter.
-The remaining could not be removed without possibly causing trouble later, due to a limited filter system.
+The remaining could not be removed without possibly causing trouble later, due to a somewhat limited filter system.
 For a standard 3D design, this reduces the amount of warnings from around 500 to about 50 \footnotemark.
 
 \footnotetext{

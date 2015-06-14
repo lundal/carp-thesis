@@ -314,16 +314,16 @@ Finally, the CA is executed to produce a fitness score that is fed back into the
 A Field Programmable Gate Array (FPGA) is a type of reconfigurable hardware.
 It can implement any desired logical operation by configuring and connecting a number of lookup tables (LUTs) and flip-flop registers (FFs).
 FPGAs can also contain dedicated blocks for addition, multiplication, storage, and other functionality.
-The resources are grouped into configurable logic blocks (CLBs), which through a network of interconnects can be connected to each other or input/output pins.
+The resources are grouped into configurable logic blocks (CLBs), which through a network of interconnects can be connected to each other or input/output (I/O) pins.
 An example of this structure is shown in \figurename~\ref{fig:fpga}.
 Note that modern FPGAs consists of thousands of CLBs and hundreds of I/O pins \cite{ds160}.
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=24.16\block]{fpga}
+    \includegraphics[width=24\block]{fpga}
     \caption[FPGA]{
         High-level block diagram of an FPGA.
-        An array of configurable logic blocks (CLBs) and input/output blocks (IOBs) are connected by a network of interconnects.
+        An array of configurable logic blocks (CLBs) and I/O pins are connected by a network of interconnects.
     }
     \label{fig:fpga}
 \end{figure}
