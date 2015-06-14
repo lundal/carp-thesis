@@ -445,9 +445,8 @@ Coincidentally, the dual-purpose states complete in one cycle while the others r
 
 The dual-purpose states are as follows:
 Send One can send either a state or a type, Write State can write either one or a row of states, and Write Type can write either one or a row of types.
-The remaining states are:
+The remaining states are as follows:
 Fill writes the same state and type to all cells, Send All States reads all states in raster order, and Send All Types reads all types in raster order.
-\todo{flow is off}
 The output formatting of the Send All states are equal to that of the Rule Numbers Reader, detailed in Section~\ref{sec:rule-numbers-reader}.
 
 %==============================================================================%
@@ -469,8 +468,6 @@ To service all required components, the Cell Storage is connected via a multiple
 It has two modes; normal and development.
 In normal mode, storage A is connected to the Cell Writer Reader and storage B to the CA.
 In development mode, both storage areas are connected to the Development module.
-
-\todo{fig?}
 
 %==============================================================================%
 
@@ -546,7 +543,6 @@ However, it is possible to enable matrix wrapping to instead use the neighbors o
 
 The Rule Fetcher is responsible for fetching development rules from the 1-in N-out Rule BRAM (one write port and N read ports) and passing them to the Rule Testers.
 It takes into account the specified number of active rules to speed up the development process by only fetching those.
-\todo{a bit funky}
 It is possible to further improve performance by setting that multiple rules should be fetched and tested at the same time.
 In that case, those with indexes higher than the number of active rules within the last rule batch are replaced by rules with no effect.
 

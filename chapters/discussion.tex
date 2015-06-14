@@ -1,8 +1,6 @@
-\TODO
-How it was to implement a CA system inside an FPGA.
-Distributed and local communication allows it to fills entire FPGA.
-Perfect for 2D structure, extra routing challenges with 3D.
-Stacked mode.
+FPGAs appear to be very suitable hardware for implementing CAs.
+The distibuted and locally connected nature allow a large number of cells while keeping performance up at the same time.
+In the following sections, the platform's performance and resource usage is analysed, followed by a brief discussion of the challenges during development and potential future improvements.
 
 %==============================================================================%
 
@@ -19,6 +17,10 @@ Lower values ease routing however, which allow implementation of designs with la
 
 The speed of the DFT can be adjusted by setting the number of DSP slices and the transform size.
 However, as the fitness module is exchangeable, parameters have to be specified at the top of the respective VHDL file.
+
+In circumstances where the matrices are 2D and relatively small, it is possible to synthesize a 3D matrix and stack multiple 2D matrices within it as individual layers.
+By using only 2D LUTs and development rules, the multiple matrices can then be developed and stepped in parallel, potentially reducing runtime by a large amount.
+It is however incompatible with the current fitness system, since the Live Counter totals all cells regardless.
 
 \subsection{Communication}
 
