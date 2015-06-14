@@ -1,0 +1,24 @@
+Naturen har mange attraktive egenskaper som ingeniører håper på å en dag kunne gjenskape i menneskeskapt teknologi for å revolusjonere databehandling.
+De inkluderer blant annet reproduksjon, læring, tilpasning og massiv parallellisering.
+Én bio-inspirert struktur er den Cellulær Automaten (CA).
+Den kan gjenskape flercellede organismers massive parallellitet, distribusjon og lokal samhandling.
+
+På NTNU har tre masteroppgaver gått med til å lage en FPGA-platform med formål om å muliggjøre forskning på CAer i kombinasjon med kunstig evolusjon og utvikling.
+Hovedprinsippet er at en genetisk algoritme (GA) brukes til å lage utviklingsregler, som så blir brukt til å konstruere en CA, som til slutt brukes til å beregne en fitnessverdi.
+Fitnessverdien blir så matet tilbake inn i GAen og prosessen gjentas til en god løsning er funnet.
+
+I forventning om å få ny maskinvare med en større FPGA, gikk den nyligste masteroppgaven ut på å utnytte den økte ressursmengden til å bedre ytelsen og utvide CAen til 3D.
+Men på grunn av produksjonsproblemer kunne dessverre ikke maskinvaren leveres i tide.
+Derfor ble ikke en ny kommunikasjonsmodul implementert og kun grunnleggende simuleringstester kunne utføres.
+
+I det innledende spesialiseringsprosjekt til denne masteroppgaven ble en ny kommunikasjonsmodul implementert og integrert i platformen, som tillot skikkelig maskinvareverifisering.
+Den viste at designet hadde mange problemer, inkludert feilende instruksjoner, stor bruk av utdaterte elementer og separate versjone for 2D og 3D CAer.
+I denne masteroppgaven har derfor hele patformen blitt revidert og ombygd.
+
+Den nye platformen løser alle store problemer med den gamle og legger til nye forbedringer som mer avansert kontrollflyt og et adaptivt programvare API.
+Flere og mer fininstillbare byggparametre tillater større justering av ytelse og gjør det mulig å få plass til større CAer på FPGAen.
+
+Funksjonaliteten til alle instruksjoner er verifisert i maskinvare og demonstrert med et program som lager repliserende strukturer.
+Dette viser at plattformen er komplett og klar for bruk til forskning.
+Et klokkeproblem med kommunikasjonsmodulen fører for tiden til at hele platformen kjører på halv hastighet, men viss det fikses vil den rå CA ytelsen bli 35\% bedre i 2D og 300\% bedre i 3D sammenlignet med det forrige designet.
+For disse ytelseskonfigurasjonene er ressursbruken vesentlig mindre i 2D og omtrent lik i 3D.
