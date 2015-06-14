@@ -1,14 +1,14 @@
-The field of bio-inspired hardware systems encompass a wide variety of technologies that take advantage of different natural concepts.
+The field of bio-inspired computing encompass a wide variety of technologies that take advantage of different natural concepts.
 In \cite{sipper1997poe}, Sipper et al. partition these technologies into a space along three axes (illustrated in \figurename~\ref{fig:poe}):
 
 \begin{itemize}
     \item
     Phylogeny:
     Temporal adaption to the environment caused by mutation and reproduction.
-    It is named after evolution of the species.
+    It is named after the evolution of the species.
     \item
     Ontogeny:
-    Growth through cell division or similar means.
+    Growth through cell division or equivalent methods.
     An example is a zygote (``mother cell'') replicating to form a larger multi-cellular organism.
     \item
     Epigenesis:
@@ -18,14 +18,14 @@ In \cite{sipper1997poe}, Sipper et al. partition these technologies into a space
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.5\textwidth]{poe}
+    \includegraphics[width=0.48\textwidth]{poe}
     \caption[POE model]{
         The POE model for bio-inspired hardware.
     }
     \label{fig:poe}
 \end{figure}
 
-The focus of this thesis is on the two first axes, phylogeny and ontogeny, in the form of artificial evolution and development.
+This thesis focuses on the first two axes, phylogeny and ontogeny, in the form of artificial evolution and development.
 This chapter goes into details about the two concepts, some of the technologies that can take advantage of them and other technologies that are used in this thesis.
 
 %==============================================================================%
@@ -34,11 +34,11 @@ This chapter goes into details about the two concepts, some of the technologies 
 
 Evolution is the natural process that over time advances species by letting the fit survive to reproduce while the less fit perish.
 Essentially, each generation includes slight variations to gradually create a species that is more adapted to the environment by having the fit traits passed on to subsequent generations.
-In nature, this effectively creates more fit solutions to the problem of life, which is to reproduce in a changing environment.
+In nature, this process effectively creates more fit solutions to the problem of life, which is to reproduce in a changing environment.
 
-Similarly, artificial evolution can be used by computers to evolve solutions instead of manually creating them, by the means of Evolutionary Algorithms (EAs) \cite{holland1992adaptation}.
+Similarly, artificial evolution can be used by computers to evolve solutions to computational problems instead of manually creating them, by the means of Evolutionary Algorithms (EAs) \cite{holland1992adaptation}.
 EAs can search millions of possible solutions, guided by their fitness scores, and find solutions that humans would never have imagined.
-In contrast to nature, where years usually pass between generations, powerful computers can create hundreds of generations every second and find good solutions in relatively short time.
+In contrast to nature, where years usually pass between each generation, powerful computers can create hundreds of generations every second and find good solutions in relatively short time.
 
 EAs have been successfully applied to many scientific tasks.
 For example, NASA has had great success with evolving antenna designs \cite{hornby2006antenna}, and Floreano and Mondada have evolved robot controllers with homing navigation \cite{floreano1996evolution}.
@@ -48,13 +48,13 @@ This can be due to complex parallel interactions, or usage of properties that ar
 \subsection{Genetic Algorithms}
 
 A very common type of EA is the Genetic Algorithm (GA) presented in \cite{golberg1989ga}.
-It represents each solution as a genotype, a binary string used as a blueprint to create the solution itself, called a phenotype.
+It represents each solution as a genotype, a binary string used as a blueprint to create the solution itself, the phenotype.
 The genotype is comparable to nature's DNA, and it is this genetic material which is modified in the evolutionary process.
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=42\block]{ga}
-    \caption[Genetic Algorithm]{
+    \caption[Genetic algorithm]{
         A genetic algorithm.
         The cycle is broken when the fitness is above a given threshold.
     }
@@ -71,8 +71,7 @@ Otherwise, a new population is created by selecting solutions with high fitness 
 
 \section{Development}
 
-The process that transforms a genotype into a phenotype is called development.
-It can be regarded as a form of decompression algorithm \cite{harding2008artificial}.
+The process that transforms a genotype into a phenotype is called development, and can be regarded as a form of decompression algorithm \cite{harding2008artificial}.
 In nature, this process is seen when a single cell transforms into a more complex multicellular organism, as visualized in \figurename~\ref{fig:development}.
 Unlike with a pure decompression algorithm however, biological systems also use information about their environments to tailor themselves to them.
 This is known as plasticity.
@@ -107,7 +106,7 @@ This is known as plasticity.
 
 Development is needed because a complete specification of a complex organism requires much more information than practically can be stored; it is several orders of magnitude greater than that of one cell and it's development rules.
 Plasticity and self-repairing abilities are merely bonuses, but have shown to be highly valuable properties.
-For the same reasons, artificial development is lucrative for building more complex computer systems that is also fault-tolerant and adaptable.
+For the same reasons, artificial development is lucrative for building more complex computer systems that are also fault-tolerant and adaptable.
 
 Development is never necessarily ``finished''; it can continue during the entire lifespan of the system.
 Over time, a dynamical system tends to end up in a state of equilibrium, an attractor \cite{heylighen2001selforg}.
@@ -118,10 +117,9 @@ If the system ends up providing the same functionality, albeit possibly with a d
 \subsection{Lindenmayer Systems}
 
 Perhaps the most known and widely used artificial development systems are Lindenmayer Systems (L-Systems).
-It was introduced by biologist and botanist Lindenmayer in 1968 to describe the growth of plants and fungi \cite{lindenmayer1968models}.
+They were introduced by biologist and botanist Lindenmayer in 1968 to describe the growth of plants and fungi \cite{lindenmayer1968models}.
 The L-System is a form of parallel generative grammar; starting with an axiom, a string is built by iteratively applying all the grammar rules in parallel.
-The string is a representation of the structure of the object.
-Each character symbolizes a branch, twist, turn, stretch or other feature.
+The string is a representation of the structure of the object; each character symbolizes a branch, twist, turn, stretch or other feature.
 
 \begin{figure}[!ht]
     \centering
@@ -165,7 +163,7 @@ Each character symbolizes a branch, twist, turn, stretch or other feature.
 
 In addition to plants, L-Systems are also suitable for generating other structures that grow and branch.
 \figurename~\ref{fig:dragon-curve} shows how they can be used to generate fractals, specifically the dragon curve \cite{gardner1967heighway}.
-It is the pattern that emerges when a piece of paper is folded many times and then each fold is opened to a 90 degree angle.
+It is the pattern that emerges when a piece of paper is folded many times and then all folds opened to 90 degree angles.
 The corresponding L-System uses only two rules, and is a testament to how very simple development rules can create outstandingly complex shapes.
 L-Systems have also been applied to other tasks, such as music composition \cite{manousakis2006musical}.
 
@@ -175,7 +173,7 @@ L-Systems have also been applied to other tasks, such as music composition \cite
 
 A Cellular Automaton (CA) is a computational structure made up of vast numbers of very simple functional elements called cells that are arranged in a grid.
 Each cell contains a state and is connected to a handful of nearby cells to form neighborhoods.
-At given time intervals the cells then update their states based on a transfer function over the states in their neighborhoods.\footnotemark
+At given time intervals the cells then update their states based on transfer functions over the states in their neighborhoods.\footnotemark
 
 \footnotetext{
     CAs are specific cases of Random Boolean Networks \cite{gershenson2004rbn}.
@@ -183,12 +181,12 @@ At given time intervals the cells then update their states based on a transfer f
 
 CAs are attempts to mimic the structures found in biological lifeforms, where complex results emerge from interactions between many simple cells.
 The key principles are massive parallelism, local interactions and simple computational units.
-As seen in \figurename~\ref{fig:computing-principles}, this is the direct opposite paradigm of the general-purpose serial architecture that is common in computers today.
-However, CAs have been shown to be Turing complete \cite{codd1968cellular, neumann1966selfreplication}, and can therefore perform the same tasks.
+As seen in \figurename~\ref{fig:computing-principles}, this is the directly opposite paradigm to the general-purpose serial architecture that is common in computers today.
+However, CAs have been shown to be Turing complete \cite{codd1968cellular, neumann1966selfreplication}, and can therefore perform any task.
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.82\textwidth]{computing-principles}
+    \includegraphics[width=0.80\textwidth]{computing-principles}
     \caption[Computing principles]{
         Graphical representation of how different computing paradigms relate with regards to computing principles.
         (Reprinted from \cite{sipper1999emergence})
@@ -208,37 +206,37 @@ Genetic Algorithms are therefore often used.
 
 Other major challenges are the representation of input and parsing of output.
 Both arise due to the CA's distributed nature.
-For output, the Discrete Fourier Transform (DFT) over the number of cells with a given state appears promising \cite{berg2013ca}.
+For output, the Discrete Fourier Transform (DFT) over the number of cells with a given state appears promising however \cite{berg2013ca}.
 
 CAs have been also been used in various research.
-They have been the environments for simulating lifeforms and creating replicating machines \cite{neumann1966selfreplication}.
+They have been environments for simulating lifeforms and creating replicating machines \cite{neumann1966selfreplication}.
 A very popular life simulator is Conway's Game of Life \cite{gardner1970life}.
 
 There are many variations of CAs, which are discussed in great detail in \cite{sipper1999emergence}.
 Following is a brief summary:
-Cell states can be discrete or continuous values.
+Cell states can have discrete or continuous values.
 The transfer function can be represented by exhaustive enumeration or a parameterized expression.
 The cells may be uniform by having the same transfer function, or non-uniform.
 Cell updates can be synchronous or asynchronous, and in the latter case the CA can be either deterministic or non-deterministic depending on the order in which cells update.
-The CA may be fully specified by direct programming or adaptively evolved using a GA or similar.
+The CA may be fully specified by direct programming or adaptively evolved using a EAs.
 Finally, there are numerous schemes that can be used to connect cells together to form neighborhoods.
 
-Only a specific form of CA is used in this thesis:
+In this thesis, only a specific form of CA is used:
 Discrete, exhaustively enumerated, non-uniform, synchronous and deterministic.
 It is possible to use direct programming, but there are systems in place for adaptive evolution.
 
 \subsection{Neighborhoods}
 
-An important property of CAs is how cells are connected to form neighborhoods, as this defines what data will be available for the transfer functions and therefore changes the way data flows through the machine.
+An important property of CAs is how cells are connected to form neighborhoods, as this defines what data will be available for the transfer functions and therefore changes the way data flow through the machine.
 It is common to connect directly adjacent cells, and sometimes those diagonally adjacent.
-Cells do not have to be part of their own neighborhoods, but it is common to have them be so.
+Cells do not have to be part of their own neighborhoods, but it is common.
 The von Neumann neighborhood shown in \figurename~\ref{fig:neighborhood} is commonly used for 2D CAs, and is also used by the design in this thesis.
 It includes the directly adjacent cells; north, south, east and west; and the cell itself.
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=20\block]{neighborhood}
-    \caption[von Neumann Neighborhood]{
+    \caption[von Neumann neighborhood]{
         The von Neumann neighborhood in a 2D CA.
         The cell states are shared with all directly adjacent cells.
     }
@@ -246,7 +244,7 @@ It includes the directly adjacent cells; north, south, east and west; and the ce
 \end{figure}
 
 The von Neumann neighborhood is easily extendable to 3D by adding the cells directly above and below to the neighborhood.
-The extra dimension allow more complex signal routing since the signals can cross over or under each other, which hopefully allow more complex computation.
+The extra dimension allow more complex signal routing since the signals can cross over or under each other, which hopefully allows more complex computation.
 It should however be possible to achieve the same complexity in fewer dimensions by increasing the neighborhood size, but that would likely require much more advanced transfer functions.
 
 \subsection{Complexity Classes}
@@ -257,7 +255,7 @@ He therefore developed a set of four classes to group them based on their emerge
 \begin{itemize}
     \item Class 1 – Uniform:
         The CA quickly results in a homogeneous state, regardless of initial condition.
-        It lacks the means to store data, as well as perform computation.
+        It lacks both the means to store data and perform computation.
     \item Class 2 – Repetitive:
         The CA develops both periodic and static data structures.
         However, after a number of cycles the states begin to repeat.
@@ -279,17 +277,17 @@ He therefore developed a set of four classes to group them based on their emerge
     \label{fig:complexity-classes}
 \end{figure}
 
-Langton attempted to connect Wolframs classes to CA rule complexity \cite{langton1990edgeofchaos}.
+Langton attempted to connect Wolframs classes to transfer function complexity \cite{langton1990edgeofchaos}.
 For this he used a measure called $\lambda$, which essentially determines the inverse ratio of rules that cause a cell to transition into any given state.
-This means that all transitions are to a given state if $\lambda=0.0$, while there are none if $\lambda=1.0$.
+This means that all transitions are to a given state if $\lambda=0.0$, while there are no transitions to any state if $\lambda=1.0$.
 His findings, displayed in \figurename~\ref{fig:complexity-classes}, show that class 4 resides in a phase transition between the order of class 2 and the chaos of class 3.
 This is known as ``The Edge of Chaos''.
 
-\subsection{Evolution and Development in CA}
+\subsection{Evolution and Development in CAs}
 \label{sec:evo-devo-ca}
 
-The problem with using EAs program CAs is that the search spaces are vast, even for the simplest binary ones ($2^{Neigborhood \cdot Cells}$ configurations\footnotemark).
-However, by adding development to the process, the search spaces can be dramatically reduced to manageable sizes while gaining other benefits such as scalable designs and robustness.
+The problem with using EAs to program CAs is that the search spaces are vast, even for the simplest binary CAs ($2^{Neigborhood \cdot Cells}$ configurations\footnotemark).
+However, by adding development to the process, the search spaces can be dramatically reduced to manageable sizes while gaining other benefits such as scalability and robustness.
 
 \footnotetext{
     The number of possible configurations for a relatively small 4x4x4 CA dwarfs the estimated number of particles in the universe.
@@ -307,22 +305,22 @@ However, by adding development to the process, the search spaces can be dramatic
 The essence of the process is illustrated in \figurename~\ref{fig:evo-devo-ca}:
 The GA defines development rules.
 Development is then used to define a CA structure.
-Finally, the CA is run to produce a fitness score that feeds back into the GA.
+Finally, the CA is executed to produce a fitness score that is fed back into the GA.
 
 %==============================================================================%
 
 \section{FPGA}
 
 A Field Programmable Gate Array (FPGA) is a type of reconfigurable hardware.
-It can implement any desired logical operation by configuring and connecting a number of lookup tables (LUTs) and flip-flops (FFs).
-FPGAs can also contain dedicated blocks for addition, multiplication, storage, and other functions.
+It can implement any desired logical operation by configuring and connecting a number of lookup tables (LUTs) and flip-flop registers (FFs).
+FPGAs can also contain dedicated blocks for addition, multiplication, storage, and other functionality.
 The resources are grouped into configurable logic blocks (CLBs), which through a network of interconnects can be connected to each other or input/output pins.
 An example of this structure is shown in \figurename~\ref{fig:fpga}.
 Note that modern FPGAs consists of thousands of CLBs and hundreds of I/O pins \cite{ds160}.
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=29\block]{fpga}
+    \includegraphics[width=24.16\block]{fpga}
     \caption[FPGA]{
         High-level block diagram of an FPGA.
         An array of configurable logic blocks (CLBs) and input/output blocks (IOBs) are connected by a network of interconnects.
@@ -341,7 +339,7 @@ The regular structure of an FPGA makes it well suited as the basis for implement
 \label{sec:sblock}
 
 The sblock was introduced as part of a new EA-friendly FPGA architecture in \cite{haddow2000sblock}.
-The architecture is a non-uniform CA with a von Neumann neighborhood, where the update function of each cell is independently configurable at run-time.
+The architecture is a non-uniform CA with a von Neumann neighborhood, where the transfer function of each cell is independently configurable at run-time.
 The cells, known as sblocks, are very simple structures; they consist of a configurable LUT and a FF, as shown in \figurename~\ref{fig:sblock}.
 
 \begin{figure}[!ht]
@@ -357,16 +355,16 @@ The cells, known as sblocks, are very simple structures; they consist of a confi
 The greatest benefit of using sblocks in research using EAs is that there is no risk of damage or exploitation of intrinsic properties in the silicon.
 Additionally, the simple structure and hardwired signal routing allows for very efficient area usage.
 The likelihood of a mass-produced sblock-FPGA arriving on the market in the near future is slim.
-However, it is possible to implement it virtually within another FPGA, as in this thesis.
+However, it is possible to implement it virtually within another FPGA, as is done in this thesis.
 
 %==============================================================================%
 
 \section{PCI Express}
 
-The PCI Express interface was designed to tackle the arising trouble with clocked parallel buses like PCI.
+The PCI Express interface was designed to tackle the rising troubles with clocked parallel buses like PCI.
 The problem with such buses is that the clock speed can not be increased beyond a given threshold, as the slightly different lengths of the wires causes data to arrive at slightly different times.
 Reducing the clock period to less than the variation in arrival time means the data will become corrupted.
-This problem is exacerbated with increasing bus size.
+This problem is exacerbated with larger bus sizes.
 
 PCI Express is therefore based on serial communication over differential pairs (lanes\footnotemark) without the need for a reference clock \cite{pcie}.
 \footnotetext{
@@ -404,7 +402,7 @@ Each byte is padded with two extra bits (8b/10b encoding) to allow clock recover
 
 \section{Related Work}
 
-This section describes work performed by others, which is related to that performed in this thesis.
+This section describes work performed by others, which is related to that performed in this thesis but not directly applicable to it.
 
 % Format: Who? What? When? Main feature? Relation?
 
@@ -443,7 +441,7 @@ For 1-bit cell states, the prototype is capable of $3 \cdot 10^9$ cell updates p
 
 \subsection{CAM-Brain Machine}
 
-In \cite{degaris2001cbm}, de Garis et al. introduces the CAM-Brain Machine (CBM), an FPGA-based platform that implements a CA-based neural network that is evolved using a GA.
+In \cite{degaris2001cbm}, de Garis et al. introduces the CAM-Brain Machine (CBM); an FPGA-based platform that implements a CA-based neural network that is evolved using a GA.
 It is part of de Garis' ``Artificial Brain Project'', which goal is to build an artificial brain with 1 billion neurons.
 The CBM is a stepping stone in the right direction, and allows the formation an artificial brain with nearly 75 million neurons in a CA of 843 million cells.
 It consists of up to 64640 modules, each containing 24x24x24 cells split over 72 FPGAs, of which 1152 cells can be neurons.
@@ -456,7 +454,7 @@ The work to design and evolve it's brain architecture was expected to continue w
 
 The Logic Systems Laboratory at the Swiss Federal Institute of Technology have been working on bio-inspired hardware systems for many years, mainly focusing on the ontogenetic axis through embryonics.
 \cite{tempesti2002biowall} describes a machine whose purpose is to convey the principles of embryonics to the public through visual and tactile interactions.
-The machine, depicted in \figurename~\ref{fig:biowall}, is named BioWall due to its bio-inspired nature and sheer size at 5.3 x 0.6 x 0.5 meters.
+The machine, depicted in \figurename~\ref{fig:biowall}, is named BioWall due to its bio-inspired nature and sheer size at 5.3x0.6x0.5 meters${}^3$.
 
 \begin{figure}[!ht]
     \centering
@@ -471,10 +469,10 @@ The machine, depicted in \figurename~\ref{fig:biowall}, is named BioWall due to 
 The BioWall is made up of 3200 identical units which can be seen an artificial molecules that can be combined to form cells.
 Each unit consists of an FPGA, 64 LEDs and a touch sensor, allowing users to interact with the surface by touching it and receiving immediate response from the LED display.
 
-The main application for the screen is the BioWatch, a organism capable of counting hours, minutes and seconds.
+The main application for the screen is the BioWatch, an organism capable of counting hours, minutes and seconds.
 It is used to demonstrate the growth and self-repair capabilities of the system.
-20 x 25 molecules (units) are arranged into cells, each responsible for one digit.
-Users can then touch molecules to disable them, forcing the cell to move its functionality to a neighbor.
+20 x 25 molecules/units are arranged into cells, each responsible for one digit.
+Users can then touch molecules to disable them, forcing the cell to reroute its functionality to a neighboring molecule.
 
 The BioWall's cellular structure is well suited for many other bio-inspired applications as well.
 Examples are 2D CAs such as the Game of Life \cite{gardner1970life}, self-replicating structures and artificial neural networks.

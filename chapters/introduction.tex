@@ -1,14 +1,14 @@
 % Motivation
 
-It is predicted that conventional CPU architectures will be unable to scale any further in about a decade \cite{esmaeilzadeh2011end}.
-Many engineers are therefore investigating radically different technologies in hope of finding viable alternatives.
+It is predicted that conventional CPU architectures will be unable to continue to scale in about a decade \cite{esmaeilzadeh2011end}.
+Many engineers are therefore investigating entirely different technologies in hope of finding viable alternatives.
 Some have looked towards nature; at biological organisms whose complexities far outweigh what humans have so far been able to engineer.
 Additionally, biological systems exhibit a wide range of characteristics that could possibly revolutionize computing, such as reproduction, learning, adaption, massive parallelism, graceful degradation, self-assembly and self-repair.
 
 % Method
 
 This has formed the field of bio-inspired computation, where the principles of nature in the form of artificial evolution, development and learning are used in the creation of computer systems.
-Some focus on mimicking the structure of the human brain in the form of artificial neural networks, while others focus on the emergent behaviors from thousands of individual cells in Cellular Automata (CAs).
+Some focus on mimicking the structure of the human brain in the form of artificial neural networks\CN, while others focus on the emergent behaviors from thousands of individual cells in Cellular Automata (CAs).
 
 % Implementation
 
@@ -21,10 +21,11 @@ The hardware platform was connected to and controlled by a computer over a PCI c
 
 A general use-case for the platform is to have the computer run a Genetic Algorithm (GA), where the genotype represents the development rules and initial CA state.
 Development is then used to create a phenotype in the form of a CA structure, which can be used for computation and to produce a fitness value.
+The fitness value is then fed back into the GA until an acceptably good solution is found.
 
 In expectation of new hardware with a larger FPGA and faster PCI Express connection, Støvneng refurbished the design in 2014.
 He took advantage of the added resources to greatly improve the performance of the platform, giving a speedup of 4 or more for many operations.
-Additionally, he extended the CA into 3D and added a DFT.
+Additionally, he extended the CA into 3D and added a Discrete Fourier Transform (DFT).
 However, since the hardware did not arrive in time, the new design was only tested in simulation and the communication interface was not upgraded.
 
 The task of the specialization project leading up to this thesis was to finish the extended platform by implementing a new PCI Express communication module, and to verify the platforms functionality in hardware.
@@ -40,20 +41,19 @@ The thesis is organized as follows:
 \begin{itemize}
     \item Chapter \ref{ch:background} –
         Theoretical background, technology and related work.
-        This chapter gives an overview of the relevant research this thesis is based on and the technology which is used.
+        This chapter gives an overview of the relevant research that this thesis is based on and the technology which is used.
     \item Chapter \ref{ch:previous-work} –
         Previous designs and implementations.
         This chapter states a brief history of the platform that this thesis builds on and the main issues that needs improvement.
-        All three previous master theses are covered.
     \item Chapter \ref{ch:development-platform} –
         Development platform and setup.
         This chapter describes the hardware and software systems used in this thesis and their setups.
     \item Chapter \ref{ch:implementation} –
         Implementation details.
-        This chapter provides in-depth descriptions of all parts of the rebuilt and extended platform.
+        This chapter provides in-depth descriptions of all parts of the rebuilt and enhanced platform.
     \item Chapter \ref{ch:verification} –
         System verification.
-        This chapter asserts the functionality of the platform through tests and example programs.
+        This chapter asserts the functionality of the platform through tests and an example program.
     \item Chapter \ref{ch:discussion} –
         Performance, challenges and future work.
         This chapter analyzes the system's performance, discusses difficulties and compromises during development, and mentions possible improvements.
@@ -62,14 +62,14 @@ The thesis is organized as follows:
         The final chapter concludes this paper by reviewing the new platform, its performance and its potential for future applications.
     \item Appendix \ref{app:test-descriptions} –
         Unit tests.
-        This appendix briefly describes the tests programs that together provide test coverage of all instructions.
+        This appendix briefly describes the test programs that together provide test coverage of all instructions.
     \item Appendix \ref{app:attached-files} –
         Attachment index.
         This appendix lists the attached files comprising the hardware design and software API.
     \item Appendix \ref{app:isa} –
         Instruction Set Architecture.
-        This appendix provides a complete specification of the rule format, the LUT format and all instructions.
+        This appendix provides a complete specification of all instructions, the rule format and the LUT format.
     \item Appendix \ref{app:specialization-project} –
         Specialization project.
-        This appendix holds the paper that led up to this thesis, in which the implementation and integration of the PCI Express-based communication module into the previous design is described.
+        This appendix holds the paper that led up to this thesis, in which a PCI Express-based communication module is implemented and integrated into the previous design.
 \end{itemize}

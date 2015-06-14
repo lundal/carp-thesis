@@ -1,12 +1,12 @@
-The new hardware originally intended for Støvneng's thesis was still unavailable at the beginning of this thesis.
+The new hardware originally intended for Støvneng's thesis was still unavailable at the beginning of the specialization project.
 Therefore, the Spartan-6 SP605 Evaluation Platform was ordered as replacement hardware.
 It has an FPGA from the same product line, but substantially smaller in size.
 This meant that the architecture would be the same, but there would be around 70\% less logic resources to work with.
-However, this should not be a significant problem as the hardware design can simply be scaled down by reducing the size of the sblock matrix or the performance.
+However, this should not be a significant problem, as the hardware design can be scaled down by reducing the size of the sblock matrix or the system's performance.
 
 \section{Spartan-6 SP605 Evaluation Platform}
 
-The Spartan-6 SP605 Evaluation Platform is essentially a board with the Spartan-6 LX45T FPGA wired to every useful peripheral imaginable.
+The Spartan-6 SP605 Evaluation Platform is essentially a circuit board with the Spartan-6 LX45T FPGA wired to every useful peripheral imaginable.
 It has connections for PCI Express\footnotemark, Ethernet, DVI, USB, flash card, JTAG, LEDs, switches, and more.
 However, the only peripherals utilized in this paper are PCI Express and JTAG.
 An overview of the system is shown in \figurename~\ref{fig:sp605}.
@@ -30,11 +30,11 @@ An overview of the system is shown in \figurename~\ref{fig:sp605}.
 The Spartan-6 is Xilinx' most cost-effective FPGA series.
 Its CLBs are divided into two independent slices, one of which is connected to a carry-chain.
 In addition to the standard slices which contain mainly LUTs and FFs, the Spartan-6 also contains a handful of specialized Digital Signal Processing (DSP) slices.
-These are optimized for pipelined wide multiplication and addition, which is required by many signal processing methods.
+These are optimized for pipelined wide multiplications and additions, which are often required in signal processing.
 
 \section{Hardware Setup}
 
-Due to the experimental nature of testing a new hardware platform, two computers were used in this project, as shown in \figurename~\ref{fig:hardware-setup}.
+Due to the experimental nature of building a new hardware design, two computers were used in this project, as shown in \figurename~\ref{fig:hardware-setup}.
 One is the main development workstation, used for coding and synthesis; it has a JTAG connection to the SP605 over USB, which allows it to upload new designs.
 The other is the host for the SP605, which is mounted in a PCI Express expansion slot.
 
@@ -54,9 +54,9 @@ The switch and jumper configurations of the SP605 are set to factory defaults pe
 \section{Software Setup}
 
 The operating systems used on the computers have varied, without complications, between Linux Mint 16, Linux Mint 17 and Manjaro during the lifespan of the project.
-Linux Mint and Ubuntu, which it is based upon, are currently the two most popular Linux distributions \cite{distrowatch}.
-Manjaro and its base Arch has a lot smaller user base, but is popular with enthusiasts.
-The procedures and software used in this paper should therefore work without trouble on most Linux systems.
+Linux Mint and its base Ubuntu are currently the two most popular Linux distributions \cite{distrowatch}.
+Manjaro and its base Arch has smaller user bases, but are popular with enthusiasts.
+The procedures and software used in this thesis should therefore work without trouble on most modern Linux systems.
 
 Xilinx ISE version 13.3 was used for hardware design and synthesis, while ISim was used for simulations.
 The third-party USB cable driver from \cite{usbdriver} was used for JTAG, as explained in Section~\ref{sec:challenges}.

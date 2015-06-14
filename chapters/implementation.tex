@@ -1,3 +1,7 @@
+The new platform is nearly identical in overall structure to the previous, as shown in \figurename~\ref{fig:implementation-simple},
+However, there are a lot of underlying changes to reduce complexity and improve reliability and scaling.
+A more detailed view of the system in shown in \figurename~\ref{fig:implementation-full}.
+
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=39\block]{implementation-simple}
@@ -7,14 +11,8 @@
     \label{fig:implementation-simple}
 \end{figure}
 
-
-The new platform is nearly identical in overall structure to the previous, as shown in \figurename~\ref{fig:implementation-simple},
-However, there are a lot of underlying changes to reduce complexity and improve reliability and scaling.
-A more detailed view of the system in shown in \figurename~\ref{fig:implementation-full}.
-
 Conseptually, the platform is a three-stage interlocked pipeline with the stages Fetch, Decode and Execute, where the Execute stage includes the Control, Development and CA modules.
-Only one module within each stage is activated at a time, and the interlocking allows each module to contain further pipelines without requiring complex hazard detection and evasion.
-%At one point there is a pipeline within a pipeline within a pipeline.
+Only one module within each stage is activated at a time, and the interlocking allows each module to use multiple cycles and contain sub-pipelines without requiring complex hazard detection and evasion.
 Fitness is special in that it is not part of the main pipeline since it operates in a dataflow-like fashion.
 
 \begin{sidewaysfigure}[!pt]
@@ -37,14 +35,14 @@ Fitness is special in that it is not part of the main pipeline since it operates
 
 Some concepts are used repeatedly throughout the design.
 The main ones are parameterization, pipelining, buffers and states machines.
-The first three are general and are detailed in the following sections.
+The first three are general and are detailed in the following subsections.
 The state machines vary from module to module and are therefore detailed where appropriate, but all are of Mealy design with clocked output.
 
 \subsection{Parameterization}
 
 Almost every part of the design is parameterized, usually with little restriction on the range of values.
 Where restrictions do apply, asserts have been placed in the code of the modules that do restrict them.
-These alert the user of correct values during synthesis, and pinpoints the code that must be changed in the event of an expansion.
+These alert the user of incorrect values during synthesis, and pinpoints the code that must be changed in the event of an expansion.
 Keep in mind though that the ISA must likely be changed as well.
 The list of parameters is shown in Table~\ref{tab:parameters}.
 
@@ -99,47 +97,47 @@ This can be taken advantage of to reduce register usage by ruling that the data 
 The stages can then write directly to their output registers, instead of caching partial output internally in extra registers.
 If a stage happens to require the output of the previous stage for multiple cycles however, input caching is needed.
 This causes no register usage reduction in the worst case, while the register usage is halved in the best case.
-The common case for this design is to only look at the input the first cycle for most signals, which should provide a nice reduction.
+The common case for this design is to only look at the input the first cycle for the most part, which means that is should provide a nice reduction.
 
 \subsection{Buffers}
 
-All buffers are implemented as first-in first-out (FIFO) queues using block RAM (BRAM) and two counters.
+All buffers are implemented as first-in first-out (FIFO) queues using one BRAM and two counters.
 The counters determine the addresses that are written to and read from, and are incremented when the write or read signals are asserted.
-\figurename~\ref{fig:wavediagram-fifo} shows how the FIFO is used to buffer two words.
+\figurename~\ref{fig:wavediagram-fifo} shows an example where a FIFO is used to buffer two words.
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.64\textwidth]{figures/wavediagram-fifo}
     \caption[FIFO buffer wave diagram]{
-        Wave diagram for the FIFO buffer, showing two consecutive writes followed by two consecutive reads.
+        Wave diagram for a FIFO buffer, showing two consecutive writes immediately followed by two consecutive reads.
     }
     \label{fig:wavediagram-fifo}
 \end{figure}
 
 Notice how the read signal needs to be asserted before the clock tick when data is read to ensure correct consecutive reads.
-This is due to the BRAM used in the FIFO, which updates at clock ticks.
-To have correct data available for a read in the following cycle, the address therefore has to be updated before the clock tick (by asserting the read signal).
+This is due to the operation of the BRAM, which updates its state at clock ticks.
+To have correct data available for a read in the following cycle, the address must therefore be updated before the clock tick (by asserting the read signal).
 
 %==============================================================================%
 
 \section{Communication}
 
-The new communication unit is based on Xilinx' reference PCI Express programmed input/output design.
-It consists of the Xilinx PCI Express endpoint core, reception and transmission engines, data buffers, and a special request handler, as shown in \figurename~\ref{fig:implementation-communication}.
+The Communication module is based on Xilinx' reference PCI Express programmed input/output design.
+It consists of the Xilinx PCI Express Endpoint Core, reception and transmission engines, data buffers, and a special request handler, as shown in \figurename~\ref{fig:implementation-communication}.
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=36\block]{implementation-communication}
     \caption[Communication module]{
-        Detailed block diagram of the communication module.
+        Detailed block diagram of the Communication module.
     }
     \label{fig:implementation-communication}
 \end{figure}
 
-The endpoint core completely handles the physical and data link layers, and all TLPs related to configuration and establishment of the PCI Express connection.
-The reception engine is responsible for parsing TLPs and either writing received data to the reception buffer or notifying the transmission engine about a read request.
-The transmission engine is responsible for building completer TLPs to respond to read requests, using data from the transmission buffer.
-The request handler listens to the read requests provided by the reception engine, and can override the transmission engine to respond to special requests.
+The Endpoint Core completely handles the physical and data link layers, plus all TLPs related to configuration and establishment of the PCI Express connection.
+The Reception Engine is responsible for parsing TLPs and either writing received data to the Reception Buffer or notifying the Transmission Engine of a read request.
+The Transmission Engine is responsible for building completer TLPs to respond to read requests, using data from the Transmission Buffer.
+The Request Handler listens to the read requests provided by the Reception Engine, and can override the Transmission Engine to respond to special requests.
 
 \subsection{PCI Express Endpoint Core}
 
@@ -158,15 +156,15 @@ The first memory region (BAR0) is used for normal communication, while the secon
 The separation is mostly conceptual as both regions are treated as one data stream.
 The difference is that the special request handler kicks in for read requests to BAR1.
 
-\subsection{Reception engine}
+\subsection{Reception Engine}
 
-The reception engine is implemented as a simple state machine, as shown in \figurename~\ref{fig:statemachine-receive}.
+The Reception Engine is implemented as a simple state machine, as shown in \figurename~\ref{fig:statemachine-receive}.
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=42\block]{statemachine-receive}
-    \caption[Reception engine state machine]{
-        State machine for the reception engine.
+    \caption[Reception Engine state machine]{
+        State machine for the Reception Engine.
     }
     \label{fig:statemachine-receive}
 \end{figure}
@@ -175,34 +173,34 @@ Until the endpoint core presents valid data, the state machine remains in Idle.
 When it does, the data is stored, and the TLP type is checked.
 If it is a read or write request, the state machine continues down the corresponding path, otherwise the remaining data is discarded.
 The remaining portion of the TLP headers are then parsed in the DW1 and DW2 states.
-For read requests, the state machine waits in ReadWait until the transmission engine is ready to accept a new read request, and then proceeds to Idle.
-For write requests, the state machine stays in WriteData, where one DW of data is written to the reception buffer each cycle, for the length of the packet, and then proceeds to Idle.
+For read requests, the state machine waits in ReadWait until the Transmission Engine is ready to accept a new read request, and then proceeds to Idle.
+For write requests, the state machine stays in WriteData, where one DW of data is written to the Reception Buffer each cycle, for the length of the packet, and then proceeds to Idle.
 
-\subsection{Transmission engine}
+\subsection{Transmission Engine}
 
-The transmission engine is implemented as a simple state machine, as shown in \figurename~\ref{fig:statemachine-transmit}.
+The Transmission Engine is implemented as a simple state machine, as shown in \figurename~\ref{fig:statemachine-transmit}.
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=40\block]{statemachine-transmit}
-    \caption[Transmission engine state machine]{
-        State machine for the transmission engine.
+    \caption[Transmission Engine state machine]{
+        State machine for the Transmission Engine.
     }
     \label{fig:statemachine-transmit}
 \end{figure}
 
-Until the reception engine signals a read request, the state machine remains in Idle.
-When a read request is signaled by the reception engine, the state machine begins to traverse the DW path.
+Until the Reception Engine signals a read request, the state machine remains in Idle.
+When a read request is signaled, the state machine begins to traverse the DW path.
 The DW0, DW1 and DW2 states each transmit one DW of the completer TLP header.
-Then if the special request signal is set, it proceeds to CompleteSpecial, where it transmits data presented by the request handler.
-Otherwise, it proceeds to CompleteData where it transmits one DW of data from the transmission buffer each cycle.
-When the requested number of DWs has been transmitted it proceeds back to Idle.
+Then if the special request signal is set, it proceeds to CompleteSpecial, where it transmits data presented by the Request Handler.
+Otherwise, it proceeds to CompleteData where it transmits one DW of data from the Transmission Buffer each cycle.
+When the requested number of DWs has been transmitted, it proceeds back to Idle.
 
-\subsection{Request handler}
+\subsection{Request Handler}
 
-The request handler continually listens to the read requests presented by the reception engine.
-If the request is targeting the primary memory area (BAR 0), it is a normal read request and the transmission engine is allowed to proceed as usual.
-Otherwise, it is a special request and the transmission engine is overridden.
+The Request Handler continually listens to the read requests presented by the Reception Engine.
+If the request is targeting the primary memory area (BAR 0), it is a normal read request and the Transmission Engine is allowed to proceed as usual.
+Otherwise, it is a special request and the Transmission Engine is overridden.
 
 The kind of special request is determined by the address of the read request, and handled thereafter.
 There are currently four special requests implemented, as shown in Table~\ref{tab:requests}.
@@ -213,12 +211,14 @@ There are currently four special requests implemented, as shown in Table~\ref{ta
     \begin{tabular}{c|l}
         \bfseries Address & \bfseries Request \\
         \hline
-        0x00 & Get transmission buffer data count \\
-        0x01 & Get transmission buffer available space \\
-        0x02 & Get reception buffer data count \\
-        0x03 & Get reception buffer available space \\
+        0x00 & Get Transmission Buffer data count \\
+        0x01 & Get Transmission Buffer available space \\
+        0x02 & Get Reception Buffer data count \\
+        0x03 & Get Reception Buffer available space \\
     \end{tabular}
-    \caption{Special requests.}
+    \caption[Special requests]{
+        Special requests.
+    }
     \label{tab:requests}
 \end{table}
 
@@ -241,7 +241,7 @@ This is shown in \figurename~\ref{fig:implementation-fetch}.
     \label{fig:implementation-fetch}
 \end{figure}
 
-Fetch Communication is responsible for converting data from the communication module into instructions while the Fetch Handler takes care of control flow and the instruction memory.
+Fetch Communication is responsible for converting data from Communication into instructions while the Fetch Handler takes care of control flow and the instruction memory.
 Both stages are implemented as state machines, making interlocking necessary.
 
 \subsection{Fetch Communication}
@@ -270,24 +270,24 @@ The modes and transitions are implemented as a state machine, which is shown in 
     \label{fig:statemachine-fetch-handler}
 \end{figure}
 
-In FetchCom mode, instructions are fetched from communication and sent to decode.
+In FetchCom mode, instructions are fetched from Communication and sent to Decode.
 Since a variable-length format is used, this may take multiple cycles.
-To make sure that instructions does not get ``stuck'' in the pipeline due to no further instructions arriving at the communication interface, NOPs are sent when Fetch Communication is busy.
+To make sure that instructions do not get ``stuck'' in the pipeline due to no further instructions arriving at the communication interface, NOPs are sent when Fetch Communication is busy.
 When encountering a Store instruction, it enters StoreMem mode and for a Jump instructions it enters FetchMem mode.
 
-In FetchMem mode, instructions are fetched from InstructionBRAM and sent to decode.
-The first InstructionBRAM address is specified by the Jump instruction, and then it is incremented by one after each instruction.
+In FetchMem mode, instructions are fetched from Instruction BRAM and sent to Decode.
+The first Instruction BRAM address is specified by the Jump instruction, and then it is incremented by one after each instruction.
 When encountering a Break instruction, it enters FetchCom mode.
-As a safety precaution to prevent lock-ups, FetchCom mode is also entered if the program counter overflows.
+As a safety precaution to prevent some potential lock-ups, FetchCom mode is also entered if the program counter overflows.
 
-In StoreMem mode, instructions are fetched from communication and stored in InstructionBRAM.
-The first InstructionBRAM address is specified by the Store instruction, and then it is incremented by one after each instruction.
+In StoreMem mode, instructions are fetched from Communication and stored in Instruction BRAM.
+The first Instruction BRAM address is specified by the Store instruction, and then it is incremented by one after each instruction.
 Instructions are stored in full 256-bit format.
 When encountering an End instruction, it enters FetchCom mode.
 
 Control flow is implemented by having N M-bit general counters and a JumpEqual instruction.
 The counters can be incremented or reset using special instructions.
-The JumpEqual instruction is treated as a Jump instruction when the specified counter matches the specified value, otherwise it is discarded.
+The JumpEqual instruction is treated as a Jump instruction when the specified counter matches the specified value, but is otherwise discarded.
 
 %==============================================================================%
 
@@ -296,7 +296,7 @@ The JumpEqual instruction is treated as a Jump instruction when the specified co
 Decode is responsible for parsing instructions, setting up control signals and passing instruction parameters to activated modules.
 It is a very simple module, being essentially a giant switch statement with a case for each instruction.
 
-Control signals are sent to all top-level modules except communication and fetch which operate earlier in the pipeline, and fitness which operates in a dataflow-like manner.
+Control signals are sent to all top-level modules except Communication and Fetch which operate earlier in the pipeline, and Fitness which operates in a dataflow-like manner.
 By default, all modules are given a no-operation signal and multiplexers stay unchanged.
 Then, depending on the instruction's operation code, the control signal for the appropriate module is set, parameters (if any) are extracted and passed on to the module, and multiplexers are changed if needed.
 
@@ -330,10 +330,10 @@ Following are detailed descriptions of the different modules, in order of increa
 The purpose of the Rule Writer is to store new rules to the Rule BRAM within the Development module.
 It is, along with the LUT Writer, the simplest control module.
 When activated, it stores one rule to a specified index of the Rule BRAM.
-The index doubles as priority for a rule, with higher indexes having higher priority.
+The indexes double as priority for the rules, with higher indexes having higher priority.
 
 As explained in Section~\ref{sec:development}, index zero is reserved for representing that no rules have triggered.
-Writing a rule to it has no effect as the rule testers are reset instead of testing the rule during development.
+Writing a rule to it has no effect as the Rule Testers are reset instead of testing the rule during development.
 
 \subsection{LUT Writer}
 
@@ -359,7 +359,7 @@ and information about the fitness modules, such as the type and output size.
 The Fitness Sender is responsible for sending the output of the Fitness module to the host.
 This is a simple matter of moving data from the Fitness Buffer to the Transmission Buffer when data is available in the first and there is space in the second.
 The number of words that is transferred per activation is declared by the Fitness module (see Section~\ref{sec:fitness}).
-Keep in mind that the machine will go into a deadlock if insufficient data is produced for the Fitness buffer.
+Keep in mind that the machine will go into a deadlock if insufficient data is produced for the Fitness Buffer.
 
 \subsection{Rule Vector Reader}
 
@@ -367,14 +367,14 @@ The Rule Vector Reader is tasked with reading one or more rule vectors created b
 Since rule vectors can be of any length, they are each split over multiple words, starting with the lowest indexes.
 The final word of each vector is padded with zeroes.
 For more information on rule vectors, see Section~\ref{sec:development}.
-Keep in mind that the machine will go into a deadlock if insufficient data is produced for the Rule Vector buffer.
+Keep in mind that the machine will go into a deadlock if insufficient data is produced for the Rule Vector Buffer.
 
 \subsection{Rule Numbers Reader}
 \label{sec:rule-numbers-reader}
 
-The Rule Numbers Reader is tasked with reading each cell's most recently activated development rule and sending them to the host.
+The Rule Numbers Reader is tasked with reading each cell's most recently activated development rule and then sending them to the host.
 The rule numbers are stored in the Rule Numbers BRAM of the Development module and are scanned in raster order\footnotemark.
-Each word is fitted with as many rule numbers as possible without splitting them over multiple words or containing ones from different rows.
+Each word is fitted with as many rule numbers as possible without splitting them over multiple words or containing numbers from different rows.
 Any remaining space is filled with zeroes.
 
 \footnotetext{
@@ -385,12 +385,12 @@ Any remaining space is filled with zeroes.
 \subsection{Cell Writer Reader}
 
 The purpose of the Cell Writer Reader is to perform read and write operations against Cell BRAM A, causing it to be the system's main input/output channel.
-It is possible to write states and types to either a single cell, a row of cells or the entire BRAM, while it it is possible to read from a single cell or the entire BRAM.
+It is possible to write states and types to either a single cell, a row of cells or all cells, while it it is possible to read from a single cell or all cells.
 
 It is easily the most complex control module, due to the intricate operations required to change only selected values in BRAM rows.
 Additionally, it must convert variable-width types and states into fixed-width words in an efficient manner when reading.
 
-The module consists of combiners which are used to combine new data with existing data from the Cell BRAM, repeaters to simplify the process of filling the entire Cell BRAM with a given state and type, shifters used to select output, and a state machine which controls everything.
+The module consists of Combiners which are used to combine new data with existing data from the Cell BRAM, Repeaters to simplify the process of filling the entire Cell BRAM with a given state and type, Shifters used to select output, and a state machine which controls everything.
 \figurename~\ref{fig:implementation-cell-writer-reader} shows how the components are connected.
 
 \begin{figure}[!ht]
@@ -407,7 +407,7 @@ The module consists of combiners which are used to combine new data with existin
 
 \subsubsection{Combiner}
 
-The combiner is a combinatorial unit that combines two signals of different lengths by replacing one part of the long signal with the short signal.
+The Combiner is a combinatorial unit that combines two signals of different lengths by replacing one part of the long signal with the short signal.
 This is implemented using a shifter and a mask that is the size of the short signal.
 First, the short input and mask is shifted into the desired position.
 Then, the long signal is AND-ed with the inverted mask and OR-ed with the short signal, producing the combined signal.
@@ -433,7 +433,7 @@ Some states are dual-purpose due to the similarity of the operations, while othe
 Coincidentally, the dual-purpose states complete in one cycle while the others require multiple\footnotemark.
 \footnotetext{
     Technically, the Send One state does not necessarily complete in one cycle since it will wait until there is available space in the Transmission Buffer.
-    However, it is the common case.
+    However, one cycle is the common case.
 }
 
 \begin{figure}[!ht]
@@ -447,15 +447,16 @@ The dual-purpose states are as follows:
 Send One can send either a state or a type, Write State can write either one or a row of states, and Write Type can write either one or a row of types.
 The remaining states are:
 Fill writes the same state and type to all cells, Send All States reads all states in raster order, and Send All Types reads all types in raster order.
-The output formatting of the Send All states is equal to that of the Rule Numbers Reader, detailed in Section~\ref{sec:rule-numbers-reader}.
+\todo{flow is off}
+The output formatting of the Send All states are equal to that of the Rule Numbers Reader, detailed in Section~\ref{sec:rule-numbers-reader}.
 
 %==============================================================================%
 
 \section{Cell Storage}
 
-The Cell Storage serves as the location for exchange of cell data between the CA, Development and Host.
+The Cell Storage serves as the location for exchange of cell data between the CA, Development and host.
 It contains two separate storage areas, the contents of which can be swapped.
-Each storage area can host a full matrix of cell states and types, and allows one row of each to be read each cycle.
+Each storage area can host a full matrix of cell states and types, and allows one row of both to be read each cycle.
 The main reason two storage areas are needed is the Development module.
 It requires a place to store its output without affecting its input during the development process.
 More on this in Section~\ref{sec:development}.
@@ -476,8 +477,8 @@ In development mode, both storage areas are connected to the Development module.
 \section{Development}
 \label{sec:development}
 
-The Development Module is responsible for providing the ontogenetic aspect of the system by allowing cells to be changed based on user-supplied development rules described in Appendix~\ref{app:isa}.
-It uses Cell Storage A as input and outputs the modified cells to Cell Storage B.
+The Development module is responsible for providing the ontogenetic aspect of the system by allowing cells to be changed based on user-supplied development rules that are described in Appendix~\ref{app:isa}.
+It uses Cell BRAM A as input and outputs the modified cells to Cell BRAM B.
 
 The module is implemented as a two-stage interlocked pipeline controlled by a state machine.
 Stage one contains the Cell Fetcher, which retrieves cell neighborhoods from Cell BRAM A, and stage two contains a four-stage pipeline that tests development rules against the cell neighborhoods.
@@ -520,7 +521,7 @@ A complete timing diagram can be seen in \figurename~\ref{fig:wavediagram-develo
 
 \subsection{Cell Fetcher}
 
-The Cell Fetch reads the cell neighborhoods for one row of cells from Cell BRAM A per run.
+The Cell Fetcher reads the cell neighborhoods for one row of cells from Cell BRAM A per run.
 It is implemented as two state machines, one which sets the BRAM address and one which retrieves the output.
 The first can be seen in \figurename~\ref{fig:statemachine-cell-fetcher}.
 The other is equivalent to the first except for being delayed two states, thus having Wait 1 as initial state instead of Fetch Center.
@@ -535,16 +536,17 @@ The other is equivalent to the first except for being delayed two states, thus h
 \end{figure}
 
 By reading an entire row at a time, the neighbors along the X axis are fetched ``for free'', while the other axes require two extra reads each.
-This lands the runtime on 5 cycles for 2D matrices and 7 cycles for 3D when including BRAM latency.
-The Cell Fetcher is therefore only a limiting factor when there are very few active rules.
+This lands the run time on 5 cycles for 2D matrices and 7 cycles for 3D when including BRAM latency.
+The Cell Fetcher is therefore only a limiting factor when there are very few active development rules.
 
 By default, neighbors which would be outside the matrix are treated as having zero for both state and type.
 However, it is possible to enable matrix wrapping to instead use the neighbors on the opposite side of the matrix.
 
 \subsection{Rule Fetcher}
 
-The Rule Fetcher is responsible for fetching development rules from Rule BRAM and passing them to the Rule Testers.
+The Rule Fetcher is responsible for fetching development rules from the 1-in N-out Rule BRAM (one write port and N read ports) and passing them to the Rule Testers.
 It takes into account the specified number of active rules to speed up the development process by only fetching those.
+\todo{a bit funky}
 It is possible to further improve performance by setting that multiple rules should be fetched and tested at the same time.
 In that case, those with indexes higher than the number of active rules within the last rule batch are replaced by rules with no effect.
 
@@ -552,83 +554,84 @@ In that case, those with indexes higher than the number of active rules within t
 
 The Rule Testers are responsible for testing development rules received from the Rule Fetcher against cell neighborhoods received from the Cell Fetcher.
 They are unique in that they produce output after both one and two cycles.
-Information about rule activations, ``hits'', are passed on to the hit processors after one cycle, and the result of the rule application is passed on to Cell BRAM B after two cycles.
+Information about rule activations (``hits'') are passed on to the Hit Processors after one cycle, and the result of the rule application is passed on to Cell BRAM B after two cycles.
 Rule hits undo any effects of previous hits so that it is impossible for two rules to have simultaneous partial effects, in cases where one modifies only the state and the other only the type.
 
 There is a special case for rule zero.
 It is used as an internal reset by forcing a hit and setting the output cell to the input cell.
-This implementation was chosen because of its simplicity and the ability to use zero to mean ``unchanged'' in the hit processors.
-It also makes it possible to have no active rules.
+This implementation was chosen because of its simplicity and the ability to use zero to mean ``unchanged'' in the Hit Processors.
+It also makes it possible to have zero active rules.
 
 \subsection{Hit Processors}
 
 There are two modules dedicated to providing information about the development procedure, Hits To Vector and Hits To Numbers.
 The input for both are hits passed on from the Rule Testers.
 
-Hits To Vector stores a vector where each bit signifies whether the rule of that index was triggered or not to the Rule Vector Buffer after each development phase.
+Hits To Vector stores a vector, where each bit signifies whether the rule of that index was triggered or not, to the Rule Vector Buffer after each development phase.
 Rules that have triggered but is later overridden by a rule with higher priority is still marked as having been triggered in the vector.
 If the buffer is full, it is reset instead of waiting, to allow programs to disregard the data without causing deadlocks.
 
 Hits To Numbers stores the index of the last triggered rule for each cell to the Rule Numbers BRAM.
-Since rule zero is always marked as a hit, the BRAM is reset to zeroes at the beginning of each development phase, and then overwritten by before the rule numbers are written.
+Since rule zero is always marked as a hit, the BRAM is reset to zeroes at the beginning of each development phase.
+Therefore, only hits from the most recent phase are stored.
 
 %==============================================================================%
 
-\section{Cellular Automata}
+\section{Cellular Automaton}
 
 The CA module is the centerpiece of the system.
 It is what contains the sblock matrix and the control logic to service it.
-The module is responsible for configuring the sblock matrix with data from Cell BRAM B, step the sblocks and store the number of live cells afterwards, and write the new states back to Cell BRAM B.
+The module is responsible for configuring the sblock matrix with data from Cell BRAM B, step the sblocks, store the number of live cells after each step, and write new states back to Cell BRAM B.
 
-The implementation can be seen in \figurename~\ref{fig:implementation-cellular-automata}.
+The implementation can be seen in \figurename~\ref{fig:implementation-cellular-automaton}.
 It consists of a state machine, the Sblock Matrix and a Live Counter, in addition to storage for LUTs and a buffer for the Live Counter.
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=34\block]{implementation-cellular-automata}
+    \includegraphics[width=34\block]{implementation-cellular-automaton}
     \caption[CA module]{
         Detailed block diagram of the CA module.
         Config Readback is a symbolic module for the majority of the state machine.
     }
-    \label{fig:implementation-cellular-automata}
+    \label{fig:implementation-cellular-automaton}
 \end{figure}
 
 \subsection{State Machine}
 
-The state machine in \figurename~\ref{fig:statemachine-cellular-automata} is what powers this module.
+The state machine in \figurename~\ref{fig:statemachine-cellular-automaton} is what powers this module.
 It is what controls both configuration, readback and stepping of the Sblock Matrix.
 Additionally, it sets write signals for the Live Count buffer.
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=50\block]{statemachine-cellular-automata}
+    \includegraphics[width=50\block]{statemachine-cellular-automaton}
     \caption[CA module state machine]{
         State machine controlling the CA module.
     }
-    \label{fig:statemachine-cellular-automata}
+    \label{fig:statemachine-cellular-automaton}
 \end{figure}
 
 Configuration is the process of taking cells from Cell BRAM B, converting them into LUTs and programming the sblocks.
 It operates on one row of cells/sblocks at a time.
-First, the cells are read from Cell BRAM B and the type of each are used as addresses for the 1-in N-out LUT BRAM to find the corresponding LUT.
-The LUTs are then loaded into shift registers and transfered to the sblocks piece by piece.
-Finally, the outputs of the sblocks are set to the states of the cells.
+First, the cells are read from Cell BRAM B and the types of used as addresses for the 1-in N-out LUT BRAM to find the corresponding LUTs.
+Then, the LUTs are loaded into shift registers and transferred to the sblocks a few bits at a time, the speed of which is configurable.
+Finally, the states/FFs of the sblocks are set to the states of the cells.
 
 Readback is the process of extracting the cell states from the Sblock Matrix and storing them back in Cell BRAM B.
 This operation also works on one row at a time.
 However, it is much simpler and faster than configuration since it simply directs the output of the sblocks to the Cell BRAM and sets the correct row.
 
-Stepping is simply the process of telling the Sblock Matrix to update the state of each of its sblocks.
+Stepping is the process of telling the Sblock Matrix to update the state of each of its sblocks.
 The new state is determined by the using the neighbor states as the input to the LUT, according to the format detailed in Appendix~\ref{app:isa}.
-Since it is common to step hundreds of times in a row, the step instruction has a parameter for the number of steps, up to a maximum of 65535 (a 16-bit number).
+Since it is common to step hundreds of times in sequence, the step instruction has a parameter for the number of steps, up to a maximum of 65535 (a 16-bit number).
 
 \subsection{Sblock Matrix}
 
-The Sblock Matrix essentially contains enormous amounts of sblock as they are described in Section~\ref{sec:sblock}.
+The Sblock Matrix essentially contains enormous amounts of the sblock that are described in Section~\ref{sec:sblock}.
 The only difference is that the sblocks used here have support for configuring multiple bits of the LUT each cycle.
 However, to use the dedicated shift registers as configurable LUTs, there are some restrictions on the number of bits.
-Firstly, it can only be powers of two; secondly, it can be maximum 2 for 2D matrices and 8 for 3D.
-Keep in mind that each bit adds one extra signal for each sblock, which accumulates to a significant amount of routing resources.
+Firstly, it can only be powers of two; secondly, it can maximally be 2 for 2D matrices and 8 for 3D.
+Keep in mind that each bit adds one extra signal for each sblock, which can accumulate to a significant amount of required routing resources.
 
 By default, neighbors which would be outside the matrix are treated as having zero for both state and type.
 However, it is possible to enable matrix wrapping to instead use the neighbors on the opposite side of the matrix.
@@ -638,53 +641,52 @@ This option lets the user decide if programs should be able to exploit the matri
 
 The Live Counter is essentially a giant adder tree that is connected to the output of each sblock.
 It calculates the total number of live cells after each CA step and stores them in the Live Count Buffer.
-Due to the massive amount of sblocks, the calculation is spread out over many cycles, the exact number of which is dependant on the number of sblocks.
+Due to the massive amount of sblocks, the calculation pipelined over many cycles, the exact number of which is dependant on the number of sblocks.
 However, the throughput remains at one total per cycle.
 
 If the Live Count Buffer happens to be full, it is reset instead of waiting, to allow programs to disregard the data without causing deadlocks.
-This will likely corrupt all fitness evaluation until the buffers are reset however.
+This will likely corrupt all fitness evaluation until all buffers are properly reset however.
 
 %==============================================================================%
 
 \section{Fitness}
 \label{sec:fitness}
 
-The Fitness module is responsible for evaluating the output of the CA for use with evolutionary algorithms.
+The Fitness module is responsible for evaluating the output of the CA for use with EAs.
 Since fitness evaluation vary widely between applications, the interface of the Fitness module is designed to be simple and generic, such that the module is easy to replace.
 
 It is connected in a dataflow-like manner between the Live Count Buffer and the Fitness Buffer.
-Whenever there is enough data available in the Live Count Buffer, it should fetch that data, processes it, and store the result to the Fitness Buffer.
+Whenever there is enough data available in the Live Count Buffer, it should fetch that data, processes it, and store the result in the Fitness Buffer.
 The host can then later retrieve it by activating the Fitness Sender.
 
-To comply with the adaptive interface, there are a few things that the Fitness module needs to tell the other parts of the system.
+To comply with the adaptive interface, there are a few things that the Fitness module needs to tell other parts of the system.
 First is the number of words per result, required by the Fitness Sender.
 Second is a unique identifier that is reported to the host by the Information Sender.
-To allow further versatility, the module can also report synthesis parameters to the host.
+To allow further versatility, the module can also report custom synthesis parameters to the host, as long as they all fit within 16-bits.
 
 There are currently two implemented fitness modules: Live Count and DFT.
 
 \subsection{Live Count}
 
-The Live Count fitness module is used to transfer the live counts to the host for software-side fitness evaluation.
-The implementation is as simple as it gets.
+The Live Count Fitness module is used to transfer the live counts to the host for software-side fitness evaluation.
+The implementation is as simple as it gets:
 The output of the Live Count Buffer is fed directly into the Fitness buffer, and the write and read signals are activated when the Live Count Buffer has data and the Fitness Buffer has space.
 
 \subsection{DFT}
 
-The DFT fitness module uses a Discrete Fourier Transform to convert the live count data into frequency spectrums.
+The DFT Fitness module uses a DFT to convert the live count data into frequency spectrums.
 This has the advantage of being able to pick up certain information that might be near-impossible to detect using conventional means.
 As shown in \cite{berg2013ca}, using a DFT to interpret CA output holds potential.
 
 A DFT of transform size N takes N complex numbers as input and produces N complex numbers as output.
-For transforms where input numbers are all real, the second half of the output mirrors the first half and can be safely ignored to save computation effort.
-Each output value of the DFT is a linear combination of all input values.
-The constants, which are known as twiddle factors, rely only on the transform size and can therefore be computed ahead of time to reduce the complexity of the calculations.
-\todo{a bit funky, move to background?}
+For transforms where all input numbers are real, the second half of the output mirrors the first half and can be safely ignored to save computation effort.
+Each output value of the DFT is a linear combination of all input values, the constants of which are known as twiddle factors.
+The twiddle factors rely only on the transform size and can therefore be computed ahead of time to reduce the complexity of the calculations.
 
 This module is essentially a revised version of Støvneng's design in \cite{stovneng2014sblock}.
 It has been refactored, streamlined and adapted to fit into the new design.
 It is also more customizable, supporting parameters other than powers of two, and can generate twiddle factors by itself during synthesis instead of relying on an external program.
-The twiddle factors are stored in a fixed-point format since they range from $-1$ to $1$, and in the order they are needed.
+The twiddle factors are stored in the order they are needed, encoded in a fixed-point format since they range from $-1$ to $1$.
 
 \begin{figure}[!ht]
     \centering
@@ -714,8 +716,8 @@ The pipeline is interlocked, since both stages can run for hundreds of cycles.
 \end{figure}
 
 The DFT is calculated using the DSP slice wrappers seen in \figurename~\ref{fig:implementation-dsp} in multiply-accumulate mode.
-Afterwards, the real and imaginary parts of each output value are combined into a single positive number by adding the absolute value of both.
-The most optimal configuration would be two DSP slices per output value, one for each real and imaginary part.
+Afterwards, the real and imaginary parts of each output value are combined into a single positive number by adding their absolutes.
+The most optimal configuration would be two DSP slices per output value; one for each real and imaginary part.
 However, FPGAs have a limited number of DSP slices.
 For larger transform sizes, the DSPs therefore have to calculate multiple output values in sequence.
 Since the Live Count Buffer, as all FIFO buffers, is delete-on-read, an internal buffer is used to repeat the values.
@@ -725,8 +727,8 @@ The state machine controlling the DFT is shown in \figurename~\ref{fig:statemach
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=38\block]{statemachine-dft}
-    \caption[DFT State Machine]{
-        State machine controlling the DFT.
+    \caption[DFT state machine]{
+        State machine controlling the DFT module.
     }
     \label{fig:statemachine-dft}
 \end{figure}
@@ -735,7 +737,7 @@ The state machine controlling the DFT is shown in \figurename~\ref{fig:statemach
 
 \section{Software API}
 
-In accord with the hardware design, the software API has also been given a major overhaul.
+In accord with the hardware design, the software API has also been given a complete overhaul.
 Everything has been rewritten from scratch to improve clarity, functionality and ease of use.
 \figurename~\ref{fig:api} illustrates the API structure: A main API is used to connect to the hardware platform, send instructions and receive data; and two optional APIs allow conversion of the received data into human-readable forms.
 
@@ -754,16 +756,15 @@ Everything has been rewritten from scratch to improve clarity, functionality and
 The main API is used to connect, disconnect, and reset the hardware platform, as well as execute instructions and parse received data into data structures.
 
 On connect, the API automatically clears any remaining data in the Transmission Buffer and queries the synthesis parameters with the Send Information instruction.
-The buffer is cleared once again on disconnect, in addition to the synthesis information.
-The reset function can be used to set the system into freshly booted state by clearing all counters, sblocks, buffers and BRAMs except for the instruction memory.
-\todo{clear instruction memory}
+The buffer is cleared once again on disconnect, and the synthesis information is nulled.
+The reset function can be used to set the system into freshly booted state by clearing all counters, sblocks, buffers and BRAMs, except for the instruction memory.
 
 Each instruction is given its own function with one-to-one correlation of parameters.
 Data structures are used to represent the parameters where possible, such as for LUTs and development rules.
 The instructions are queued in a buffer until the program tries to receive data or manually flushes it, to allow for debugging and creating test benches from the instruction stream.
 
 For each instruction that should return data there is a corresponding getter function used to receive that data and parse it into a data structure.
-The getter functions are needed because of the hardware platform's separate instruction memory and control flow, causing the amount of instructions issued by the API to not necessarily correspond to the number of times the instruction is executed.
+The getter functions are needed because of the hardware platform's separate instruction memory and control flow, which causes the amount of instructions issued by the API to not necessarily correspond to the number of times the instruction is executed.
 
 \subsection{Optional APIs}
 
@@ -772,19 +773,19 @@ Both are used to convert data structures into human-readable formats.
 
 The Print API allows terminal printouts of all data structures, which includes system information, rule vectors and matrices (types, states or rule numbers).
 
-The PostScript API allows programs to generate postscript figures from one layer of a matrix data structure (types, states or rule numbers).
+The PostScript API allows programs to generate PostScript figures from one layer of a matrix data structure (types, states or rule numbers).
 The caller specifies the coloring scheme that is used by providing a function that takes in a cell value and returns a hexadecimal RGB value.
 
 \subsection{Communication}
 
-The communication part of the new software API is split into two parts:
+The communication part of the software API is split into two parts:
 
 The first is a general interface for connecting to PCI and PCI Express devices without using a custom driver.
 It takes advantage of Linux' automatic population of \textbf{/sys/devices/pci*} with files representing the memory regions of all PCI and PCI Express devices.
 The directory is searched by vendor and device id, and the corresponding memory regions are memory-mapped into the program.
 Due to this direct interaction with device files, each program must be run with superuser rights.
 
-The second is an interface specifically for the communication unit.
+The second is an interface specifically for the Communication module.
 It provides open, close, read and write functions similar to the old BenERA interface, in addition to implementing all special request functions in Table~\ref{tab:requests}.
 When a read or write operation is initiated, buffers are checked for available data or space.
 If there is not enough present, the program waits for 1 microsecond and then rechecks.
