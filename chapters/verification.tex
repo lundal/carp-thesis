@@ -47,7 +47,7 @@ However, as shown in \tablename~\ref{tab:dft-precision}, the new module is more 
 As a proof of concept, the example in \figurename~\ref{fig:replicator} was created to showcase how development can be used to create simple self-replicating structures in a 2D CA that can grow to any desirable size given enough time.
 It was manually designed using 17 development rules and 13 cell types, and the source code is available in \textbf{programs/demo\_replicator.c}.
 
-In essence, green cells creates copies of themselves going around in clockwise loops, while cyan cells shoot off from the corners to begin the creation of new loops.
+In essence, green cells creates copies of themselves going around in clockwise loops, while yellow cells shoot off from the corners to begin the creation of new loops.
 When loops are completed, the center cells turns red.
 After the entire structure has formed, the next step would be to use it for computation by specifying LUTs for each cell type.
 However, that is outside the scope of this simple example.
