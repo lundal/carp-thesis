@@ -1,9 +1,8 @@
 An archive containing the code for the hardware design and the software API should be distributed with this thesis.
 If not, all resources related to the project can be found online at \url{https://github.com/lundal/carp}.
+\todo{\url{http://lund.al/carp/}?}
 
-All files from previous designs have been scrapped, but parts of old code have been reused to some extent.
-
-\todo{remaining file comments}
+All files from previous designs have been discarded, but parts of old code have been reused to some extent.
 
 \section{Directory Structure}
 
@@ -36,25 +35,17 @@ All files from previous designs have been scrapped, but parts of old code have b
 ~
 \dirtree{%
 .1 api/libcarp.
-    .2 bitvector.c.
-    .2 bitvector.h.
-    .2 carp.c.
-    .2 carp.h.
-    .2 communication.c.
-    .2 communication.h.
-    .2 instructions.h.
-    .2 lut.h.
-    .2 matrix.c.
-    .2 matrix.h.
-    .2 pci.c.
-    .2 pci.h.
-    .2 postscript.c.
-    .2 postscript.h.
-    .2 print.c.
-    .2 print.h.
-    .2 rule.h.
-    .2 utility.c.
-    .2 utility.h.
+    .2 bitvector.[c|h] \DTcomment{Utility bit string builder}.
+    .2 carp.[c|h] \DTcomment{Main API}.
+    .2 communication.[c|h] \DTcomment{Communication module interface}.
+    .2 instructions.h \DTcomment{Instruction code definitions}.
+    .2 lut.h \DTcomment{LUT data structure}.
+    .2 matrix.[c|h] \DTcomment{Matrix data structure}.
+    .2 pci.[c|h] \DTcomment{Generic PCI/PCI Express interface}.
+    .2 postscript.[c|h] \DTcomment{Optional PostScript API}.
+    .2 print.[c|h] \DTcomment{Optional print API}.
+    .2 rule.h \DTcomment{Development rule data structure}.
+    .2 utility.[c|h] \DTcomment{Various utility functions}.
 }
 ~
 \dirtree{%
@@ -95,28 +86,28 @@ All files from previous designs have been scrapped, but parts of old code have b
 ~
 \dirtree{%
 .1 vhdl/modules.
-    .2 cell\_storage.vhd.
-    .2 cell\_storage\_mux.vhd.
-    .2 cell\_writer\_reader.vhd.
-    .2 decode.vhd.
-    .2 fitness\_sender.vhd.
-    .2 information\_sender.vhd.
-    .2 lut\_writer.vhd.
-    .2 resetter.vhd.
-    .2 rule\_numbers\_reader.vhd.
-    .2 rule\_vector\_reader.vhd.
-    .2 rule\_writer.vhd.
-    .2 send\_buffer\_mux.vhd.
-    .2 toplevel.vhd.in.
+    .2 cell\_storage.vhd \DTcomment{Cell Storage}.
+    .2 cell\_storage\_mux.vhd \DTcomment{Cell Storage Multiplexer}.
+    .2 cell\_writer\_reader.vhd \DTcomment{Cell Writer Reader}.
+    .2 decode.vhd \DTcomment{Decode}.
+    .2 fitness\_sender.vhd \DTcomment{Fitness Sender}.
+    .2 information\_sender.vhd \DTcomment{Information Sender}.
+    .2 lut\_writer.vhd \DTcomment{LUT Writer}.
+    .2 resetter.vhd \DTcomment{Buffer Resetter}.
+    .2 rule\_numbers\_reader.vhd \DTcomment{Rule Numbers Reader}.
+    .2 rule\_vector\_reader.vhd \DTcomment{Rule Vector Reader}.
+    .2 rule\_writer.vhd \DTcomment{Rule Writer}.
+    .2 send\_buffer\_mux.vhd \DTcomment{Send Buffer Multiplexer}.
+    .2 toplevel.vhd.in \DTcomment{Toplevel; preprocessed to toplevel.vhd}.
 }
 ~
 \dirtree{%
 .1 vhdl/modules/cellular\_automata.
-    .2 cellular\_automata.vhd.
-    .2 live\_counter.vhd.
-    .2 lut\_configurable.vhd.
-    .2 sblock.vhd.
-    .2 sblock\_matrix.vhd.
+    .2 cellular\_automata.vhd \DTcomment{Cellular Automaton}.
+    .2 live\_counter.vhd \DTcomment{Live Counter}.
+    .2 lut\_configurable.vhd \DTcomment{Configurable LUT}.
+    .2 sblock.vhd \DTcomment{Single sblock}.
+    .2 sblock\_matrix.vhd \DTcomment{Sblock Matrix}.
 }
 ~
 \dirtree{%
@@ -130,62 +121,62 @@ All files from previous designs have been scrapped, but parts of old code have b
 \clearpage
 \dirtree{%
 .1 vhdl/modules/development.
-    .2 cell\_fetcher.vhd.
-    .2 development.vhd.
-    .2 hits\_to\_numbers.vhd.
-    .2 hits\_to\_vector.vhd.
-    .2 rule\_fetcher.vhd.
-    .2 rule\_tester.vhd.
-    .2 rule\_tester\_multi.vhd.
-    .2 rule\_testers\_multi.vhd.
+    .2 cell\_fetcher.vhd \DTcomment{Cell Fetcher}.
+    .2 development.vhd \DTcomment{Development}.
+    .2 hits\_to\_numbers.vhd \DTcomment{Hits To Numbers processor}.
+    .2 hits\_to\_vector.vhd \DTcomment{Hits To Vector processor}.
+    .2 rule\_fetcher.vhd \DTcomment{Rule Fetcher}.
+    .2 rule\_tester.vhd \DTcomment{Single-rule Rule Tester}.
+    .2 rule\_tester\_multi.vhd \DTcomment{Multi-rule Rule Tester}.
+    .2 rule\_testers\_multi.vhd \DTcomment{Multiple multi-rule Rule Testers}.
 }
 ~
 \dirtree{%
 .1 vhdl/modules/fetch.
-    .2 fetch.vhd.
-    .2 fetch\_communication.vhd.
-    .2 fetch\_handler.vhd.
+    .2 fetch.vhd \DTcomment{Fetch}.
+    .2 fetch\_communication.vhd \DTcomment{Fetch Communication}.
+    .2 fetch\_handler.vhd \DTcomment{Fetch Handler}.
 }
 ~
 \dirtree{%
 .1 vhdl/modules/fitness.
-    .2 dft.vhd.
-    .2 dsp\_wrapper.vhd.
-    .2 fitness\_dft.vhd.
-    .2 fitness\_live\_counter.vhd.
-    .2 twiddles.vhd.
+    .2 dft.vhd \DTcomment{DFT}.
+    .2 dsp\_wrapper.vhd \DTcomment{DSP Wrapper}.
+    .2 fitness\_dft.vhd \DTcomment{DFT Fitness}.
+    .2 fitness\_live\_counter.vhd \DTcomment{Live Count Fitness}.
+    .2 twiddles.vhd \DTcomment{DFT twiddle factors generator}.
 }
 ~
 \dirtree{%
 .1 vhdl/modules/utility.
-    .2 bit\_counter\_32.vhd.
-    .2 bit\_counter\_N.vhd.
-    .2 bram\_1toN.vhd.
-    .2 bram\_tdp.vhd.
-    .2 combiner.vhd.
-    .2 fifo.vhd.
-    .2 selector.vhd.
-    .2 shifter.vhd.
-    .2 shifter\_dynamic.vhd.
-    .2 shift\_register.vhd.
+    .2 bit\_counter\_32.vhd \DTcomment{Counts number of ones in 32 bits}.
+    .2 bit\_counter\_N.vhd \DTcomment{Counts number of ones in N bits}.
+    .2 bram\_1toN.vhd \DTcomment{1-in N-out BRAM}.
+    .2 bram\_tdp.vhd \DTcomment{Dual-port BRAM}.
+    .2 combiner.vhd \DTcomment{Combiner}.
+    .2 fifo.vhd \DTcomment{FIFO}.
+    .2 selector.vhd \DTcomment{Selector}.
+    .2 shifter.vhd \DTcomment{Static shifter}.
+    .2 shifter\_dynamic.vhd \DTcomment{Dynamic shifter}.
+    .2 shift\_register.vhd \DTcomment{Shift register}.
 }
 ~
 \dirtree{%
 .1 vhdl/packages.
-    .2 functions.vhd.
-    .2 instructions.vhd.
-    .2 types.vhd.
+    .2 functions.vhd \DTcomment{Utility functions}.
+    .2 instructions.vhd \DTcomment{Instruction codes}.
+    .2 types.vhd \DTcomment{Custom type declarations}.
 }
 ~
 \dirtree{%
 .1 vhdl/sp605.
-    .2 constraints.ucf.in.
-    .2 pcie\_wrapper.vhd.
+    .2 constraints.ucf.in \DTcomment{Constraints; preprocessed to constraints.ucf}.
+    .2 pcie\_wrapper.vhd \DTcomment{PCI Express Endpoint Core wrapper}.
 }
 ~
 \dirtree{%
 .1 vhdl/testbenches.
-    .2 test\_template.vhd.
-    .2 test\_dft.vhd.
-    .2 test\_dsp\_wrapper.vhd.
+    .2 test\_template.vhd \DTcomment{Testbench template}.
+    .2 test\_dft.vhd \DTcomment{DFT testbench}.
+    .2 test\_dsp\_wrapper.vhd \DTcomment{DSP Wrapper testbench}.
 }
