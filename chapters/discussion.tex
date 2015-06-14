@@ -20,11 +20,11 @@ However, as the fitness module is exchangeable, parameters have to be specified 
 
 In circumstances where the matrices are 2D and relatively small, it is possible to synthesize a 3D matrix and stack multiple 2D matrices within it as individual layers.
 By using only 2D LUTs and development rules, the multiple matrices can then be developed and stepped in parallel, potentially reducing runtime by a large amount.
-It is however incompatible with the current fitness system, since the Live Counter totals all cells regardless.
+It is however incompatible with the current fitness system, since the Live Counter totals all cells regardless of how they are used.
 
 \subsection{Communication}
 
-\todo{intro?}
+The platform's new PCI Express based communication interface has been profiled by determining the latency and throughput of the link in both normal and low-latency mode.
 
 The latency is measured by averaging the times for 100000 pings.
 Each ping is the execution a read\_type instruction followed by retrieval of the type.
@@ -208,8 +208,6 @@ Hopefully, this is implemented in a way that is both organized and understandabl
 
 It appears that the USB cable driver for JTAG provided by Xilinx has some problems with newer Linux kernels; it certainly does not detect the board in the current hardware setup.
 Thankfully, a third-party driver was found at \cite{usbdriver} which proved to be compatible and solved the problem.
-
-\todo{more? copy from report?}
 
 %==============================================================================%
 
