@@ -104,7 +104,7 @@ This is known as plasticity.
     \label{fig:development}
 \end{figure}
 
-Development is needed because a complete specification of a complex organism requires much more information than practically can be stored; it is several orders of magnitude greater than that of one cell and it's development rules.
+Development is needed because a complete specification of a complex organism requires much more information than practically can be stored; it is several orders of magnitude greater than that of one cell and its development rules.
 Plasticity and self-repairing abilities are merely bonuses, but have shown to be highly valuable properties.
 For the same reasons, artificial development is lucrative for building more complex computer systems that are also fault-tolerant and adaptable.
 
@@ -217,7 +217,7 @@ Following is a brief summary:
 Cell states can have discrete or continuous values.
 The transfer function can be represented by exhaustive enumeration or a parameterized expression.
 The cells may be uniform by having the same transfer function, or non-uniform.
-Cell updates can be synchronous or asynchronous, and in the latter case the CA can be either deterministic or non-deterministic depending on the order in which cells update.
+Cell updates can be synchronous or asynchronous, and in the latter case the CA can be either deterministic or nondeterministic depending on the order in which cells update.
 The CA may be fully specified by direct programming or adaptively evolved using a EAs.
 Finally, there are numerous schemes that can be used to connect cells together to form neighborhoods.
 
@@ -271,13 +271,13 @@ He therefore developed a set of four classes to group them based on their emerge
     \centering
     \includegraphics[width=0.66\textwidth]{complexity-classes}
     \caption[Complexity classes]{
-        The location of Wolframs complexity classes in $\lambda$ space.
+        The location of Wolfram's complexity classes in $\lambda$ space.
         (Adapted reprint from \cite{langton1990edgeofchaos})
     }
     \label{fig:complexity-classes}
 \end{figure}
 
-Langton attempted to connect Wolframs classes to transfer function complexity \cite{langton1990edgeofchaos}.
+Langton attempted to connect Wolfram's classes to transfer function complexity \cite{langton1990edgeofchaos}.
 For this he used a measure called $\lambda$, which essentially determines the inverse ratio of rules that cause a cell to transition into any given state.
 This means that all transitions are to a given state if $\lambda=0.0$, while there are no transitions to any state if $\lambda=1.0$.
 His findings, displayed in \figurename~\ref{fig:complexity-classes}, show that class 4 resides in a phase transition between the order of class 2 and the chaos of class 3.
@@ -286,7 +286,7 @@ This is known as ``The Edge of Chaos''.
 \subsection{Evolution and Development in CAs}
 \label{sec:evo-devo-ca}
 
-The problem with using EAs to program CAs is that the search spaces are vast, even for the simplest binary CAs ($2^{Neigborhood \cdot Cells}$ configurations\footnotemark).
+The problem with using EAs to program CAs is that the search spaces are vast, even for the simplest binary CAs ($2^{Neighborhood \cdot Cells}$ configurations\footnotemark).
 However, by adding development to the process, the search spaces can be dramatically reduced to manageable sizes while gaining other benefits such as scalability and robustness.
 
 \footnotetext{
@@ -408,7 +408,7 @@ This section describes work performed by others, which is related to that perfor
 
 \subsection{CAM-8}
 
-The Information Mechanics Group at MIT Laboratory for Computer Science has had a focus the question ``How can computation and computers best be adapted to the constraints and opportunities afforded my microscopic physics?''
+The Information Mechanics Group at MIT Laboratory for Computer Science has had a focus the question ``How can computation and computers best be adapted to the constraints and opportunities afforded by microscopic physics?''
 This has led to more than a decade of study of CAs, as their fine-grained computation with local interconnectivity are particularly good candidates for micro-physical efficiency.
 To this end, they have created CA Machines (CAMs) that aim to use common computer parts in smart arrangements to provide CA computation performance akin to modern supercomputers.
 \cite{margolus1996cam8} describes their eighth iteration, known as the CAM-8.

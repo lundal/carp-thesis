@@ -11,7 +11,7 @@ A more detailed view of the system in shown in \figurename~\ref{fig:implementati
     \label{fig:implementation-simple}
 \end{figure}
 
-Conseptually, the platform is a three-stage interlocked pipeline with the stages Fetch, Decode and Execute, where the Execute stage includes the Control, Development and CA modules.
+Conceptually, the platform is a three-stage interlocked pipeline with the stages Fetch, Decode and Execute, where the Execute stage includes the Control, Development and CA modules.
 Only one module within each stage is activated at a time, and the interlocking allows each module to use multiple cycles and contain sub-pipelines without requiring complex hazard detection and evasion.
 Fitness is special in that it is not part of the main pipeline since it operates in a dataflow-like fashion.
 
